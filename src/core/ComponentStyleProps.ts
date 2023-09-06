@@ -16,17 +16,17 @@ class ComponentStyleProps {
     backgroundImageId?: string = undefined;
     
     space?: string | number = 0;
-    spaceLeft?: string | number = 0;
-    spaceRight?: string | number = 0;
-    spaceTop?: string | number = 0;
-    spaceBottom?: string | number = 0;
+    spaceLeft?: string | number = undefined;
+    spaceRight?: string | number = undefined;
+    spaceTop?: string | number = undefined;
+    spaceBottom?: string | number = undefined;
 
     /* Border */
-    borderRadius?: string | number = undefined;
-    borderRadiusBottomRight?: string | number = undefined;
-    borderRadiusBottomLeft?: string | number = undefined;
-    borderRadiusTopLeft?: string | number = undefined;
-    borderRadiusTopRight?: string | number = undefined;
+    borderRadius?: string | number = 0;
+    borderRadiusBottomRight?: string | number = 0;
+    borderRadiusBottomLeft?: string | number = 0;
+    borderRadiusTopLeft?: string | number = 0;
+    borderRadiusTopRight?: string | number = 0;
 
     borderWidth?: string | number = 0;
     borderTopWidth?: string | number = 0;
@@ -34,11 +34,11 @@ class ComponentStyleProps {
     borderBottomWidth?: string | number = 0;
     borderLeftWidth?: string | number = 0;
 
-    borderColor?: Color;
-    borderTopColor?: Color ;
-    borderRightColor?: string ;
-    borderBottomColor?: string ;
-    borderLeftColor?: string ;
+    borderColor?: string|Color;
+    borderTopColor?: string|Color ;
+    borderRightColor?: string|Color ;
+    borderBottomColor?: string|Color ;
+    borderLeftColor?: string|Color ;
 
     borderStyle?: string = "solid";
     borderTopStyle?: string = "solid";
@@ -49,6 +49,7 @@ class ComponentStyleProps {
     maxWidth?: string | number = "100%";  // Default value
     maxHeight?: string | number = "100%"; // Default value
 
+    // ignored for now, future feature
     zIndex: number = 0;
 }
 

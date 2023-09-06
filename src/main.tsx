@@ -10,9 +10,9 @@ let root: BaseComponent =
     <Div style={{ width: "1000px", height: "800px", backgroundColor: "#cccccc" }}>
         <Grid style={{ backgroundColor: "#cccccc", width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "4fr"]} rowsPattern={["1fr", "1fr"]}>
             <Div key={"obj1"} style={{ backgroundColor: "#ff0000", width: "100%", height: "100%", position: "relative" }} />
-            <Div style={{ backgroundColor: "#00ff00", width: "100%", height: "100%", position: "relative" }} />
+            <Div style={{ backgroundColor: "#00ff00", width: "100%", height: "100%", position: "relative"}} />
             <Div style={{ backgroundColor: "#0000ff", width: "100%", height: "100%", position: "relative" }} />
-            <Div style={{ backgroundColor: "#ff00ff", width: "100%", height: "100%", position: "relative", space: 10, spaceLeft: 100 }} />
+            <Div style={{ backgroundColor: "#ff00ff", width: "100%", height: "100%", position: "relative", space: 10, spaceLeft: 100, spaceRight: 100 }} />
         </Grid>
     </Div>
 

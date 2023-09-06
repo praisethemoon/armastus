@@ -1,5 +1,8 @@
 export function parseCoordinate(value: string, parentSize: number): number {
-    if (value.endsWith('px')) {
+    if(value == undefined || value == null) {
+        return parentSize;
+    }
+    else if (value.endsWith('px')) {
         return parseInt(value); // Parse pixel value
     } else if (value.endsWith('%')) {
         const percentage = parseInt(value) / 100;

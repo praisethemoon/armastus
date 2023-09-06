@@ -13,17 +13,8 @@ export class Grid extends Div {
     }
 
     setGridTemplate(columnsPattern: string[], rowsPattern: string[]) {
-        print(columnsPattern.length, rowsPattern.length)
         this.gridTemplateColumns = columnsPattern;
         this.gridTemplateRows = rowsPattern;
-    }
-
-    render() {
-        super.render()
-        // Render child elements
-        for (const child of this.children) {
-            child.render();
-        }
     }
 
     computeViewport(accumulatedX: number, accumulatedY: number, parentWidth: number, parentHeight: number) {
@@ -65,7 +56,6 @@ export class Grid extends Div {
             const cellWidth = columnWidths[columnIndex];
             const cellHeight = rowHeights[rowIndex];
 
-            print("cell:", cellWidth, cellHeight)
 
             // Set child's position and dimensions
             //print(child.computedX, gridX, child.computedY, gridY, child.computedWidth, child.computedHeight)
