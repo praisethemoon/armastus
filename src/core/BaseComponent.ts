@@ -51,30 +51,14 @@ export class BaseComponent {
        */
     computeViewport(parentX: number, parentY: number, parentW: number, parentH: number) {
         // Initialize the child viewport with the parent's viewport
-        const childViewport: ViewportInfo = { ...this.viewport };
 
         // Apply the component's own style properties
         const style: Partial<ComponentStyleProps> = this.props.style || new ComponentStyleProps();
         const { width, height, maxWidth, maxHeight, position, top, left, margin } = style;
 
-        // Calculate width and height based on style properties and parent dimensions
-        childViewport.width = this.computeDimension(width, maxWidth, parentW);
-        childViewport.height = this.computeDimension(height, maxHeight, parentH);
-
-        // Update child viewport position based on position property
-        if (position === 'absolute') {
-            // Absolute positioning
-            childViewport.x = this.computeDimension(left, undefined, parentW) + parentX;
-            childViewport.y = this.computeDimension(top, undefined, parentH) + parentY;
-        } else if (position === 'relative') {
-            // Relative positioning (default behavior)
-            childViewport.x += parentX;
-            childViewport.y += parentY;
-        }
-
         // Initialize variables to calculate the combined dimensions of all child components
-        let totalWidth = childViewport.width;
-        let totalHeight = childViewport.height;
+        let totalWidth = this.computeDimension(width, maxWidth, parentW);
+        let totalHeight = this.computeDimension(height, maxHeight, parentH);
 
         // check if max width or height is set
         if (maxWidth !== undefined && maxWidth !== 'unset') {
@@ -84,8 +68,15 @@ export class BaseComponent {
             totalHeight = Math.min(totalHeight, this.computeDimension(maxHeight, maxHeight, parentH));
         }
 
-        this.viewport.x = parentX;
-        this.viewport.y = parentY;
+        if (position === 'absolute') {
+            // Absolute positioning
+            this.viewport.x = this.computeDimension(left, undefined, parentW) + parentX;
+            this.viewport.y = this.computeDimension(top, undefined, parentH) + parentY;
+        } else {
+            this.viewport.x = parentX;
+            this.viewport.y = parentY;
+        }
+
         this.viewport.width = totalWidth;
         this.viewport.height = totalHeight;
 
@@ -95,6 +86,11 @@ export class BaseComponent {
         let highestHeight = 0;
 
         for (const child of this.children) {
+            if(child.props.style.position === 'absolute') {
+                child.computeViewport(0, 0, this.viewport.width, this.viewport.height)
+                continue;
+            };
+
             const childViewportResult = child.computeViewport(
                 accX,
                 accY,

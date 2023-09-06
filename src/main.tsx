@@ -55,6 +55,7 @@ root =
       <Div style={{ backgroundColor: "#00ff00", width: "100px", height: "100px", position: "relative" }} />
       <Div style={{ backgroundColor: "#0000ff", width: "100px", height: "100px", position: "relative" }} />
       <Div style={{ backgroundColor: "#ffffff", width: "50px", height: "50px", position: "relative" }} />
+      <Div style={{ backgroundColor: "#0e1c01", width: "200px", height: "200px", position: "absolute", left: "250px", top: "10px"}} />
   </Div>
 
 
