@@ -1,6 +1,11 @@
-export function parseCoordinate(value: string, parentSize: number): number {
-    if(value == undefined || value == null) {
+import { NullableProp } from "../ComponentStyleProps";
+
+export function parseCoordinate(value: NullableProp | undefined, parentSize: number): number {
+    if(value == null || value == undefined) {
         return parentSize;
+    }
+    if(typeof(value) == "number") {
+        return value;
     }
     else if (value.endsWith('px')) {
         return parseInt(value); // Parse pixel value

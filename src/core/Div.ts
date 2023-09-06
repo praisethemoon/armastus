@@ -48,21 +48,30 @@ export class Div extends BaseComponent {
         //print(borderRadius, borderRadiusBottomRight, borderRadiusBottomLeft, borderRadiusTopLeft, borderRadiusTopRight)
 
         borderRadius = parseCoordinate(borderRadius + "", 0)
-        borderRadiusBottomRight = (borderRadiusBottomRight != undefined) ? parseCoordinate(borderRadiusBottomRight + "", 0) : borderRadius
-        borderRadiusBottomLeft = (borderRadiusBottomLeft != undefined) ? parseCoordinate(borderRadiusBottomLeft + "", 0) : borderRadius
-        borderRadiusTopLeft = (borderRadiusTopLeft != undefined) ? parseCoordinate(borderRadiusTopLeft + "", 0) : borderRadius
-        borderRadiusTopRight = (borderRadiusTopRight != undefined) ? parseCoordinate(borderRadiusTopRight + "", 0) : borderRadius
+        borderRadiusBottomRight = (borderRadiusBottomRight != null) ? parseCoordinate(borderRadiusBottomRight + "", 0) : borderRadius
+        borderRadiusBottomLeft = (borderRadiusBottomLeft != null) ? parseCoordinate(borderRadiusBottomLeft + "", 0) : borderRadius
+        borderRadiusTopLeft = (borderRadiusTopLeft != null) ? parseCoordinate(borderRadiusTopLeft + "", 0) : borderRadius
+        borderRadiusTopRight = (borderRadiusTopRight != null) ? parseCoordinate(borderRadiusTopRight + "", 0) : borderRadius
 
         borderWidth = parseCoordinate(borderWidth + "", 0)
-        borderTopWidth = (borderTopWidth != undefined) ? parseCoordinate(borderTopWidth + "", 0) : borderWidth
-        borderRightWidth = (borderRightWidth != undefined) ? parseCoordinate(borderRightWidth + "", 0) : borderWidth
-        borderBottomWidth = (borderBottomWidth != undefined) ? parseCoordinate(borderBottomWidth + "", 0) : borderWidth
-        borderLeftWidth = (borderLeftWidth != undefined) ? parseCoordinate(borderLeftWidth + "", 0) : borderWidth
+        borderTopWidth = (borderTopWidth != null) ? parseCoordinate(borderTopWidth + "", 0) : borderWidth
+        borderRightWidth = (borderRightWidth != null) ? parseCoordinate(borderRightWidth + "", 0) : borderWidth
+        borderBottomWidth = (borderBottomWidth != null) ? parseCoordinate(borderBottomWidth + "", 0) : borderWidth
+        borderLeftWidth = (borderLeftWidth != null) ? parseCoordinate(borderLeftWidth + "", 0) : borderWidth
 
+        borderColor = borderColor || "#000000"
         borderTopColor = borderTopColor || borderColor
         borderRightColor = borderRightColor || borderColor
         borderBottomColor = borderBottomColor || borderColor
         borderLeftColor = borderLeftColor || borderColor
+
+        // we convert colors to love2d colors
+        borderColor = (typeof(borderColor) == "string") ? Color.fromString(borderColor) : borderColor
+        borderTopColor = (typeof(borderTopColor) == "string") ? Color.fromString(borderTopColor) : borderTopColor
+        borderRightColor = (typeof(borderRightColor) == "string") ? Color.fromString(borderRightColor) : borderRightColor
+        borderBottomColor = (typeof(borderBottomColor) == "string") ? Color.fromString(borderBottomColor) : borderBottomColor
+        borderLeftColor = (typeof(borderLeftColor) == "string") ? Color.fromString(borderLeftColor) : borderLeftColor
+        
 
         //print(borderRadius, borderRadiusBottomRight, borderRadiusBottomLeft, borderRadiusTopLeft, borderRadiusTopRight)
 
@@ -122,6 +131,18 @@ export class Div extends BaseComponent {
                     // Now, render the canvas with opacity
                 }
             }
+            /**
+             * Now we draw border
+             */
+            /*
+            if (borderTopWidth > 0) {
+                const colors = borderTopColor.toLove2DColor()
+                love.graphics.setColor(colors[0], colors[1], colors[2], colors[3]);
+                // we draw border same as in web, we respect radius and border width
+                love.graphics.setLineWidth(borderTopWidth)
+                love.graphics.rectangle('line', borderRadiusTopLeft, 0, width - borderRadiusTopLeft - borderRadiusTopRight, borderTopWidth);
+            }
+            */
 
             love.graphics.setCanvas(); // Reset the canvas
             love.graphics.setColor(1, 1, 1, bgColor[3]);

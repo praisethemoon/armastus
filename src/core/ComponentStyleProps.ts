@@ -1,53 +1,55 @@
 import { Color } from "./Color";
 
+export type NullableProp = string | number | null;
+
 // src/ui-components/CSSProps.ts
 class ComponentStyleProps {
-    position?: 'absolute' | 'relative';
-    top?: string | number = 0;
-    left?: string | number = 0;
-    //bottom?: string | number = 0;
-    //right?: string | number = 0;
-    width?: string | number | "unset" = "100%";
-    height?: string | number | "unset" = "100%";
+    position: 'absolute' | 'relative' = 'relative';
+    top: NullableProp = null;
+    left: NullableProp = null;
+    //bottom: NullableProp = null;
+    //right: NullableProp = null;
+    width: NullableProp | "unset" = "100%";
+    height: NullableProp | "unset" = "100%";
 
-    backgroundColor?: Color | string = "#cccccc";
-    color?: Color | "inherit" = new Color(0, 0, 0, 255);
+    backgroundColor: Color | string = "#cccccc";
+    color: Color | "inherit" = new Color(0, 0, 0, 255);
 
-    backgroundImageId?: string = undefined;
+    backgroundImageId: string | null = null;
     
-    space?: string | number = 0;
-    spaceLeft?: string | number = undefined;
-    spaceRight?: string | number = undefined;
-    spaceTop?: string | number = undefined;
-    spaceBottom?: string | number = undefined;
+    space: NullableProp = 0;
+    spaceLeft: NullableProp = null;
+    spaceRight: NullableProp = null;
+    spaceTop: NullableProp = null;
+    spaceBottom: NullableProp = null;
 
     /* Border */
-    borderRadius?: string | number = 0;
-    borderRadiusBottomRight?: string | number = 0;
-    borderRadiusBottomLeft?: string | number = 0;
-    borderRadiusTopLeft?: string | number = 0;
-    borderRadiusTopRight?: string | number = 0;
+    borderRadius: NullableProp = 0;
+    borderRadiusBottomRight: NullableProp = null;
+    borderRadiusBottomLeft: NullableProp = null;
+    borderRadiusTopLeft: NullableProp = null;
+    borderRadiusTopRight: NullableProp = null;
 
-    borderWidth?: string | number = 0;
-    borderTopWidth?: string | number = 0;
-    borderRightWidth?: string | number = 0;
-    borderBottomWidth?: string | number = 0;
-    borderLeftWidth?: string | number = 0;
+    borderWidth: NullableProp = 0;
+    borderTopWidth: NullableProp = null;
+    borderRightWidth: NullableProp = null;
+    borderBottomWidth: NullableProp = null;
+    borderLeftWidth: NullableProp = null;
 
-    borderColor?: string|Color;
-    borderTopColor?: string|Color ;
-    borderRightColor?: string|Color ;
-    borderBottomColor?: string|Color ;
-    borderLeftColor?: string|Color ;
+    borderColor: string|Color|null = null ;
+    borderTopColor: string|Color|null = null ;
+    borderRightColor: string|Color|null = null ;
+    borderBottomColor: string|Color|null = null ;
+    borderLeftColor: string|Color|null = null ;
 
-    borderStyle?: string = "solid";
-    borderTopStyle?: string = "solid";
-    borderRightStyle?: string = "solid";
-    borderBottomStyle?: string = "solid";
-    borderLeftStyle?: string = "solid";
+    borderStyle: string = "solid";
+    borderTopStyle: string = "solid";
+    borderRightStyle: string = "solid";
+    borderBottomStyle: string = "solid";
+    borderLeftStyle: string = "solid";
 
-    maxWidth?: string | number = "100%";  // Default value
-    maxHeight?: string | number = "100%"; // Default value
+    maxWidth: NullableProp = "100%";  // Default value
+    maxHeight: NullableProp = "100%"; // Default value
 
     // ignored for now, future feature
     zIndex: number = 0;

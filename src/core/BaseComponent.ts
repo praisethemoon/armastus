@@ -18,8 +18,17 @@ export class BaseComponent {
 
     /**
      * Viewport information
+     * Spacing is not part of this!
      */
     viewport: ViewportInfo = {
+        x: 0, y: 0, width: 0, height: 0
+    }
+
+    /**
+     * Location of where to draw children within the viewport
+     * this is mostly relevant when there is a border
+     */
+    childRenderViewport = {
         x: 0, y: 0, width: 0, height: 0
     }
 
@@ -62,17 +71,17 @@ export class BaseComponent {
         let totalHeight = this.computeDimension(height, maxHeight, parentH);
 
         // check if max width or height is set
-        if (maxWidth !== undefined && maxWidth !== 'unset') {
+        if (maxWidth !== null && maxWidth !== 'unset') {
             totalWidth = Math.min(totalWidth, this.computeDimension(maxWidth, maxWidth, parentW));
         }
-        if (maxHeight !== undefined && maxHeight !== 'unset') {
+        if (maxHeight !== null && maxHeight !== 'unset') {
             totalHeight = Math.min(totalHeight, this.computeDimension(maxHeight, maxHeight, parentH));
         }
 
         if (position === 'absolute') {
             // Absolute positioning
-            this.viewport.x = this.computeDimension(left, undefined, parentW) + parentX;
-            this.viewport.y = this.computeDimension(top, undefined, parentH) + parentY;
+            this.viewport.x = this.computeDimension(left, null, parentW) + parentX;
+            this.viewport.y = this.computeDimension(top, null, parentH) + parentY;
         } else {
             this.viewport.x = parentX;
             this.viewport.y = parentY;
@@ -86,39 +95,56 @@ export class BaseComponent {
         totalWidth = totalWidth - spaceL - spaceR;
         totalHeight = totalHeight - spaceT - spaceB;
 
-        this,this.viewport.x += spaceL;
+        this, this.viewport.x += spaceL;
         this.viewport.y += spaceT;
 
         this.viewport.width = totalWidth;
         this.viewport.height = totalHeight;
 
-        let accX = this.viewport.x;
-        let accY = this.viewport.y;
+
+        // extract border values:
+        let { borderWidth, borderLeftWidth, borderRightWidth, borderBottomWidth, borderTopWidth } = style;
+        borderWidth = parseCoordinate(borderWidth, 0);
+        borderLeftWidth = parseCoordinate(borderLeftWidth, borderWidth);
+        borderRightWidth = parseCoordinate(borderRightWidth, borderWidth);
+        borderBottomWidth = parseCoordinate(borderBottomWidth, borderWidth);
+        borderTopWidth = parseCoordinate(borderTopWidth, borderWidth);
+        print(borderWidth, borderLeftWidth, borderRightWidth, borderBottomWidth, borderTopWidth)
+
+        // now we check if we have a border
+        this.childRenderViewport = { ...this.viewport };
+        this.childRenderViewport.y += borderTopWidth;
+        this.childRenderViewport.x += borderLeftWidth;
+        this.childRenderViewport.height -= borderTopWidth + borderBottomWidth;
+        this.childRenderViewport.width -= borderLeftWidth + borderRightWidth;
+
+        let accX = this.childRenderViewport.x;
+        let accY = this.childRenderViewport.y;
 
         let highestHeight = 0;
 
         for (const child of this.children) {
-            if(child.props.style.position === 'absolute') {
-                child.computeViewport(0, 0, this.viewport.width, this.viewport.height)
+            if (child.props.style.position === 'absolute') {
+                child.computeViewport(0, 0, this.childRenderViewport.width, this.childRenderViewport.height)
                 continue;
             };
 
             const childViewportResult = child.computeViewport(
                 accX,
                 accY,
-                this.viewport.width,
-                this.viewport.height
+                this.childRenderViewport.width,
+                this.childRenderViewport.height
             );
 
             // Update the child viewport information
             accX = child.viewport.x + child.viewport.width;
 
             // Check if the child's height exceeds the highest height
-            highestHeight = Math.max(highestHeight, child.viewport.height);
+            highestHeight = Math.max(highestHeight, child.childRenderViewport.height);
 
             // Check if the child exceeds the parent width, and if so, move to the next row
-            if (accX + child.viewport.width > this.viewport.x + this.viewport.width) {
-                accX = this.viewport.x;
+            if (accX + child.viewport.width > this.childRenderViewport.x + this.viewport.width) {
+                accX = this.childRenderViewport.x;
                 accY += highestHeight; // Move to the next row
                 highestHeight = child.viewport.height; // Reset highest height for the new row
 
@@ -128,20 +154,20 @@ export class BaseComponent {
 
                 // Update the accumulated x-coordinate
                 accX += child.viewport.width;
-
             }
         }
-
-        /*
-        if(this.key == "obj1") {
-            print("current dims", this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height)
-            print("parent:", parentX, parentY, parentW, parentH)
-        }
-        */
     }
 
     // Helper function to compute dimensions based on different types of values
-    computeDimension(value: string | number | undefined, max: string | number | undefined, parentSize: number): number {
+    computeDimension(value: string | number | null | undefined, max: string | number | null | undefined, parentSize: number): number {
+        if (value === undefined) {
+            value = null;
+        }
+
+        if (max === undefined) {
+            max = null;
+        }
+
         if (typeof value === 'number') {
             return value;
         } else if (typeof value === 'string') {
@@ -152,15 +178,15 @@ export class BaseComponent {
             } else {
                 return parseFloat(value);
             }
-        } else if (value == undefined) {
-            if(max == undefined) {
+        } else if (value == null) {
+            if (max == null) {
                 return 0;
             }
-            return this.computeDimension(max, undefined, parentSize);
-        } 
+            return this.computeDimension(max, null, parentSize);
+        }
         else {
-            // Value is undefined, use max value if provided, or 0 otherwise
-            if (max !== undefined) {
+            // Value is null, use max value if provided, or 0 otherwise
+            if (max !== null) {
                 return typeof max === 'number' ? max : parseFloat(max);
             } else {
                 return 0;
