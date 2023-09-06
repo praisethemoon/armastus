@@ -1,4 +1,4 @@
-import { Color } from "./Color";
+import { Color, GradientColor} from "./Color";
 
 export type NullableProp = string | number | null;
 
@@ -13,6 +13,7 @@ class ComponentStyleProps {
     height: NullableProp | "unset" = "100%";
 
     backgroundColor: Color | string = "#cccccc";
+    backgroundGradient: GradientColor | null = null;
     color: Color | "inherit" = new Color(0, 0, 0, 255);
 
     backgroundImageId: string | null = null;

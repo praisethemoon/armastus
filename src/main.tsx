@@ -3,16 +3,29 @@ import { Arma } from "./core/Arma";
 //import { TextBox } from "./ui/components/Text";
 import { BaseComponent } from "./core/BaseComponent";
 import { Div } from "./core/Div";
-import { Color } from "./core/Color";
+import { Color, GradientColor } from "./core/Color";
 import { Grid } from "./core/Grid";
 import { TextBox } from "./core/TextBox";
 
 let root: BaseComponent =
     <Div style={{ width: "1000px", height: "800px", backgroundColor: "#cccccc"}}>
-        <Grid style={{ backgroundColor: "#cccccc00", width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "4fr"]} rowsPattern={["1fr", "1fr"]}>
+        <Grid style={{ backgroundColor: "#cccccc00", width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "1fr"]} rowsPattern={["1fr", "1fr"]}>
             <Div key={"obj1"} style={{ backgroundColor: "#ff0000", width: "100%", height: "100%", position: "relative" }} />
             <Div style={{ backgroundColor: "#00ff00", width: "100%", height: "100%", position: "relative"}} />
-            <Div style={{ backgroundColor: "#0000ff", width: "100%", height: "100%", position: "relative" }} />
+            <Div style={{ backgroundColor: "#ffffff", backgroundGradient: new GradientColor(
+                "linear",
+                "90deg",
+                null,
+                null,
+                null,
+                [
+                    { color: Color.fromString("#000000"), position: "0%" },
+                    { color: Color.fromString("#ff0000"), position: "70%" },
+                    { color: Color.fromString("#ccccccff"), position: "100%" },
+                ]
+            )
+            
+            , width: "100%", height: "100%", position: "relative" }} />
             <Div style={{ 
                 backgroundColor: "#ff00ffe0", width: "100%", height: "100%", position: "relative", space: 50, spaceLeft: 100, spaceRight: 100, 
                 borderRadiusBottomLeft: "50px", 

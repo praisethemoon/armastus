@@ -88,3 +88,41 @@ export class Color {
         return this;
     }
 }
+
+export class GradientColor {
+    gradientType: string;
+    angle: number = 0;
+    shape: string | null;
+    position: string | null;
+    extent: string | null;
+    colorStops: { color: Color; position: string }[];
+
+    constructor(
+        gradientType: string,
+        angle: string | null,
+        shape: string | null,
+        position: string | null,
+        extent: string | null,
+        colorStops: { color: Color; position: string }[]
+    ) {
+        this.gradientType = gradientType;
+        this.shape = shape;
+        this.position = position;
+        this.extent = extent;
+        this.colorStops = colorStops;
+
+        if(angle != null) {
+            if(angle.endsWith("deg")) {
+                this.angle = parseFloat(angle);
+                // convert to rad
+                this.angle = this.angle * math.pi / 180;
+            }
+            else if(angle.endsWith("rad")) {
+                this.angle = parseFloat(angle);
+            }
+            else {
+                this.angle = 0
+            }
+        }
+    }
+}
