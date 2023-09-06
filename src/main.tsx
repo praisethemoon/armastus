@@ -6,18 +6,15 @@ import { Div } from "./core/Div";
 import { Color } from "./core/Color";
 import { Grid } from "./core/Grid";
 
-let root: BaseComponent;
-
-
-root =
-  <Div style={{ width: "1000px", height: "800px", backgroundColor: "#cccccc" }}>
-    <Grid style={{ backgroundColor: "#cccccc", width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "4fr"]} rowsPattern={["1fr", "1fr"]}>
-      <Div key={"obj1"} style={{ backgroundColor: "#ff0000", width: "100%", height: "100%", position: "relative" }} />
-      <Div style={{ backgroundColor: "#00ff00", width: "100%", height: "100%", position: "relative" }} />
-      <Div style={{ backgroundColor: "#0000ff", width: "100%", height: "100%", position: "relative" }} />
-      <Div style={{ backgroundColor: "#ff00ff", width: "100%", height: "100%", position: "relative" }} />
-    </Grid>
-  </Div>
+let root: BaseComponent =
+    <Div style={{ width: "1000px", height: "800px", backgroundColor: "#cccccc" }}>
+        <Grid style={{ backgroundColor: "#cccccc", width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "4fr"]} rowsPattern={["1fr", "1fr"]}>
+            <Div key={"obj1"} style={{ backgroundColor: "#ff0000", width: "100%", height: "100%", position: "relative" }} />
+            <Div style={{ backgroundColor: "#00ff00", width: "100%", height: "100%", position: "relative" }} />
+            <Div style={{ backgroundColor: "#0000ff", width: "100%", height: "100%", position: "relative" }} />
+            <Div style={{ backgroundColor: "#ff00ff", width: "100%", height: "100%", position: "relative", space: 10, spaceLeft: 100 }} />
+        </Grid>
+    </Div>
 
 /*
   <Div style={{ width: "1000px", height: "1000px", backgroundColor: "#cccccc" }}>
@@ -78,9 +75,9 @@ let c = Color.fromString("#cccccc").toLove2DColor()
 print(c[0], c[1], c[2], c[3])
 
 love.draw = () => {
-  root.render();
+    root.render();
 };
 
 love.update = (dt: number) => {
-  root.update(dt);
+    root.update(dt);
 }

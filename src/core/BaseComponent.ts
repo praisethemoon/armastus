@@ -54,7 +54,7 @@ export class BaseComponent {
 
         // Apply the component's own style properties
         const style: Partial<ComponentStyleProps> = this.props.style || new ComponentStyleProps();
-        const { width, height, maxWidth, maxHeight, position, top, left, margin } = style;
+        const { width, height, maxWidth, maxHeight, position, top, left, space, spaceLeft, spaceBottom, spaceRight, spaceTop } = style;
 
         // Initialize variables to calculate the combined dimensions of all child components
         let totalWidth = this.computeDimension(width, maxWidth, parentW);
@@ -76,6 +76,17 @@ export class BaseComponent {
             this.viewport.x = parentX;
             this.viewport.y = parentY;
         }
+
+        let spaceL = this.computeDimension(spaceLeft, space, parentW);
+        let spaceR = this.computeDimension(spaceRight, space, parentW);
+        let spaceT = this.computeDimension(spaceTop, space, parentH);
+        let spaceB = this.computeDimension(spaceBottom, space, parentH);
+
+        totalWidth = totalWidth - spaceL - spaceR;
+        totalHeight = totalHeight - spaceT - spaceB;
+
+        this,this.viewport.x += spaceL;
+        this.viewport.y += spaceT;
 
         this.viewport.width = totalWidth;
         this.viewport.height = totalHeight;
@@ -138,7 +149,13 @@ export class BaseComponent {
             } else {
                 return parseFloat(value);
             }
-        } else {
+        } else if (value == undefined) {
+            if(max == undefined) {
+                return 0;
+            }
+            return this.computeDimension(max, undefined, parentSize);
+        } 
+        else {
             // Value is undefined, use max value if provided, or 0 otherwise
             if (max !== undefined) {
                 return typeof max === 'number' ? max : parseFloat(max);

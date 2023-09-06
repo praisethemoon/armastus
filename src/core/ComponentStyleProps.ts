@@ -15,18 +15,11 @@ class ComponentStyleProps {
 
     backgroundImageId?: string = undefined;
     
-    // padding
-    padding?: string | number = 0;
-    paddingTop?: string | number = 0;
-    paddingBottom?: string | number = 0;
-    paddingLeft?: string | number = 0;
-    paddingRight?: string | number = 0;
-    
-    margin?: string | number = 0;
-    marginLeft?: string | number = 0;
-    marginRight?: string | number = 0;
-    marginTop?: string | number = 0;
-    marginBottom?: string | number = 0;
+    space?: string | number = 0;
+    spaceLeft?: string | number = 0;
+    spaceRight?: string | number = 0;
+    spaceTop?: string | number = 0;
+    spaceBottom?: string | number = 0;
 
     /* Border */
     borderRadius?: string | number = undefined;
