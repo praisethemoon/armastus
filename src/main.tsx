@@ -19,16 +19,10 @@ let root: BaseComponent =
                 borderRadiusBottomRight: "50px",
                 borderBottomWidth: 50,
                 borderBottomColor: "#ffff00",
-
-                borderRadiusTopLeft: "10px",
+                borderRadiusTopLeft: "25px",
                 borderRadiusTopRight: "25px",
-                borderTopWidth: 25,
-                borderTopColor: "#f0cce0",
-
-                borderLeftColor: "#ff00ff",
-                borderLeftWidth: 25,
-                
-
+                borderColor: "#ff0000",
+                            
             }}>
                 <TextBox halign="center" valign="center" style={{color: new Color(0, 0, 0)}} fontAssetName="defaultFont" fontSize={20}>
                     Wub you dummy!

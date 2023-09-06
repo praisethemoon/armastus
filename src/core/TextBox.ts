@@ -67,7 +67,7 @@ export class TextBox extends Div {
         love.graphics.push();
         love.graphics.setFont(this.font);
         love.graphics.setColor(color[0], color[1], color[2], color[3]);
-        love.graphics.print(this.text, textX, textY);
+        love.graphics.printf(this.text, textX, textY, this.viewport.width);
         love.graphics.pop();
     }
     

@@ -163,9 +163,8 @@ export class Div extends BaseComponent {
 
                     // left line
                     love.graphics.setLineWidth(borderLeftWidth)
-                    //love.graphics.setColor(0, 1, 0);
-                    love.graphics.rectangle('fill', 0, borderRadiusTopLeft, borderLeftWidth, height - borderRadiusTopLeft - borderRadiusBottomLeft);
                     love.graphics.setColor(leftColors[0], leftColors[1], leftColors[2], leftColors[3]);
+                    love.graphics.rectangle('fill', 0, borderRadiusTopLeft, borderLeftWidth, height - borderRadiusTopLeft - borderRadiusBottomLeft);
 
                     if (borderLeftWidth == 0) {
                         love.graphics.setColor(topColors[0], topColors[1], topColors[2], topColors[3]);
@@ -174,10 +173,7 @@ export class Div extends BaseComponent {
                         love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
                     }
                     else {// first arc top left which stops at the middle
-                        love.graphics.push("all")
-                        love.graphics.setColor(1, 0, 0)
                         love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi + math.pi / 4, math.pi, numSegments);
-                        love.graphics.pop()
                         // second arc bottom left
                         love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
                     }
