@@ -60,7 +60,6 @@ export class BaseComponent {
         // Calculate width and height based on style properties and parent dimensions
         childViewport.width = this.computeDimension(width, maxWidth, parentW);
         childViewport.height = this.computeDimension(height, maxHeight, parentH);
-        print(childViewport.width, childViewport.height)
 
         // Update child viewport position based on position property
         if (position === 'absolute') {
@@ -121,7 +120,7 @@ export class BaseComponent {
 
                 // Update the accumulated x-coordinate
                 accX += child.viewport.width;
-                
+
             }
         }
     }
