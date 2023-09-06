@@ -41,14 +41,14 @@ export class Color {
                 return new Color(parseInt(hex.substring(1, 3), 16), parseInt(hex.substring(3, 5), 16), parseInt(hex.substring(5, 7), 16), parseInt(hex.substring(7, 9), 16)/255.0);
             }
             if (hex.length == 7) {
-                return new Color(parseInt(hex.substring(1, 3), 16), parseInt(hex.substring(3, 5), 16), parseInt(hex.substring(5, 7), 16));
+                return new Color(parseInt(hex.substring(1, 3), 16), parseInt(hex.substring(3, 5), 16), parseInt(hex.substring(5, 7), 16), 255);
             }
         }
         throw new Error("Invalid color format: `" + hex+"`");
     }
 
     toLove2DColor(): number[] {
-        return [this.red, this.green, this.blue, this.alpha];
+        return [this.red/255, this.green/255, this.blue/255, this.alpha/255];
     }
 
     /**
