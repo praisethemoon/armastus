@@ -6,7 +6,7 @@ import { parseCoordinate } from "./utils/parseCoordinate";
 export class Grid extends Div {
     private gridTemplateColumns: string[] = [];
     private gridTemplateRows: string[] = [];
-    /*
+    
     constructor(props?: { style: Partial<ComponentStyleProps>, id?: string, columnsPattern: string[], rowsPattern: string[]}, children?: BaseComponent[]) {
         super(props, children);
         this.setGridTemplate(props?.columnsPattern || [], props?.rowsPattern || []);
@@ -26,14 +26,27 @@ export class Grid extends Div {
         }
     }
 
-    computeLayout(parentWidth: number, parentHeight: number, accumulatedX: number, accumulatedY: number) {
+    computeViewport(accumulatedX: number, accumulatedY: number, parentWidth: number, parentHeight: number) {
+        
+        if(this.props.style.position == 'absolute') {
+            this.viewport.x = parseCoordinate(this.props.style.left+"", parentWidth) ;
+            this.viewport.y = parseCoordinate(this.props.style.top+"", parentHeight);
+        }
+        else {
+            this.viewport.x = accumulatedX;
+            this.viewport.y = accumulatedY;
+        }
+
+        this.viewport.width = parseCoordinate(this.props.style.width+"", parentWidth);
+        this.viewport.height = parseCoordinate(this.props.style.height+"", parentHeight);
+
+
+        // Calculate the final position of the grid
+
+
         // Compute grid dimensions based on patterns
         const columnWidths = this.computeGridDimensions(this.gridTemplateColumns, parentWidth);
         const rowHeights = this.computeGridDimensions(this.gridTemplateRows, parentHeight);
-
-        print(columnWidths[0], rowHeights[0])
-        print(columnWidths[], rowHeights[1])
-
         // Set positions and dimensions for child elements based on the grid layout
         let rowIndex = 0;
         let columnIndex = 0;
@@ -42,9 +55,9 @@ export class Grid extends Div {
         let gridY = 0;
 
          // Calculate the final position of the grid
-         if (this.styleProps.position == 'absolute') {
-            gridX = parseCoordinate(this.styleProps.left+"", parentWidth) ;
-            gridY = parseCoordinate(this.styleProps.top+"", parentHeight);
+         if (this.props.style.position == 'absolute') {
+            gridX = parseCoordinate(this.props.style.left+"", parentWidth) ;
+            gridY = parseCoordinate(this.props.style.top+"", parentHeight);
          }
 
         for (const child of this.children) {
@@ -52,18 +65,21 @@ export class Grid extends Div {
             const cellWidth = columnWidths[columnIndex];
             const cellHeight = rowHeights[rowIndex];
 
+            print("cell:", cellWidth, cellHeight)
 
             // Set child's position and dimensions
             //print(child.computedX, gridX, child.computedY, gridY, child.computedWidth, child.computedHeight)
             // Round child's position to the nearest pixel
-            child._renderProps.x = Math.round(gridX + accumulatedX + columnWidths.slice(0, columnIndex).reduce((acc, val) => acc + val, 0));
-            child._renderProps.y = Math.round(gridY + accumulatedY + rowHeights.slice(0, rowIndex).reduce((acc, val) => acc + val, 0));
+            child.viewport.x = Math.round(gridX + accumulatedX + columnWidths.slice(0, columnIndex).reduce((acc, val) => acc + val, 0));
+            child.viewport.y = Math.round(gridY + accumulatedY + rowHeights.slice(0, rowIndex).reduce((acc, val) => acc + val, 0));
 
-            child._renderProps.width = cellWidth;
-            child._renderProps.height = cellHeight;
+            child.viewport.width = cellWidth;
+            child.viewport.height = cellHeight;
 
 
-            child.computeLayout(cellWidth, cellHeight, child._renderProps.x, child._renderProps.y)
+            child.computeViewport(child.viewport.x, child.viewport.y, cellWidth, cellHeight)
+            //print("new child coords", child.viewport.x, child.viewport.y, child.viewport.width, child.viewport.height)
+
 
             // Increment column and row indices
             columnIndex++;
@@ -75,39 +91,58 @@ export class Grid extends Div {
     }
 
     private computeGridDimensions(pattern: string[], totalSize: number): number[] {
-        const fixedColumns = pattern.filter((item) => typeof item === 'string' && !item.endsWith('fr'));
-        const frColumns = pattern.filter((item) => typeof item === 'string' && item.endsWith('fr'));
+        const numColumns = pattern.length;
+        const cellDimensions: number[] = [];
     
-        const fixedSize = fixedColumns.reduce((acc, item) => acc + parseFloat(item), 0);
-        const remainingSize = totalSize - fixedSize;
-    
-        const frTotal = frColumns.reduce((acc, item) => acc + parseFloat(item), 0);
-    
-        if (frTotal > 0) {
-            const frUnitSize = remainingSize / frTotal;
-    
-            return pattern.map((item) => {
-                if (typeof item === 'string') {
-                    if (item.endsWith('fr')) {
-                        return Math.floor(frUnitSize * parseFloat(item)); // Use floor instead of rounding down
-                    } else {
-                        return Math.floor(parseFloat(item)); // Use floor instead of rounding down
-                    }
+        // Calculate the total size occupied by fixed columns/rows
+        let totalFixedSize = 0;
+        for (const item of pattern) {
+            if (typeof item === 'string') {
+                if (item.endsWith('fr')) {
+                    // Fractional columns/rows do not contribute to fixed size
+                    continue;
                 } else {
-                    return item;
+                    // Fixed columns/rows contribute to fixed size
+                    totalFixedSize += parseFloat(item);
                 }
-            });
-        } else {
-            // No fractional columns, distribute the fixed size evenly
-            const numFixedColumns = fixedColumns.length;
-            if (numFixedColumns > 0) {
-                const fixedColumnWidth = totalSize / numFixedColumns;
-                return pattern.map((item) => (typeof item === 'string' ? Math.floor(fixedColumnWidth) : item)); // Use floor instead of rounding down
             }
         }
     
-        return [];
+        // Calculate the remaining size available for fractional columns/rows
+        const remainingSize = totalSize - totalFixedSize;
+    
+        // Calculate the size of each fractional column/row
+        const frSizes: number[] = [];
+        let totalFrUnits = 0;
+        for (const item of pattern) {
+            if (typeof item === 'string' && item.endsWith('fr')) {
+                const frUnits = parseFloat(item);
+                frSizes.push(frUnits);
+                totalFrUnits += frUnits;
+            }
+        }
+    
+        // Calculate the size of each fractional unit
+        const frUnitSize = totalFrUnits > 0 ? remainingSize / totalFrUnits : 0;
+    
+        // Calculate the actual size for each cell based on the pattern
+        for (const item of pattern) {
+            if (typeof item === 'string') {
+                if (item.endsWith('fr')) {
+                    // Fractional column/row
+                    cellDimensions.push(Math.floor(frSizes.shift()! * frUnitSize)); // Use floor instead of rounding down
+                } else {
+                    // Fixed column/row
+                    cellDimensions.push(Math.floor(parseFloat(item))); // Use floor instead of rounding down
+                }
+            } else {
+                // Non-string item (e.g., 'auto')
+                cellDimensions.push(item);
+            }
+        }
+    
+        return cellDimensions;
     }
-    */
+    
     
 }

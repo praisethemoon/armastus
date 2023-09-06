@@ -10,6 +10,16 @@ let root: BaseComponent;
 
 
 root =
+  <Div style={{ width: "1000px", height: "800px", backgroundColor: "#cccccc" }}>
+    <Grid style={{ backgroundColor: "#cccccc", width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "4fr"]} rowsPattern={["1fr", "1fr"]}>
+      <Div key={"obj1"} style={{ backgroundColor: "#ff0000", width: "100%", height: "100%", position: "relative" }} />
+      <Div style={{ backgroundColor: "#00ff00", width: "100%", height: "100%", position: "relative" }} />
+      <Div style={{ backgroundColor: "#0000ff", width: "100%", height: "100%", position: "relative" }} />
+      <Div style={{ backgroundColor: "#ff00ff", width: "100%", height: "100%", position: "relative" }} />
+    </Grid>
+  </Div>
+
+/*
   <Div style={{ width: "1000px", height: "1000px", backgroundColor: "#cccccc" }}>
       <Div style={{ backgroundColor: "#ff0000", width: "100px", height: "100px", position: "relative" }} />
       <Div style={{ backgroundColor: "#00ff00", width: "100px", height: "100px", position: "relative" }} />
@@ -56,7 +66,7 @@ root =
       <Div style={{ backgroundColor: "#0000ff", width: "100px", height: "100px", position: "relative" }} />
       <Div style={{ backgroundColor: "#ffffff", width: "50px", height: "50px", position: "relative" }} />
       <Div style={{ backgroundColor: "#0e1c01", width: "200px", height: "200px", position: "absolute", left: "250px", top: "10px"}} />
-  </Div>
+  </Div>*/
 
 
 

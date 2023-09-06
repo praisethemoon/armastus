@@ -119,6 +119,11 @@ export class BaseComponent {
 
             }
         }
+
+        if(this.key == "obj1") {
+            print("current dims", this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height)
+            print("parent:", parentX, parentY, parentW, parentH)
+        }
     }
 
     // Helper function to compute dimensions based on different types of values
