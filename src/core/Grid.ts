@@ -7,7 +7,7 @@ export class Grid extends Div {
     private gridTemplateColumns: string[] = [];
     private gridTemplateRows: string[] = [];
     
-    constructor(props?: { style: Partial<ComponentStyleProps>, id?: string, columnsPattern: string[], rowsPattern: string[]}, children?: BaseComponent[]) {
+    constructor(props?: { style?: Partial<ComponentStyleProps>, id?: string, columnsPattern: string[], rowsPattern: string[]}, children?: BaseComponent[]) {
         super(props, children);
         this.setGridTemplate(props?.columnsPattern || [], props?.rowsPattern || []);
     }

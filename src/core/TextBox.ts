@@ -17,7 +17,7 @@ export class TextBox extends Div {
     halign: TextBoxHAlign = "left";
     valign: TextBoxVAlign = "top";
 
-    constructor(props?: { style: Partial<ComponentStyleProps>, key?: string, fontAssetName?: string, fontSize?: number, valign: TextBoxVAlign, halign: TextBoxHAlign  }, children?: string[]) {
+    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string, fontAssetName?: string, fontSize?: number, valign: TextBoxVAlign, halign: TextBoxHAlign  }, children?: string[]) {
         super(props, []);
 
         this.fontAssetName = props?.fontAssetName || "defaultFont";

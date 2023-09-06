@@ -10,7 +10,7 @@ export class Div extends BaseComponent {
     private prevCanvasH: number = 0;
     private gradientShader: Shader | null = null;
 
-    constructor(props?: { style: Partial<ComponentStyleProps>, key?: string }, children?: BaseComponent[]) {
+    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string }, children?: BaseComponent[]) {
         super(props, children);
     }
 
@@ -91,17 +91,11 @@ export class Div extends BaseComponent {
                 this.prevCanvasH = height
                 this.prevCanvasW = width
             }
-            love.graphics.setCanvas(this.canvas);
-            love.graphics.clear();
 
             if (typeof backgroundColor == "string") {
                 backgroundColor = Color.fromString(backgroundColor);
             }
-            else if (backgroundColor == null) {
-                backgroundColor = new Color(0, 0, 0, 0);
-            }
-
-            const bgColor = backgroundColor.toLove2DColor()
+            const bgColor = backgroundColor!=null?backgroundColor.toLove2DColor():null
 
 
             // Draw the rounded rectangle on the canvas
@@ -133,7 +127,8 @@ export class Div extends BaseComponent {
                 love.graphics.rectangle('fill', 0, 0, width, height);
                 love.graphics.setShader();
             }
-            else {
+            else if(bgColor != null) {
+                
                 love.graphics.setColor(
                     bgColor[0], bgColor[1], bgColor[2], 1
                 );
@@ -263,7 +258,7 @@ export class Div extends BaseComponent {
             */
 
             love.graphics.setCanvas(); // Reset the canvas
-            love.graphics.setColor(1, 1, 1, 1);
+            love.graphics.setColor(1, 1, 1, bgColor!=null?bgColor[3]:1);
             love.graphics.draw(this.canvas, x, y);
 
             // Reset the color
@@ -272,6 +267,8 @@ export class Div extends BaseComponent {
     }
 
     createShaderSource(gradient: GradientColor) {
+        print(gradient)
+        print(...gradient.colorStops[0].color.toLove2DColor())
         const vertexShader = `
             vec4 position(mat4 transform_projection, vec4 vertex_position)
             {

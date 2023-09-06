@@ -12,7 +12,7 @@ class ComponentStyleProps {
     width: NullableProp | "unset" = "100%";
     height: NullableProp | "unset" = "100%";
 
-    backgroundColor: Color | string = "#cccccc";
+    backgroundColor: Color | string | null = null;
     backgroundGradient: GradientColor | null = null;
     color: Color | "inherit" = new Color(0, 0, 0, 255);
 

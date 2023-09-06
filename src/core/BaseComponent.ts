@@ -32,7 +32,7 @@ export class BaseComponent {
         x: 0, y: 0, width: 0, height: 0
     }
 
-    constructor(props?: { style: Partial<ComponentStyleProps>, key?: string }, children?: BaseComponent[]) {
+    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string }, children?: BaseComponent[]) {
         this.props = { ...this.props, ...props };
         this.props.style = { ...new ComponentStyleProps(), ...props?.style };
         this.key = props?.key || "";
