@@ -63,7 +63,7 @@ export class Color {
         green.length == 1 ? green = "0" + green : green = green;
         let blue = this.blue.toString(16);
         blue.length == 1 ? blue = "0" + blue : blue = blue;
-        let alpha = math.floor(this.alpha*255).toString(16);
+        let alpha = math.ceil(this.alpha).toString(16);
         alpha.length == 1 ? alpha = "0" + alpha : alpha = alpha;
         return "#" + red + green + blue + alpha;
     }
@@ -124,5 +124,21 @@ export class GradientColor {
                 this.angle = 0
             }
         }
+    }
+
+    __str__(): string {
+        if(this.gradientType == "linear"){
+            let angle = this.angle * 180 / math.pi;
+            return `linear-gradient(${angle}deg, ${this.colorStops.map((stop) => `${stop.color.toHex()} ${stop.position}`).join(", ")})`;
+        }
+        return `unknown`
+    }
+
+    toString(): string {
+        if(this.gradientType == "linear"){
+            let angle = this.angle * 180 / math.pi;
+            return `linear-gradient(${angle}deg, ${this.colorStops.map((stop) => `${stop.color.toHex()} ${stop.position}`).join(", ")})`;
+        }
+        return `unknown`
     }
 }
