@@ -109,7 +109,6 @@ export class BaseComponent {
         borderRightWidth = parseCoordinate(borderRightWidth, borderWidth);
         borderBottomWidth = parseCoordinate(borderBottomWidth, borderWidth);
         borderTopWidth = parseCoordinate(borderTopWidth, borderWidth);
-        print(borderWidth, borderLeftWidth, borderRightWidth, borderBottomWidth, borderTopWidth)
 
         // now we check if we have a border
         this.childRenderViewport = { ...this.viewport };
