@@ -95,155 +95,159 @@ export class Div extends BaseComponent {
             if (typeof backgroundColor == "string") {
                 backgroundColor = Color.fromString(backgroundColor);
             }
-            const bgColor = backgroundColor!=null?backgroundColor.toLove2DColor():null
+            const bgColor = backgroundColor != null ? backgroundColor.toLove2DColor() : null
 
 
             // Draw the rounded rectangle on the canvas
 
 
             if (backgroundGradient != null) {
-                if(!this.gradientShader) {
+                if (!this.gradientShader) {
                     const { vertexShader, fragmentShader } = this.createShaderSource(backgroundGradient);
                     //if (this.gradientShader == null) {
-                        this.gradientShader = love.graphics.newShader(vertexShader, fragmentShader);
-                        print("errors: ", this.gradientShader.getWarnings())
+                    this.gradientShader = love.graphics.newShader(vertexShader, fragmentShader);
+                    print("errors: ", this.gradientShader.getWarnings())
 
-                        let gradientLocations: any[] = []
-                        let gradientColors: any[] = []
+                    let gradientLocations: any[] = []
+                    let gradientColors: any[] = []
 
-                        for (let i = 0; i < backgroundGradient.colorStops.length; i++) {
-                            gradientLocations.push((parseInt(backgroundGradient.colorStops[i].position)/100))
-                            print(parseInt(backgroundGradient.colorStops[i].position)/100)
-                            gradientColors.push(backgroundGradient.colorStops[i].color.toLove2DColor())
-                        }
-                        //print(gradientLocations.length, gradientColors.length)
-
-                        //this.gradientShader.send("numColorStops", gradientLocations.length);
-                        this.gradientShader.send("colorPositions", ...gradientLocations);
-                        this.gradientShader.send("colorStops", ...gradientColors);
+                    for (let i = 0; i < backgroundGradient.colorStops.length; i++) {
+                        gradientLocations.push((parseInt(backgroundGradient.colorStops[i].position) / 100))
+                        print(parseInt(backgroundGradient.colorStops[i].position) / 100)
+                        gradientColors.push(backgroundGradient.colorStops[i].color.toLove2DColor())
                     }
-                
+                    //print(gradientLocations.length, gradientColors.length)
+
+                    //this.gradientShader.send("numColorStops", gradientLocations.length);
+                    this.gradientShader.send("colorPositions", ...gradientLocations);
+                    this.gradientShader.send("colorStops", ...gradientColors);
+                }
+
                 love.graphics.setShader(this.gradientShader as Shader);
-                love.graphics.rectangle('fill', 0, 0, width, height);
-                love.graphics.setShader();
+                //love.graphics.rectangle('fill', 0, 0, width, height);
             }
-            else if(bgColor != null) {
-                
+            
+            if(bgColor != null) {
                 love.graphics.setColor(
                     bgColor[0], bgColor[1], bgColor[2], 1
                 );
-                if (borderRadiusBottomRight == 0 && borderRadiusBottomLeft == 0 && borderRadiusTopLeft == 0 && borderRadiusTopRight == 0) {
-                    love.graphics.rectangle('fill', 0, 0, width, height);
-                }
-                else {
-                    love.graphics.push("all")
-                    const numSegments = 100
-                    love.graphics.setColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3])
-                    // Fill the top, bottom, left, and right sides with rectangles
-                    love.graphics.rectangle('fill', borderRadiusTopLeft, 0, width - borderRadiusTopLeft - borderRadiusTopRight, borderRadiusTopLeft);
-                    love.graphics.rectangle('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, width - borderRadiusBottomLeft - borderRadiusBottomRight, borderRadiusBottomLeft);
-                    love.graphics.rectangle('fill', 0, borderRadiusTopLeft, width - borderRadiusTopRight, height - borderRadiusTopLeft - borderRadiusBottomLeft);
-                    love.graphics.rectangle('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, height - borderRadiusTopRight - borderRadiusBottomRight);
+            }
+            if (borderRadiusBottomRight == 0 && borderRadiusBottomLeft == 0 && borderRadiusTopLeft == 0 && borderRadiusTopRight == 0) {
+                love.graphics.rectangle('fill', 0, 0, width, height);
+            }
 
-                    if (borderWidth + borderLeftWidth + borderRightWidth + borderTopWidth + borderBottomWidth > 0) {
-                        const topColors = borderTopColor.toLove2DColor()
-                        const bottomColors = borderBottomColor.toLove2DColor()
-                        const leftColors = borderLeftColor.toLove2DColor()
-                        const rightColors = borderRightColor.toLove2DColor()
+            else {
+                love.graphics.push("all")
+                const numSegments = 100
+                
+                // Fill the top, bottom, left, and right sides with rectangles
+                love.graphics.rectangle('fill', borderRadiusTopLeft, 0, width - borderRadiusTopLeft - borderRadiusTopRight, borderRadiusTopLeft);
+                love.graphics.rectangle('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, width - borderRadiusBottomLeft - borderRadiusBottomRight, borderRadiusBottomLeft);
+                love.graphics.rectangle('fill', 0, borderRadiusTopLeft, width - borderRadiusTopRight, height - borderRadiusTopLeft - borderRadiusBottomLeft);
+                love.graphics.rectangle('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, height - borderRadiusTopRight - borderRadiusBottomRight);
 
-                        // TOP LINE
-                        love.graphics.setLineWidth(borderTopWidth)
-                        love.graphics.setColor(topColors[0], topColors[1], topColors[2], topColors[3]);
-                        love.graphics.rectangle('fill', borderRadiusTopLeft, 0, width - borderRadiusTopLeft - borderRadiusTopRight, borderTopWidth);
+                if (borderWidth + borderLeftWidth + borderRightWidth + borderTopWidth + borderBottomWidth > 0) {
+                    const topColors = borderTopColor.toLove2DColor()
+                    const bottomColors = borderBottomColor.toLove2DColor()
+                    const leftColors = borderLeftColor.toLove2DColor()
+                    const rightColors = borderRightColor.toLove2DColor()
 
-                        /** below is the same proceedure except, if the broder is zero, we use the nearest border color for drawing */
-                        if (borderTopWidth == 0) {
-                            love.graphics.setColor(leftColors[0], leftColors[1], leftColors[2], leftColors[3]);
-                            love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, -math.pi / 2, -3 * math.pi / 4, numSegments);
-                            love.graphics.setColor(rightColors[0], rightColors[1], rightColors[2], rightColors[3])
-                            love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 2, -math.pi / 4, numSegments);
-                        }
-                        else {
-                            // first arc top left
-                            love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, -math.pi / 2, -3 * math.pi / 4, numSegments);
-                            // second arc top right
-                            love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 2, -math.pi / 4, numSegments);
-                        }
+                    // TOP LINE
+                    love.graphics.setLineWidth(borderTopWidth)
+                    love.graphics.setColor(topColors[0], topColors[1], topColors[2], topColors[3]);
+                    love.graphics.rectangle('fill', borderRadiusTopLeft, 0, width - borderRadiusTopLeft - borderRadiusTopRight, borderTopWidth);
 
-                        // bottom line
-                        love.graphics.setLineWidth(borderBottomWidth)
-                        love.graphics.setColor(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]);
-                        love.graphics.rectangle('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, width - borderRadiusBottomLeft - borderRadiusBottomRight, borderBottomWidth);
-
-                        if (borderBottomWidth == 0) {
-                            love.graphics.setColor(leftColors[0], leftColors[1], leftColors[2], leftColors[3]);
-                            love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi / 2, 3 * math.pi / 4, numSegments);
-                            love.graphics.setColor(rightColors[0], rightColors[1], rightColors[2], rightColors[3])
-                            love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 2, math.pi / 4, numSegments);
-                        }
-                        else {
-                            // first arc bottom left
-                            love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi / 2, 3 * math.pi / 4, numSegments);
-                            // second arc bottom right
-                            love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 2, math.pi / 4, numSegments);
-                        }
-
-                        // left line
-                        love.graphics.setLineWidth(borderLeftWidth)
+                    /** below is the same proceedure except, if the broder is zero, we use the nearest border color for drawing */
+                    if (borderTopWidth == 0) {
                         love.graphics.setColor(leftColors[0], leftColors[1], leftColors[2], leftColors[3]);
-                        love.graphics.rectangle('fill', 0, borderRadiusTopLeft, borderLeftWidth, height - borderRadiusTopLeft - borderRadiusBottomLeft);
-
-                        if (borderLeftWidth == 0) {
-                            love.graphics.setColor(topColors[0], topColors[1], topColors[2], topColors[3]);
-                            love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi + math.pi / 4, math.pi, numSegments);
-                            love.graphics.setColor(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3])
-                            love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
-                        }
-                        else {// first arc top left which stops at the middle
-                            love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi + math.pi / 4, math.pi, numSegments);
-                            // second arc bottom left
-                            love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
-                        }
-
-                        // right line
-                        love.graphics.setLineWidth(borderRightWidth)
-                        love.graphics.setColor(rightColors[0], rightColors[1], rightColors[2], rightColors[3]);
-                        love.graphics.rectangle('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRightWidth, height - borderRadiusTopRight - borderRadiusBottomRight);
-                        if (borderRightWidth == 0) {
-                            love.graphics.setColor(topColors[0], topColors[1], topColors[2], topColors[3]);
-                            love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 4, 0, numSegments);
-                            love.graphics.setColor(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3])
-                            love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 4, 0, numSegments);
-                        }
-                        else {
-                            // first arc top right
-                            love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, 0, -math.pi / 4, numSegments);
-                            // second arc bottom right
-                            love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, 0, math.pi / 4, numSegments);
-                        }
-
-
+                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, -math.pi / 2, -3 * math.pi / 4, numSegments);
+                        love.graphics.setColor(rightColors[0], rightColors[1], rightColors[2], rightColors[3])
+                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 2, -math.pi / 4, numSegments);
                     }
                     else {
-                        // Draw the top-left rounded corner
-                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi, math.pi * 1.5, numSegments);
-
-                        // Draw the top-right rounded corner
-                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi * 0.5, 0, numSegments);
-
-                        // Draw the bottom-left rounded corner
-                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi * 0.5, math.pi, numSegments);
-
-                        // Draw the bottom-right rounded corner
-
-                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, 0, math.pi * 0.5, numSegments);
-
+                        // first arc top left
+                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, -math.pi / 2, -3 * math.pi / 4, numSegments);
+                        // second arc top right
+                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 2, -math.pi / 4, numSegments);
                     }
 
-                    love.graphics.pop()
+                    // bottom line
+                    love.graphics.setLineWidth(borderBottomWidth)
+                    love.graphics.setColor(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]);
+                    love.graphics.rectangle('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, width - borderRadiusBottomLeft - borderRadiusBottomRight, borderBottomWidth);
+
+                    if (borderBottomWidth == 0) {
+                        love.graphics.setColor(leftColors[0], leftColors[1], leftColors[2], leftColors[3]);
+                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi / 2, 3 * math.pi / 4, numSegments);
+                        love.graphics.setColor(rightColors[0], rightColors[1], rightColors[2], rightColors[3])
+                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 2, math.pi / 4, numSegments);
+                    }
+                    else {
+                        // first arc bottom left
+                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi / 2, 3 * math.pi / 4, numSegments);
+                        // second arc bottom right
+                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 2, math.pi / 4, numSegments);
+                    }
+
+                    // left line
+                    love.graphics.setLineWidth(borderLeftWidth)
+                    love.graphics.setColor(leftColors[0], leftColors[1], leftColors[2], leftColors[3]);
+                    love.graphics.rectangle('fill', 0, borderRadiusTopLeft, borderLeftWidth, height - borderRadiusTopLeft - borderRadiusBottomLeft);
+
+                    if (borderLeftWidth == 0) {
+                        love.graphics.setColor(topColors[0], topColors[1], topColors[2], topColors[3]);
+                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi + math.pi / 4, math.pi, numSegments);
+                        love.graphics.setColor(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3])
+                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
+                    }
+                    else {// first arc top left which stops at the middle
+                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi + math.pi / 4, math.pi, numSegments);
+                        // second arc bottom left
+                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
+                    }
+
+                    // right line
+                    love.graphics.setLineWidth(borderRightWidth)
+                    love.graphics.setColor(rightColors[0], rightColors[1], rightColors[2], rightColors[3]);
+                    love.graphics.rectangle('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRightWidth, height - borderRadiusTopRight - borderRadiusBottomRight);
+                    if (borderRightWidth == 0) {
+                        love.graphics.setColor(topColors[0], topColors[1], topColors[2], topColors[3]);
+                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 4, 0, numSegments);
+                        love.graphics.setColor(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3])
+                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 4, 0, numSegments);
+                    }
+                    else {
+                        // first arc top right
+                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, 0, -math.pi / 4, numSegments);
+                        // second arc bottom right
+                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, 0, math.pi / 4, numSegments);
+                    }
+
+
+                }
+                else {
+                    // Draw the top-left rounded corner
+                    love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi, math.pi * 1.5, numSegments);
+
+                    // Draw the top-right rounded corner
+                    love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi * 0.5, 0, numSegments);
+
+                    // Draw the bottom-left rounded corner
+                    love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi * 0.5, math.pi, numSegments);
+
+                    // Draw the bottom-right rounded corner
+
+                    love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, 0, math.pi * 0.5, numSegments);
+
                 }
 
+                love.graphics.pop()
             }
+
+            if(this.gradientShader != null) {
+                love.graphics.setShader()
+            }
+
             /**
              * Now we draw border
              */
@@ -258,7 +262,7 @@ export class Div extends BaseComponent {
             */
 
             love.graphics.setCanvas(); // Reset the canvas
-            love.graphics.setColor(1, 1, 1, bgColor!=null?bgColor[3]:1);
+            love.graphics.setColor(1, 1, 1, bgColor != null ? bgColor[3] : 1);
             love.graphics.draw(this.canvas, x, y);
 
             // Reset the color
@@ -275,7 +279,7 @@ export class Div extends BaseComponent {
                 return transform_projection * vertex_position;
             }
         `;
-    
+
         const fragmentShader = `
             int numColorStops = ${gradient.colorStops.length};
             extern vec4 colorStops[${gradient.colorStops.length}];
@@ -300,10 +304,10 @@ export class Div extends BaseComponent {
                 return mix(color1, color2, t);
             }
         `;
-    
+
         return { vertexShader, fragmentShader };
     }
-    
+
 
     render() {
         this.renderCanvas()
