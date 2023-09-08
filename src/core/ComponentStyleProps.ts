@@ -1,6 +1,9 @@
 import { Color, GradientColor} from "./Color";
 
 export type NullableProp = string | number | null;
+export type OverflowProp = "hidden" | "visible" | "scroll";
+
+export type ColorProp = Color | string | GradientColor | null
 
 // src/ui-components/CSSProps.ts
 class ComponentStyleProps {
@@ -12,9 +15,8 @@ class ComponentStyleProps {
     width: NullableProp | "unset" = "100%";
     height: NullableProp | "unset" = "100%";
 
-    backgroundColor: Color | string | null = null;
-    backgroundGradient: GradientColor | null = null;
-    color: Color | "inherit" = new Color(0, 0, 0, 255);
+    backgroundColor: ColorProp = null;
+    color: ColorProp = new Color(0, 0, 0, 255);
 
     backgroundImageId: string | null = null;
     
@@ -37,11 +39,11 @@ class ComponentStyleProps {
     borderBottomWidth: NullableProp = null;
     borderLeftWidth: NullableProp = null;
 
-    borderColor: string|Color|null = null ;
-    borderTopColor: string|Color|null = null ;
-    borderRightColor: string|Color|null = null ;
-    borderBottomColor: string|Color|null = null ;
-    borderLeftColor: string|Color|null = null ;
+    borderColor: ColorProp = null ;
+    borderTopColor: ColorProp = null ;
+    borderRightColor: ColorProp = null ;
+    borderBottomColor: ColorProp = null ;
+    borderLeftColor: ColorProp = null ;
 
     borderStyle: string = "solid";
     borderTopStyle: string = "solid";
@@ -51,6 +53,9 @@ class ComponentStyleProps {
 
     maxWidth: NullableProp = "100%";  // Default value
     maxHeight: NullableProp = "100%"; // Default value
+
+    overflowX?: OverflowProp = "scroll" 
+    overflowY?: OverflowProp = "scroll"
 
     // ignored for now, future feature
     zIndex: number = 0;

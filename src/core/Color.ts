@@ -1,9 +1,14 @@
+import { Shader } from "love.graphics";
+import { ShaderFactory } from "./ShaderFactory";
+
+type ColorType = "color" | "gradient";
 
 export class Color {
     red: number;
     green: number;
     blue: number;
     alpha: number;
+    type = "color" as ColorType;
 
     constructor(red: number, green: number, blue: number, alpha: number = 255) {
         this.red = red;
@@ -89,6 +94,8 @@ export class Color {
     }
 }
 
+type GradientType = "linear" | "radial" | "conic" | "unknown";
+
 export class GradientColor {
     gradientType: string;
     angle: number = 0;
@@ -96,9 +103,11 @@ export class GradientColor {
     position: string | null;
     extent: string | null;
     colorStops: { color: Color; position: string }[];
+    shader: Shader | null = null;
+    type = "gradient" as ColorType;
 
     constructor(
-        gradientType: string,
+        gradientType: GradientType,
         angle: string | null,
         shape: string | null,
         position: string | null,
@@ -124,6 +133,8 @@ export class GradientColor {
                 this.angle = 0
             }
         }
+
+        this.buildShader();
     }
 
     __str__(): string {
@@ -140,5 +151,35 @@ export class GradientColor {
             return `linear-gradient(${angle}deg, ${this.colorStops.map((stop) => `${stop.color.toHex()} ${stop.position}`).join(", ")})`;
         }
         return `unknown`
+    }
+
+    buildShader() {
+        if(this.gradientType == "linear") {
+            const {vertexShader, fragmentShader} =  ShaderFactory.createGradientShaderSource(this);
+
+            this.shader = love.graphics.newShader(vertexShader, fragmentShader);
+            print("errors: ", this.shader.getWarnings())
+
+            let gradientLocations: any[] = []
+            let gradientColors: any[] = []
+
+            for (let i = 0; i < this.colorStops.length; i++) {
+                gradientLocations.push((parseInt(this.colorStops[i].position) / 100))
+                print(parseInt(this.colorStops[i].position) / 100)
+                gradientColors.push(this.colorStops[i].color.toLove2DColor())
+            }
+            //print(gradientLocations.length, gradientColors.length)
+
+            //this.gradientShader.send("numColorStops", gradientLocations.length);
+            this.shader.send("colorPositions", ...gradientLocations);
+            this.shader.send("colorStops", ...gradientColors);
+        }
+        else {
+            throw new Error("Unsupported gradient type: " + this.gradientType)
+        }
+    }
+
+    getShader(): Shader {
+        return this.shader as Shader;
     }
 }
