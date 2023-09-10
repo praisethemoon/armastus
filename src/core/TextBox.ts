@@ -75,7 +75,6 @@ export class TextBox extends Div {
 
         
         love.graphics.push('all');
-
         // Enable scissor test to clip rendering
         love.graphics.setScissor(x, y, w, h);
         love.graphics.setFont(this.font);
