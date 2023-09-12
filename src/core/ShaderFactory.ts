@@ -8,21 +8,34 @@ export class ShaderFactory {
         float angle = ${gradient.angle}; // Added angle parameter
 
         vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
-            vec2 dir = normalize(vec2(cos(angle), sin(angle))); // Calculate gradient direction from angle
-            float pos = dot(screen_coords - love_ScreenSize.xy / 2.0, dir) / length(love_ScreenSize.xy / 2.0); // Position along the gradient direction
-
-            int index = 0;
-            for (int i = 0; i < numColorStops - 1; i++) {
-                if (pos >= colorPositions[i] && pos <= colorPositions[i + 1]) {
-                    index = i;
+            // Calculate the position along the gradient axis based on the angle
+            vec2 gradientDirection = vec2(cos(angle), sin(angle));
+            float position = dot(texture_coords - vec2(0.5, 0.5), gradientDirection) + 0.5;
+    
+            // Initialize the interpolated color
+            vec4 interpolatedColor = vec4(0.0);
+    
+            // Find the two color stops to interpolate between
+            int startIndex = 0;
+            int endIndex = 0;
+    
+            for (int i = 0; i < ${gradient.colorStops.length} - 1; i++) {
+                if (position >= colorPositions[i] && position <= colorPositions[i + 1]) {
+                    startIndex = i;
+                    endIndex = i + 1;
                     break;
                 }
             }
-
-            vec4 color1 = colorStops[index];
-            vec4 color2 = colorStops[index + 1];
-            float t = (pos - colorPositions[index]) / (colorPositions[index + 1] - colorPositions[index]);
-            return mix(color1, color2, t);
+    
+            // Calculate the t value for interpolation
+            float t = (position - colorPositions[startIndex]) / (colorPositions[endIndex] - colorPositions[startIndex]);
+    
+            // Interpolate between the two colors using the t value
+            vec4 startColor = colorStops[startIndex];
+            vec4 endColor = colorStops[endIndex];
+            interpolatedColor = mix(startColor, endColor, t);
+    
+            return interpolatedColor * color;
         }
     `;
 

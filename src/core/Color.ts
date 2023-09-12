@@ -3,6 +3,31 @@ import { ShaderFactory } from "./ShaderFactory";
 
 type ColorType = "color" | "gradient";
 
+function hslToRgb(h: number, s: number, l: number): [number, number, number] {
+    let r, g, b;
+  
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      const hueToRgb = (p: number, q: number, t: number) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+      };
+  
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hueToRgb(p, q, h + 1 / 3);
+      g = hueToRgb(p, q, h);
+      b = hueToRgb(p, q, h - 1 / 3);
+    }
+  
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  }
+
 export class Color {
     red: number;
     green: number;
@@ -31,13 +56,37 @@ export class Color {
         
         // check if rgba
         if (hex.startsWith("rgba")) {
-            let values = hex.substring(5, hex.length - 1).split(",");
+            let values = hex.substring(5, hex.length - 1).split(",").map(e => e.trim());
             return new Color(parseInt(values[0]), parseInt(values[1]), parseInt(values[2]), parseFloat(values[3]));
         }
         // check if rgb
         if (hex.startsWith("rgb")) {
-            let values = hex.substring(4, hex.length - 1).split(",");
+            let values = hex.substring(4, hex.length - 1).split(",").map(e => e.trim());
             return new Color(parseInt(values[0]), parseInt(values[1]), parseInt(values[2]));
+        }
+        if(hex.startsWith("hsl")){
+            let values = hex.substring(4, hex.length - 1).split(",").map(e => e.trim());
+            
+            let h = parseInt(values[0]);
+            if(values[0].endsWith("rad")){
+                // convert to rad
+                h = h * math.pi / 180;
+                h/= 360;
+            }
+            else if(values[0].endsWith("deg")){
+                h /= 360;
+            }
+
+            let s = parseInt(values[1]);
+            if(values[1].endsWith("%"))
+                s = s / 100;
+
+            let v = parseInt(values[2]);
+            if(values[2].endsWith("%"))
+                v = v / 100;
+
+            const rgb = hslToRgb(h, s, v);
+            return new Color(rgb[0], rgb[1], rgb[2]);
         }
         // check if hex
         if (hex.startsWith("#")) {
@@ -91,6 +140,9 @@ export class Color {
     setAlpha(a: number): Color {
         this.alpha = a;
         return this;
+    }
+    __str__(): string {
+        return this.toHex();
     }
 }
 
@@ -165,7 +217,7 @@ export class GradientColor {
 
             for (let i = 0; i < this.colorStops.length; i++) {
                 gradientLocations.push((parseInt(this.colorStops[i].position) / 100))
-                print(parseInt(this.colorStops[i].position) / 100)
+                print(this.colorStops[i].color.toHex(), parseInt(this.colorStops[i].position) / 100)
                 gradientColors.push(this.colorStops[i].color.toLove2DColor())
             }
             //print(gradientLocations.length, gradientColors.length)

@@ -7,20 +7,34 @@ import { Color, GradientColor } from "./core/Color";
 import { Grid } from "./core/Grid";
 import { TextBox } from "./core/TextBox";
 
+love.graphics.setDefaultFilter("nearest", "nearest");
+love.graphics.setLineStyle("smooth")
+love.graphics.setLineJoin("miter")
+
 let root: BaseComponent =
     <Div style={{
         width: "1000px", height: "800px",
-        backgroundColor:"#cccccc",
-        borderRadius: "50px",
-        borderWidth: 50,
-        borderColor: "#ff0000",
+        backgroundColor: new GradientColor("linear", "270deg", null, null, null, [
+            {color: Color.fromString("hsl(240deg, 100%, 20%)"), position: "0%"},
+            {color: Color.fromString("hsl(289deg, 100%, 21%) "), position: "21%"},
+            {color: Color.fromString("hsl(315deg, 100%, 27%)"), position: "30%"},
+            {color: Color.fromString("hsl(329deg, 100%, 36%)"), position: "39%"},
+            {color: Color.fromString("hsl(337deg, 100%, 43%)"), position: "46%"},
+            {color: Color.fromString("hsl(357deg, 91%, 59%)"), position: "54%"},
+            {color: Color.fromString("hsl(17deg, 100%, 59%)"), position: "61%"},
+            {color: Color.fromString("hsl(34deg, 100%, 53%)"), position: "69%"},
+            {color: Color.fromString("hsl(45deg, 100%, 50%)"), position: "79%"},
+            {color: Color.fromString("hsl(55deg, 100%, 50%)"), position: "100%"},
+        ]),
+        borderRadius: "100px",
+        borderWidth: "50px",
     }}>
         <Grid style={{ width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "1fr"]} rowsPattern={["1fr", "1fr"]}>
-            <Div key={"obj1"} style={{ width: "100%", height: "100%", position: "relative" }} />
-            <Div style={{ width: "100%", height: "100%", position: "relative" }} />
-            <Div style={{ width: "100%", height: "100%", backgroundColor: "#cccccca1"}} />
-            <Div style={{
-                width: "100%", height: "100%", position: "relative", space: 50, spaceLeft: 100, spaceRight: 100,
+            <Div key={"obj1"} style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#071952" }} />
+            <Div style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#088395" }} />
+            <Div style={{ width: "100%", height: "100%", backgroundColor: "#35A29F"}} />
+            <Div key={"id1"} style={{
+                width: "100%", height: "100%", position: "relative",
                 backgroundColor: new GradientColor(
                     "linear",
                     "0deg",
@@ -28,18 +42,12 @@ let root: BaseComponent =
                     null,
                     null,
                     [
-                        { color: Color.fromString("#ff000010"), position: "0%" },
-                        { color: Color.fromString("#0000ff10"), position: "70%" },
-                        { color: Color.fromString("#cccccc10"), position: "100%" },
+                        { color: Color.fromString("#ff0000"), position: "0%" },
+                        { color: Color.fromString("#0000ff"), position: "70%" },
+                        { color: Color.fromString("#cccccc"), position: "100%" },
                     ]
                 ),
-                borderRadiusBottomLeft: "50px",
-                borderRadiusBottomRight: "50px",
-                borderBottomWidth: 50,
-                borderBottomColor: "#ffff00",
-                borderRadiusTopLeft: "25px",
-                borderRadiusTopRight: "25px",
-                borderColor: "#ff0000",
+
 
             }}>
                 <TextBox halign="right" valign="center" textAlign="justify" style={{ color: "#00ffff"}} fontAssetName="defaultFont" fontSize={20}>

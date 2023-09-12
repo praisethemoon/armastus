@@ -17,8 +17,36 @@ export class Div extends BaseComponent {
     }
 
     renderCanvas() {
+        let {
+            borderColor,
+            borderTopColor,
+            borderRightColor,
+            borderBottomColor,
+            borderLeftColor,
+            backgroundColor,
+            backgroundImageId,
+        } = this.props.style;
+
+        const {
+            borderBottomWidth,
+            borderLeftWidth,
+            borderRadius,
+            borderRadiusBottomLeft,
+            borderRadiusBottomRight,
+            borderRadiusTopLeft,
+            borderRadiusTopRight,
+            borderRightWidth,
+            borderTopWidth,
+            borderWidth
+        } = this.extractBorderProps();
+
+        borderColor = borderColor || backgroundColor || "#000000";
+        borderTopColor = borderTopColor || borderColor;
+        borderRightColor = borderRightColor || borderColor;
+        borderBottomColor = borderBottomColor || borderColor;
+        borderLeftColor = borderLeftColor || borderColor;
         this.canvas = this.canvas || love.graphics.newCanvas();
-        // @ts-ignore
+
         love.graphics.setCanvas(this.canvas);
 
         const {
@@ -28,217 +56,160 @@ export class Div extends BaseComponent {
             height,
         } = this.viewport;
 
-        let {
-            borderRadius,
-            borderRadiusBottomRight,
-            borderRadiusBottomLeft,
-            borderRadiusTopLeft,
-            borderRadiusTopRight,
+        const contentX = this.childRenderViewport.x - x;
+        const contentY = this.childRenderViewport.y - y;
+        const contentWidth = this.childRenderViewport.width;
+        const contentHeight = this.childRenderViewport.height;
 
-            borderColor,
-            borderTopColor,
-            borderRightColor,
-            borderBottomColor,
-            borderLeftColor,
-
-            borderWidth,
-            borderTopWidth,
-            borderRightWidth,
-            borderBottomWidth,
-            borderLeftWidth,
-
-            backgroundColor,
-
-            backgroundImageId,
-        } = this.props.style;
-
-        //print(borderRadius, borderRadiusBottomRight, borderRadiusBottomLeft, borderRadiusTopLeft, borderRadiusTopRight)
-
-        borderRadius = parseCoordinate(borderRadius + "", 0)
-        borderRadiusBottomRight = (borderRadiusBottomRight != null) ? parseCoordinate(borderRadiusBottomRight + "", 0) : borderRadius
-        borderRadiusBottomLeft = (borderRadiusBottomLeft != null) ? parseCoordinate(borderRadiusBottomLeft + "", 0) : borderRadius
-        borderRadiusTopLeft = (borderRadiusTopLeft != null) ? parseCoordinate(borderRadiusTopLeft + "", 0) : borderRadius
-        borderRadiusTopRight = (borderRadiusTopRight != null) ? parseCoordinate(borderRadiusTopRight + "", 0) : borderRadius
-
-        borderWidth = parseCoordinate(borderWidth + "", 0)
-        borderTopWidth = (borderTopWidth != null) ? parseCoordinate(borderTopWidth + "", 0) : borderWidth
-        borderRightWidth = (borderRightWidth != null) ? parseCoordinate(borderRightWidth + "", 0) : borderWidth
-        borderBottomWidth = (borderBottomWidth != null) ? parseCoordinate(borderBottomWidth + "", 0) : borderWidth
-        borderLeftWidth = (borderLeftWidth != null) ? parseCoordinate(borderLeftWidth + "", 0) : borderWidth
-
-        borderColor = borderColor || "#000000"
-        borderTopColor = borderTopColor || borderColor
-        borderRightColor = borderRightColor || borderColor
-        borderBottomColor = borderBottomColor || borderColor
-        borderLeftColor = borderLeftColor || borderColor
-
-        // we convert colors to love2d colors
-        borderColor = (typeof (borderColor) == "string") ? Color.fromString(borderColor) : borderColor
-        borderTopColor = (typeof (borderTopColor) == "string") ? Color.fromString(borderTopColor) : borderTopColor
-        borderRightColor = (typeof (borderRightColor) == "string") ? Color.fromString(borderRightColor) : borderRightColor
-        borderBottomColor = (typeof (borderBottomColor) == "string") ? Color.fromString(borderBottomColor) : borderBottomColor
-        borderLeftColor = (typeof (borderLeftColor) == "string") ? Color.fromString(borderLeftColor) : borderLeftColor
-
-
-        //print(borderRadius, borderRadiusBottomRight, borderRadiusBottomLeft, borderRadiusTopLeft, borderRadiusTopRight)
-
-
-        //print("render: ", this.width)
-        if (backgroundColor != null || backgroundImageId != null) {
-            // Create a canvas to draw the rounded rectangle
-            //if (!this.canvas) {
-            if ((this.prevCanvasH != height) || (this.prevCanvasW != width) || (this.canvas == null)) {
-                if (this.canvas != null) {
-                    this.canvas.release()
-                }
-
-                this.canvas = love.graphics.newCanvas(width, height);
-                this.prevCanvasH = height
-                this.prevCanvasW = width
+        // Check if we need to resize the canvas
+        if ((this.prevCanvasH != height) || (this.prevCanvasW != width) || (this.canvas == null)) {
+            if (this.canvas != null) {
+                this.canvas.release();
             }
 
-
-            backgroundColor = backgroundColor || null
-
-            // Draw the rounded rectangle on the canvas
-
-            this.renderColor(backgroundColor)
-
-            if (borderRadiusBottomRight == 0 && borderRadiusBottomLeft == 0 && borderRadiusTopLeft == 0 && borderRadiusTopRight == 0) {
-                love.graphics.rectangle('fill', 0, 0, width, height);
-            }
-
-            else {
-                love.graphics.push("all")
-                const numSegments = 100
-
-                // Fill the top, bottom, left, and right sides with rectangles
-                love.graphics.rectangle('fill', borderRadiusTopLeft, 0, width - borderRadiusTopLeft - borderRadiusTopRight, borderRadiusTopLeft);
-                love.graphics.rectangle('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, width - borderRadiusBottomLeft - borderRadiusBottomRight, borderRadiusBottomLeft);
-                love.graphics.rectangle('fill', 0, borderRadiusTopLeft, width - borderRadiusTopRight, height - borderRadiusTopLeft - borderRadiusBottomLeft);
-                love.graphics.rectangle('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, height - borderRadiusTopRight - borderRadiusBottomRight);
-
-                if (borderWidth + borderLeftWidth + borderRightWidth + borderTopWidth + borderBottomWidth > 0) {
-                    // TOP LINE
-                    love.graphics.setLineWidth(borderTopWidth)
-                    this.renderColor(borderTopColor)
-                    love.graphics.rectangle('fill', borderRadiusTopLeft, 0, width - borderRadiusTopLeft - borderRadiusTopRight, borderTopWidth);
-
-                    /** below is the same proceedure except, if the broder is zero, we use the nearest border color for drawing */
-                    if (borderTopWidth == 0) {
-                        this.renderColor(borderLeftColor)
-                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, -math.pi / 2, -3 * math.pi / 4, numSegments);
-                        this.renderColor(borderRightColor)
-                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 2, -math.pi / 4, numSegments);
-                    }
-                    else {
-                        // first arc top left
-                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, -math.pi / 2, -3 * math.pi / 4, numSegments);
-                        // second arc top right
-                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 2, -math.pi / 4, numSegments);
-                    }
-
-                    // bottom line
-                    love.graphics.setLineWidth(borderBottomWidth)
-                    this.renderColor(borderBottomColor)
-                    love.graphics.rectangle('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, width - borderRadiusBottomLeft - borderRadiusBottomRight, borderBottomWidth);
-
-                    if (borderBottomWidth == 0) {
-                        this.renderColor(borderLeftColor)
-                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi / 2, 3 * math.pi / 4, numSegments);
-                        this.renderColor(borderRightColor)
-                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 2, math.pi / 4, numSegments);
-                    }
-                    else {
-                        // first arc bottom left
-                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi / 2, 3 * math.pi / 4, numSegments);
-                        // second arc bottom right
-                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 2, math.pi / 4, numSegments);
-                    }
-
-                    // left line
-                    love.graphics.setLineWidth(borderLeftWidth)
-                    this.renderColor(borderLeftColor)
-                    love.graphics.rectangle('fill', 0, borderRadiusTopLeft, borderLeftWidth, height - borderRadiusTopLeft - borderRadiusBottomLeft);
-
-                    if (borderLeftWidth == 0) {
-                        this.renderColor(borderTopColor)
-                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi + math.pi / 4, math.pi, numSegments);
-                        this.renderColor(borderBottomColor)
-                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
-                    }
-                    else {// first arc top left which stops at the middle
-                        love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi + math.pi / 4, math.pi, numSegments);
-                        // second arc bottom left
-                        love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
-                    }
-
-                    // right line
-                    love.graphics.setLineWidth(borderRightWidth)
-                    this.renderColor(borderRightColor)
-                    love.graphics.rectangle('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRightWidth, height - borderRadiusTopRight - borderRadiusBottomRight);
-                    if (borderRightWidth == 0) {
-                        this.renderColor(borderTopColor)
-                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi / 4, 0, numSegments);
-                        this.renderColor(borderBottomColor)
-                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, math.pi / 4, 0, numSegments);
-                    }
-                    else {
-                        // first arc top right
-                        love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, 0, -math.pi / 4, numSegments);
-                        // second arc bottom right
-                        love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, 0, math.pi / 4, numSegments);
-                    }
-
-
-                }
-                else {
-                    // Draw the top-left rounded corner
-                    love.graphics.arc('fill', borderRadiusTopLeft, borderRadiusTopLeft, borderRadiusTopLeft, math.pi, math.pi * 1.5, numSegments);
-
-                    // Draw the top-right rounded corner
-                    love.graphics.arc('fill', width - borderRadiusTopRight, borderRadiusTopRight, borderRadiusTopRight, -math.pi * 0.5, 0, numSegments);
-
-                    // Draw the bottom-left rounded corner
-                    love.graphics.arc('fill', borderRadiusBottomLeft, height - borderRadiusBottomLeft, borderRadiusBottomLeft, math.pi * 0.5, math.pi, numSegments);
-
-                    // Draw the bottom-right rounded corner
-
-                    love.graphics.arc('fill', width - borderRadiusBottomRight, height - borderRadiusBottomRight, borderRadiusBottomRight, 0, math.pi * 0.5, numSegments);
-
-                }
-
-                love.graphics.pop()
-            }
-
-            this.renderBGImage()
-
-
-            /**
-             * Now we draw border
-             */
-            /*
-            if (borderTopWidth > 0) {
-                const colors = borderTopColor.toLove2DColor()
-                love.graphics.setColor(colors[0], colors[1], colors[2], colors[3]);
-                // we draw border same as in web, we respect radius and border width
-                love.graphics.setLineWidth(borderTopWidth)
-                love.graphics.rectangle('line', borderRadiusTopLeft, 0, width - borderRadiusTopLeft - borderRadiusTopRight, borderTopWidth);
-            }
-            */
-            
-            love.graphics.setShader();
-            love.graphics.setCanvas(); // Reset the canvas
-            love.graphics.setColor(1, 1, 1, this.getColorOpacity(backgroundColor))
-
-            this.startRenderMask()
-            love.graphics.draw(this.canvas, x, y);
-            this.endRenderMask()
-            
-            // Reset the color
-            love.graphics.setColor(1, 1, 1, 1);
+            this.canvas = love.graphics.newCanvas(width, height);
+            this.prevCanvasH = height;
+            this.prevCanvasW = width;
         }
+
+        const hasBorderRadius =
+            borderRadius !== 0 ||
+            borderRadiusBottomRight !== 0 ||
+            borderRadiusBottomLeft !== 0 ||
+            borderRadiusTopLeft !== 0 ||
+            borderRadiusTopRight !== 0;
+
+        const hasBorderWidth =
+            borderWidth !== 0 ||
+            borderTopWidth !== 0 ||
+            borderRightWidth !== 0 ||
+            borderBottomWidth !== 0 ||
+            borderLeftWidth !== 0;
+
+        // Clear the canvas
+        love.graphics.clear();
+
+        if (backgroundColor != null) {
+            // Fill the area of the childRenderViewport with the background color
+            this.renderColor(backgroundColor);
+            //love.graphics.rectangle("fill", 0, 0, width, height);
+            
+            
+            const emptyImageData = love.image.newImageData(width, height);
+
+            // Create a texture from the empty image data
+            const emptyTexture = love.graphics.newImage(emptyImageData);
+
+            // Create a quad for the rectangle
+            const quad = love.graphics.newQuad(0, 0, width, height, width, height);
+            love.graphics.draw(emptyTexture, quad, 0, 0);
+            this.resetColor()
+        }
+
+        // Set border colors and draw borders
+        if (hasBorderWidth) {
+            // Draw rounded rectangle with borders
+            //print(borderColor, borderTopColor, borderRightColor, borderBottomColor, borderLeftColor)
+            this.renderColor(borderTopColor)
+            // draw top line
+            love.graphics.setLineWidth(borderTopWidth)
+            love.graphics.line(0, 0, width, 0)
+            this.resetColor()
+
+            this.renderColor(borderRightColor)
+            love.graphics.setLineWidth(borderRightWidth)
+            love.graphics.line(width, 0, width, height)
+            this.resetColor()
+
+            this.renderColor(borderBottomColor)
+            love.graphics.setLineWidth(borderBottomWidth)
+            love.graphics.line(0, height, width, height)
+            this.resetColor()
+
+            this.renderColor(borderLeftColor)
+            love.graphics.setLineWidth(borderLeftWidth)
+            love.graphics.line(0, 0, 0, height)
+            this.resetColor()
+
+            love.graphics.setLineWidth(1)
+        }
+
+        if (hasBorderRadius) {
+            //this.drawRoundedCorners(width, height, borderRadiusTopLeft, borderRadiusTopRight, borderRadiusBottomLeft, borderRadiusBottomRight);
+        }
+
+        love.graphics.setCanvas();
+
+        // TODO: inherit transparency from color (if not gradient)
+        if (hasBorderRadius) {
+            this.applyMask(borderRadiusTopLeft, borderRadiusTopRight, borderRadiusBottomLeft, borderRadiusBottomRight);
+        }
+
+        love.graphics.setColor(1, 1, 1, 1);
+        love.graphics.draw(this.canvas, x, y);
+        this.clearMask()
     }
+
+    applyMask(
+        topLeft: number = 0,
+        topRight: number = 0,
+        bottomLeft: number = 0,
+        bottomRight: number = 0
+    ) {
+        const { width, height, x, y } = this.viewport;
+
+        // Create a stencil function for rounded corners and filled area
+        const stencilFunction = () => {
+            love.graphics.push("all")
+            love.graphics.translate(x, y);
+            // Draw the top edge
+            love.graphics.rectangle("fill", topLeft, 0, width - topLeft - topRight, topRight);
+            // Draw the bottom edge
+            love.graphics.rectangle("fill", bottomLeft, height - bottomLeft, width - bottomLeft - bottomRight, bottomRight);
+            // Draw the left edge
+            love.graphics.rectangle("fill", 0, topLeft, topLeft, height - topLeft - bottomLeft);
+            // Draw the right edge
+            love.graphics.rectangle("fill", width - topRight, topRight, topRight, height - topRight - bottomRight);
+
+            // Cut out the rounded corners using arcs
+            love.graphics.arc("fill", "pie", topLeft, topLeft, topLeft, math.pi, math.pi * 1.5, 20);
+            love.graphics.arc("fill", "pie", width - topRight, topRight, topRight, -math.pi * 0.5, 0, 20);
+            love.graphics.arc("fill", "pie", bottomLeft, height - bottomLeft, bottomLeft, math.pi * 0.5, math.pi, 20);
+            love.graphics.arc("fill", "pie", width - bottomRight, height - bottomRight, bottomRight, 0, math.pi * 0.5, 20);
+
+            // fill remaining area
+            love.graphics.rectangle("fill", topLeft, topLeft, width - topLeft - topRight, height - topLeft - bottomLeft);
+            love.graphics.pop()
+        };
+
+        love.graphics.stencil(stencilFunction, "replace", 1)
+        love.graphics.setStencilTest("greater", 0)
+
+        // Set up the stencil
+    }
+
+    clearMask() {
+        love.graphics.setStencilTest()
+    }
+
+    /*
+    removed because we simply removed round edges with masks
+    drawRoundedCorners(width: number, height: number, topLeft: number, topRight: number, bottomLeft: number, bottomRight: number) {
+        
+        // Top-left corner
+        love.graphics.arc("line", "open", topLeft, topLeft, topLeft, math.pi, math.pi * 1.5)
+
+        // Top-right corner
+        love.graphics.arc("line", "open", width - topRight, topRight, topRight, -math.pi * 0.5, 0)
+
+        // Bottom-left corner
+        love.graphics.arc("line", "open", bottomLeft, height - bottomLeft, bottomLeft, math.pi * 0.5, math.pi)
+
+        // Bottom-right corner
+        love.graphics.arc("line", "open", width - bottomRight, height - bottomRight, bottomRight, 0, math.pi * 0.5)
+    }
+    */
+
 
     renderColor(color: Color | GradientColor | string | null) {
         const colorObject: Color | GradientColor | null = (typeof (color) == "string") ? Color.fromString(color) : color
@@ -256,6 +227,11 @@ export class Div extends BaseComponent {
         }
     }
 
+    resetColor() {
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.setShader()
+    }
+
     renderBGImage() {
 
         if (this.props.style.backgroundImageId == null) {
@@ -265,7 +241,7 @@ export class Div extends BaseComponent {
         const image = AssetMap.loadImage(this.props.style.backgroundImageId);
 
         // Render the background image with the mask
-        // calculate image extent
+        // TODO: calculate image extent
         const {
             x,
             y,
@@ -273,107 +249,16 @@ export class Div extends BaseComponent {
             height,
         } = this.viewport;
 
-        // 
+        love.graphics.draw(image, x, y);
     }
 
     /**
      * Renders mask so everything outside the mask is not visible
      */
-    startRenderMask(){
-        const x = this.viewport.x;
-        const y = this.viewport.y;
-        const w = this.viewport.width;
-        const h = this.viewport.height;
-
-        let { borderRadius, borderRadiusBottomRight, borderRadiusBottomLeft, borderRadiusTopLeft, borderRadiusTopRight } = this.props.style;
-
-        borderRadius = parseCoordinate(borderRadius + "", 0)
-        let cornerRadiusBottomRight = (borderRadiusBottomRight != null) ? parseCoordinate(borderRadiusBottomRight + "", 0) : borderRadius
-        let cornerRadiusBottomLeft = (borderRadiusBottomLeft != null) ? parseCoordinate(borderRadiusBottomLeft + "", 0) : borderRadius
-        let cornerRadiusTopLeft = (borderRadiusTopLeft != null) ? parseCoordinate(borderRadiusTopLeft + "", 0) : borderRadius
-        let cornerRadiusTopRight = (borderRadiusTopRight != null) ? parseCoordinate(borderRadiusTopRight + "", 0) : borderRadius
-        print(cornerRadiusBottomRight, cornerRadiusBottomLeft, cornerRadiusTopLeft, cornerRadiusTopRight, borderRadius)
-
-        let borderWidth = parseCoordinate(this.props.style.borderWidth + "", 0)
-        let borderTopWidth = (this.props.style.borderTopWidth != null) ? parseCoordinate(this.props.style.borderTopWidth + "", 0) : borderWidth
-        let borderRightWidth = (this.props.style.borderRightWidth != null) ? parseCoordinate(this.props.style.borderRightWidth + "", 0) : borderWidth
-        let borderBottomWidth = (this.props.style.borderBottomWidth != null) ? parseCoordinate(this.props.style.borderBottomWidth + "", 0) : borderWidth
-        let borderLeftWidth = (this.props.style.borderLeftWidth != null) ? parseCoordinate(this.props.style.borderLeftWidth + "", 0) : borderWidth
-
-        // Create a rounded rectangle mask
-        love.graphics.stencil(() => {
-            if (cornerRadiusBottomRight == 0 && cornerRadiusBottomLeft == 0 && cornerRadiusTopLeft == 0 && cornerRadiusTopRight == 0) {
-                love.graphics.rectangle('fill', x, y, w, h);
-            }
-
-            else {
-                love.graphics.push("all")
-                const numSegments = 100
-
-                // Fill the top, bottom, left, and right sides with rectangles
-                love.graphics.rectangle('fill', x+cornerRadiusTopLeft, y, x+w - cornerRadiusTopLeft - cornerRadiusTopRight, y+cornerRadiusTopLeft);
-                love.graphics.rectangle('fill', x+cornerRadiusBottomLeft, y+h - cornerRadiusBottomLeft, x+w - cornerRadiusBottomLeft - cornerRadiusBottomRight, y+cornerRadiusBottomLeft);
-                love.graphics.rectangle('fill', x, y+cornerRadiusTopLeft, x+w - cornerRadiusTopRight, y+h - cornerRadiusTopLeft - cornerRadiusBottomLeft);
-                love.graphics.rectangle('fill', x+w - cornerRadiusTopRight, y+cornerRadiusTopRight, x+cornerRadiusTopRight, y+h - cornerRadiusTopRight - cornerRadiusBottomRight);
-
-                if (borderWidth + borderLeftWidth + borderRightWidth + borderTopWidth + borderBottomWidth > 0) {
-
-                    // TOP LINE
-                    love.graphics.setLineWidth(borderTopWidth)
-                    love.graphics.rectangle('fill', x+cornerRadiusTopLeft, y, x+w - cornerRadiusTopLeft - cornerRadiusTopRight, y+borderTopWidth);
-
-                    /** below is the same proceedure except, if the broder is zero, we use the nearest border color for drawing */
-                    love.graphics.arc('fill', x+cornerRadiusTopLeft, y+cornerRadiusTopLeft, cornerRadiusTopLeft, -math.pi / 2, -3 * math.pi / 4, numSegments);
-                    love.graphics.arc('fill', x+w - cornerRadiusTopRight, y+cornerRadiusTopRight, cornerRadiusTopRight, -math.pi / 2, -math.pi / 4, numSegments);
-                    // bottom line
-                    love.graphics.setLineWidth(borderBottomWidth)
-                    love.graphics.rectangle('fill', x+cornerRadiusBottomLeft, y+h - cornerRadiusBottomLeft, x+w - cornerRadiusBottomLeft - cornerRadiusBottomRight, y+ borderBottomWidth);
-
-                    love.graphics.arc('fill', x+cornerRadiusBottomLeft, y+h - cornerRadiusBottomLeft, cornerRadiusBottomLeft, math.pi / 2, 3 * math.pi / 4, numSegments);
-                    love.graphics.arc('fill', x+w - cornerRadiusBottomRight, y+h - cornerRadiusBottomRight, cornerRadiusBottomRight, math.pi / 2, math.pi / 4, numSegments);
-
-
-                    // left line
-                    love.graphics.setLineWidth(borderLeftWidth)
-                    love.graphics.rectangle('fill', x, y+cornerRadiusTopLeft, x+borderLeftWidth, y+h - cornerRadiusTopLeft - cornerRadiusBottomLeft);
-
-                    love.graphics.arc('fill', x+cornerRadiusTopLeft, y+cornerRadiusTopLeft, cornerRadiusTopLeft, math.pi + math.pi / 4, math.pi, numSegments);
-                    love.graphics.arc('fill', x+cornerRadiusBottomLeft, y+h - cornerRadiusBottomLeft, cornerRadiusBottomLeft, -math.pi - math.pi / 4, -math.pi, numSegments);
-
-
-                    // right line
-                    love.graphics.setLineWidth(borderRightWidth)
-                    love.graphics.rectangle('fill', x+w - cornerRadiusTopRight, y+cornerRadiusTopRight, x+borderRightWidth, y+h - cornerRadiusTopRight - cornerRadiusBottomRight);
-                    love.graphics.arc('fill', x+w - cornerRadiusTopRight, y+cornerRadiusTopRight, cornerRadiusTopRight, -math.pi / 4, 0, numSegments);
-                    love.graphics.arc('fill', x+w - cornerRadiusBottomRight, y+h - cornerRadiusBottomRight, cornerRadiusBottomRight, math.pi / 4, 0, numSegments);
-
-                }
-                else {
-                    // Draw the top-left rounded corner
-                    love.graphics.arc('fill', x+cornerRadiusTopLeft, y+cornerRadiusTopLeft, cornerRadiusTopLeft, math.pi, math.pi * 1.5, numSegments);
-
-                    // Draw the top-right rounded corner
-                    love.graphics.arc('fill', x+w - cornerRadiusTopRight,y+cornerRadiusTopRight, cornerRadiusTopRight, -math.pi * 0.5, 0, numSegments);
-
-                    // Draw the bottom-left rounded corner
-                    love.graphics.arc('fill', x+cornerRadiusBottomLeft, y+h - cornerRadiusBottomLeft, cornerRadiusBottomLeft, math.pi * 0.5, math.pi, numSegments);
-
-                    // Draw the bottom-right rounded corner
-
-                    love.graphics.arc('fill', x+w - cornerRadiusBottomRight, y+h - cornerRadiusBottomRight, cornerRadiusBottomRight, 0, math.pi * 0.5, numSegments);
-
-                }
-
-                love.graphics.pop()
-            }
-
-        }, "replace", 1);
-
-
-        love.graphics.setStencilTest("greater", 0); // Set the stencil test to only render where the stencil value is greater than 0
+    startRenderMask() {
     }
 
-    endRenderMask(){
+    endRenderMask() {
         // Reset the stencil
         love.graphics.setStencilTest();
     }
@@ -387,10 +272,57 @@ export class Div extends BaseComponent {
     }
 
     render() {
+        love.graphics.push("all")
         this.renderCanvas()
+        love.graphics.pop()
         // Render child elements
         for (const child of this.children) {
             child.render();
         }
+    }
+
+    extractBorderProps() {
+        let {
+            borderRadius,
+            borderRadiusBottomRight,
+            borderRadiusBottomLeft,
+            borderRadiusTopLeft,
+            borderRadiusTopRight,
+
+            borderWidth,
+            borderTopWidth,
+            borderRightWidth,
+            borderBottomWidth,
+            borderLeftWidth,
+        } = this.props.style;
+
+        borderRadius = parseCoordinate(borderRadius + "", 0)
+        borderRadiusBottomRight = (borderRadiusBottomRight != null) ? parseCoordinate(borderRadiusBottomRight + "", 0) : borderRadius
+        borderRadiusBottomLeft = (borderRadiusBottomLeft != null) ? parseCoordinate(borderRadiusBottomLeft + "", 0) : borderRadius
+        borderRadiusTopLeft = (borderRadiusTopLeft != null) ? parseCoordinate(borderRadiusTopLeft + "", 0) : borderRadius
+        borderRadiusTopRight = (borderRadiusTopRight != null) ? parseCoordinate(borderRadiusTopRight + "", 0) : borderRadius
+
+        borderWidth = parseCoordinate(borderWidth + "", 0)
+        borderTopWidth = (borderTopWidth != null) ? parseCoordinate(borderTopWidth + "", 0) : borderWidth
+        borderRightWidth = (borderRightWidth != null) ? parseCoordinate(borderRightWidth + "", 0) : borderWidth
+        borderBottomWidth = (borderBottomWidth != null) ? parseCoordinate(borderBottomWidth + "", 0) : borderWidth
+        borderLeftWidth = (borderLeftWidth != null) ? parseCoordinate(borderLeftWidth + "", 0) : borderWidth
+
+
+        return {
+            borderRadius: borderRadius as number,
+            borderRadiusBottomRight: borderRadiusBottomRight as number,
+            borderRadiusBottomLeft: borderRadiusBottomLeft as number,
+            borderRadiusTopLeft: borderRadiusTopLeft as number,
+            borderRadiusTopRight: borderRadiusTopRight as number,
+
+            // border width
+            borderWidth: borderWidth as number,
+            borderTopWidth: borderTopWidth as number,
+            borderRightWidth: borderRightWidth as number,
+            borderBottomWidth: borderBottomWidth as number,
+            borderLeftWidth: borderLeftWidth as number,
+        }
+
     }
 }
