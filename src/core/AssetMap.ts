@@ -53,7 +53,7 @@ export class AssetMap {
 
         let asset = AssetMap.assetObjects[key];
         if(asset == undefined) {
-            asset = love.graphics.newFont(assetPath, 12);
+            asset = love.graphics.newFont(assetPath, size);
             AssetMap.assetObjects[key] = asset;
         }   
     }
@@ -73,9 +73,11 @@ export class AssetMap {
 
     static {
         this.addAsset("defaultFont", "res/fonts/RobotoSlab-VariableFont_wght.ttf")
+        this.addAsset("defaultFont_30", "res/fonts/RobotoSlab-VariableFont_wght.ttf")
         this.addAsset("kitten", "res/images/kawaii-kitten.png")
 
         this.preloadFont("defaultFont", 12);
+        this.preloadFont("defaultFont_30", 30)
         this.preloadImage("kitten");
     }
 }

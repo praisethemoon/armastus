@@ -26,8 +26,7 @@ let root: BaseComponent =
             {color: Color.fromString("hsl(45deg, 100%, 50%)"), position: "79%"},
             {color: Color.fromString("hsl(55deg, 100%, 50%)"), position: "100%"},
         ]),
-        borderRadius: "100px",
-        borderWidth: "50px",
+        borderRadius: "20px",
     }}>
         <Grid style={{ width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "1fr"]} rowsPattern={["1fr", "1fr"]}>
             <Div key={"obj1"} style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#071952" }} />
@@ -50,7 +49,7 @@ let root: BaseComponent =
 
 
             }}>
-                <TextBox halign="right" valign="center" textAlign="justify" style={{ color: "#00ffff"}} fontAssetName="defaultFont" fontSize={20}>
+                <TextBox halign="right" valign="center" textAlign="justify" style={{ color: "#00ffff"}} fontAssetName="defaultFont_30" fontSize={30}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin fermentum tristique ipsum quis porta. Morbi non lacus at nisi placerat egestas. Pellentesque lobortis vehicula efficitur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer sem nibh, tincidunt ut finibus quis, rhoncus nec est. Nulla facilisi. Integer ac fringilla enim. Nunc imperdiet pulvinar ex eget pharetra. Fusce aliquet libero nec magna sodales cursus. Donec quam nunc, convallis eu accumsan nec, efficitur ut erat. Donec egestas ipsum nec ligula auctor porttitor sed nec ligula. Sed a pellentesque nibh, in condimentum erat. Nullam sodales molestie tortor, non condimentum elit dignissim vitae. In ultricies facilisis rutrum.
 
                 </TextBox>
