@@ -75,6 +75,7 @@ export class AssetMap {
         this.addAsset("defaultFont", "res/fonts/RobotoSlab-VariableFont_wght.ttf")
         this.addAsset("defaultFont_30", "res/fonts/RobotoSlab-VariableFont_wght.ttf")
         this.addAsset("kitten", "res/images/kawaii-kitten.png")
+        this.addAsset("kitten-xs", "res/images/kawaii-kitten-xs.png")
 
         this.preloadFont("defaultFont", 12);
         this.preloadFont("defaultFont_30", 30)

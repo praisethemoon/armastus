@@ -1,4 +1,4 @@
-import { Canvas, Image, Shader } from "love.graphics";
+import { Canvas, Image, Shader, scale } from "love.graphics";
 import { BaseComponent } from "./BaseComponent";
 import ComponentStyleProps from "./ComponentStyleProps";
 import { Color, GradientColor } from "./Color";
@@ -106,6 +106,12 @@ export class Div extends BaseComponent {
             this.resetColor()
         }
 
+
+        if(backgroundImageId != null) {
+            this.renderBGImage()
+        }
+
+
         // Set border colors and draw borders
         if (hasBorderWidth) {
             // Draw rounded rectangle with borders
@@ -132,10 +138,6 @@ export class Div extends BaseComponent {
             this.resetColor()
 
             love.graphics.setLineWidth(1)
-        }
-
-        if (hasBorderRadius) {
-            //this.drawRoundedCorners(width, height, borderRadiusTopLeft, borderRadiusTopRight, borderRadiusBottomLeft, borderRadiusBottomRight);
         }
 
         love.graphics.setCanvas();
@@ -249,7 +251,65 @@ export class Div extends BaseComponent {
             height,
         } = this.viewport;
 
-        love.graphics.draw(image, x, y);
+        const {/*backgroundImageRender, */backgroundImageSize} = this.props.style;
+        
+        const imageWidth = image.getWidth();
+        const imageHeight = image.getHeight();
+
+        let imgX = 0;
+        let imgY = 0;
+
+        let scaleX = 1;
+        let scaleY = 1;
+
+        if(backgroundImageSize == "contain"){
+            // scale image to fit inside the div while maintaining aspect ration
+            const scale = math.min(width / imageWidth, height / imageHeight)
+            scaleX = scale
+            scaleY = scale
+
+            const scaledWidth = imageWidth * scale
+            const scaledHeight = imageHeight * scale
+            imgX = width / 2 - scaledWidth / 2
+            imgY = height / 2 - scaledHeight / 2
+            
+        }
+        else if(backgroundImageSize == "cover"){
+            // scale image to cover the entire div while maintaining aspect ration
+            const scale = math.max(width / imageWidth, height / imageHeight)
+            scaleX = scale
+            scaleY = scale
+
+            const scaledWidth = imageWidth * scale
+            const scaledHeight = imageHeight * scale
+            imgX = width / 2 - scaledWidth / 2
+            imgY = height / 2 - scaledHeight / 2
+        }
+        else if (backgroundImageSize == "fill") {
+            // The replaced content is sized to fill the element's content box
+            scaleX = width / imageWidth
+            scaleY = height / imageHeight
+        }
+        else if (typeof (backgroundImageSize) == "string") {
+            let size_x = parseCoordinate(backgroundImageSize, imageWidth)
+            let size_y = parseCoordinate(backgroundImageSize, imageHeight)
+
+            scaleX = size_x / imageWidth
+            scaleY = size_y / imageHeight
+        }
+        else if (typeof (backgroundImageSize) == "number") {
+            scaleX = backgroundImageSize / imageWidth
+            scaleY = backgroundImageSize / imageHeight
+        }
+        else if (Array.isArray(backgroundImageSize)) {
+            let size_x = parseCoordinate(backgroundImageSize[0], imageWidth)
+            let size_y = parseCoordinate(backgroundImageSize[1], imageHeight)
+
+            scaleX = size_x / imageWidth
+            scaleY = size_y / imageHeight
+        }
+
+        love.graphics.draw(image, imgX, imgY, 0, scaleX, scaleY);
     }
 
     /**

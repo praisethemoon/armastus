@@ -5,8 +5,8 @@ export type OverflowProp = "hidden" | "visible" | "scroll";
 
 export type ColorProp = Color | string | GradientColor | null
 
-export type ImageRenderProp = "repeat-x" | "repeat-y" | "repeat" | "no-repeat" | null
-export type ImageSizeProp = "cover" | "cover" | [number|string, number|string] | string | number | null
+//export type ImageRenderProp = "repeat-x" | "repeat-y" | "repeat" | "no-repeat" | null
+export type ImageSizeProp = "cover" | "contain" | "fill" | [number|string, number|string] | string | number | null
 
 // src/ui-components/CSSProps.ts
 class ComponentStyleProps {
@@ -22,7 +22,7 @@ class ComponentStyleProps {
     color: ColorProp = new Color(0, 0, 0, 255);
 
     backgroundImageId: string | null = null;
-    backgroundImageRender: ImageRenderProp = "repeat";
+    //backgroundImageRender: ImageRenderProp = "repeat";
     backgroundImageSize: ImageSizeProp = '100%';
     
     space: NullableProp = 0;

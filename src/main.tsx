@@ -29,9 +29,9 @@ let root: BaseComponent =
         borderRadius: "20px",
     }}>
         <Grid style={{ width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "1fr"]} rowsPattern={["1fr", "1fr"]}>
-            <Div key={"obj1"} style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#071952" }} />
-            <Div style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#088395" }} />
-            <Div style={{ width: "100%", height: "100%", backgroundColor: "#35A29F"}} />
+            <Div style={{ width: "100%", height: "100%", position: "relative", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "contain" }} />
+            <Div style={{ width: "100%", height: "100%", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
+            <Div key={"obj1"} style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#071952", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "fill"}} />
             <Div key={"id1"} style={{
                 width: "100%", height: "100%", position: "relative",
                 backgroundColor: new GradientColor(
