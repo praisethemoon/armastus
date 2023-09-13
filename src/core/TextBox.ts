@@ -12,19 +12,17 @@ type TextContentAlign = "left" | "right" | "center" | "justify"
 
 export class TextBox extends Div {
     fontAssetName: string;
-    fontSize: number;
     font: Font;
     text: string
     halign: TextBoxHAlign = "left";
     valign: TextBoxVAlign = "top";
     textAlign: TextContentAlign = "left";
 
-    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string, fontAssetName?: string, fontSize?: number, valign: TextBoxVAlign, halign: TextBoxHAlign, textAlign?: TextContentAlign }, children?: string[]) {
+    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string, fontAssetName?: string, valign: TextBoxVAlign, halign: TextBoxHAlign, textAlign?: TextContentAlign }, children?: string[]) {
         super(props, []);
 
         this.fontAssetName = props?.fontAssetName || "defaultFont";
-        this.fontSize = props?.fontSize || 12;
-        this.font = AssetMap.loadFont(this.fontAssetName, this.fontSize) as Font
+        this.font = AssetMap.loadFont(this.fontAssetName) as Font
         this.text = children?.join("") || "";
         this.halign = props?.halign || "left";
         this.valign = props?.valign || "top";
@@ -34,9 +32,9 @@ export class TextBox extends Div {
     renderLove2d() {
         super.renderLove2d()
         // render text in childRenderViewport depending on halign and valign
-        const textWidth = math.min(this.font.getWidth(this.text), this.viewport.width);
+        const textWidth = math.min(this.font.getWidth(this.text), this.childRenderViewport.width);
 
-        const wrappedText = this.font.getWrap(this.text, this.viewport.width); // Get the wrapped text array
+        const wrappedText = this.font.getWrap(this.text, this.childRenderViewport.width); // Get the wrapped text array
         const numLines = wrappedText[1].length; // Calculate the total number of lines
         const lineHeight = this.font.getHeight(); // Get the height of a single line
 
@@ -46,6 +44,7 @@ export class TextBox extends Div {
         const y = this.childRenderViewport.y;
         const w = this.childRenderViewport.width;
         const h = this.childRenderViewport.height;
+        print(x, y, w, h)
 
 
         const halign = this.halign as TextBoxHAlign;
@@ -77,9 +76,9 @@ export class TextBox extends Div {
         
         love.graphics.push('all');
         // Enable scissor test to clip rendering
-        love.graphics.setScissor(x, y, w, h);
+        love.graphics.setScissor(this.childRenderViewport.x, this.childRenderViewport.y, this.childRenderViewport.width, this.childRenderViewport.height);
         love.graphics.setFont(this.font);
-        this.renderColor(this.props.style.color as Color)
+        this.renderColor(this.props.style.color || null)
         love.graphics.printf(this.text, textX, textY, this.viewport.width, this.textAlign);
 
         // Disable scissor test when done to restore normal rendering

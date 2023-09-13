@@ -31,15 +31,10 @@ export class AssetMap {
         return AssetMap.assetObjects[key] as Image;
     }
 
-    static loadFont(key: string, size: number): Font {
-        const assetPath = AssetMap.getAsset(key);
-        if(assetPath == null) {
-            throw new Error("Asset not found: " + key);
-        }
-
+    static loadFont(key: string): Font {
         let asset = AssetMap.assetObjects[key];
         if(asset == undefined) {
-            this.preloadFont(key, size);
+            throw new Error("Asset not found: " + key);
         }
 
         return AssetMap.assetObjects[key] as Font;
