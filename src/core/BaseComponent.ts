@@ -37,7 +37,6 @@ export class BaseComponent<T = {}> {
     /**
      * Last rendered component
      */
-
     _renderCache: BaseComponent | null = null;
 
     constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string } & T, children?: BaseComponent[]) {

@@ -44,8 +44,6 @@ export class TextBox extends Div {
         const y = this.childRenderViewport.y;
         const w = this.childRenderViewport.width;
         const h = this.childRenderViewport.height;
-        print(x, y, w, h)
-
 
         const halign = this.halign as TextBoxHAlign;
         const valign = this.valign as TextBoxVAlign;
