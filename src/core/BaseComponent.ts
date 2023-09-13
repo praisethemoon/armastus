@@ -282,9 +282,14 @@ export class BaseComponent<T = {}> {
     }
 
     setState(newState: any){
-        this.state = {...this.state, ...newState};
         this._renderCache = null;
-        this.computeViewport(this.parent?.viewport.x || 0, this.parent?.viewport.y || 0, this.parent?.viewport.width || parseCoordinate(this.props.style.width + "", 0), this.parent?.viewport.height || parseCoordinate(this.props.style.height + "", 0))
+        this.state = {...this.state, ...newState};
+        this._renderCache = this.render();
+        if(this._renderCache != null){
+            // @ts-ignore
+            this._renderCache.parent = this;
+        }
+        this.computeViewport(this.childRenderViewport.x, this.childRenderViewport.y, this.childRenderViewport.width, this.childRenderViewport.height)
     }
 
 
@@ -296,7 +301,7 @@ export class BaseComponent<T = {}> {
     isMouseInside(): boolean {
         const x = love.mouse.getX();
         const y = love.mouse.getY();
-        const bounds = [this.viewport.x, this.viewport.y, this.viewport.width+this.viewport.x, this.viewport.height+this.viewport.y];
+        const bounds = [this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height];
         return x >= bounds[0] && x <= bounds[0] + bounds[2] && y >= bounds[1] && y <= bounds[1] + bounds[3];
     }
 }
