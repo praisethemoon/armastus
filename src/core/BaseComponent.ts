@@ -159,7 +159,7 @@ export class BaseComponent<T = {}> {
             accX = child.viewport.x + child.viewport.width;
 
             // Check if the child's height exceeds the highest height
-            highestHeight = Math.max(highestHeight, child.childRenderViewport.height);
+            highestHeight = Math.max(highestHeight, child.viewport.height);
 
             // Check if the child exceeds the parent width, and if so, move to the next row
             if ((accX  > this.childRenderViewport.x + this.viewport.width) && childCounter > 0) {
