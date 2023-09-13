@@ -17,6 +17,7 @@ export class Div extends BaseComponent {
     }
 
     renderCanvas() {
+
         let {
             borderColor,
             borderTopColor,
@@ -47,7 +48,7 @@ export class Div extends BaseComponent {
         borderLeftColor = borderLeftColor || borderColor;
         this.canvas = this.canvas || love.graphics.newCanvas();
 
-        love.graphics.setCanvas(this.canvas);
+        
 
         const {
             x,
@@ -60,17 +61,6 @@ export class Div extends BaseComponent {
         const contentY = this.childRenderViewport.y - y;
         const contentWidth = this.childRenderViewport.width;
         const contentHeight = this.childRenderViewport.height;
-
-        // Check if we need to resize the canvas
-        if ((this.prevCanvasH != height) || (this.prevCanvasW != width) || (this.canvas == null)) {
-            if (this.canvas != null) {
-                this.canvas.release();
-            }
-
-            this.canvas = love.graphics.newCanvas(width, height);
-            this.prevCanvasH = height;
-            this.prevCanvasW = width;
-        }
 
         const hasBorderRadius =
             borderRadius !== 0 ||
@@ -86,64 +76,78 @@ export class Div extends BaseComponent {
             borderBottomWidth !== 0 ||
             borderLeftWidth !== 0;
 
-        // Clear the canvas
-        love.graphics.clear();
 
-        if (backgroundColor != null) {
-            // Fill the area of the childRenderViewport with the background color
-            this.renderColor(backgroundColor);
+        // Check if we need to resize the canvas
+        if (this.canvas == null || this.prevCanvasW != width || this.prevCanvasH != height) {
+            const start = love.timer.getTime()
 
-            if((typeof(backgroundColor) == "object") && (backgroundColor.type == "gradient")){
-                
-                const emptyImageData = love.image.newImageData(width, height);
+            this.canvas = love.graphics.newCanvas(width, height);
+            this.prevCanvasW = width;
+            this.prevCanvasH = height;
+            love.graphics.setCanvas(this.canvas);
 
-                // Create a texture from the empty image data
-                const emptyTexture = love.graphics.newImage(emptyImageData);
-                // Create a quad for the rectangle
 
-                const quad = love.graphics.newQuad(0, 0, width, height, width, height);
-                love.graphics.draw(emptyTexture, quad, 0, 0);
+            // Clear the canvas
+            love.graphics.clear();
+
+            if (backgroundColor != null) {
+                // Fill the area of the childRenderViewport with the background color
+                this.renderColor(backgroundColor);
+
+                if ((typeof (backgroundColor) == "object") && (backgroundColor.type == "gradient")) {
+
+                    const emptyImageData = love.image.newImageData(width, height);
+
+                    // Create a texture from the empty image data
+                    const emptyTexture = love.graphics.newImage(emptyImageData);
+                    // Create a quad for the rectangle
+
+                    const quad = love.graphics.newQuad(0, 0, width, height, width, height);
+                    love.graphics.draw(emptyTexture, quad, 0, 0);
+                }
+                else
+                    love.graphics.rectangle("fill", 0, 0, width, height);
+
+                this.resetColor()
             }
-            else
-                love.graphics.rectangle("fill", 0, 0, width, height);
 
-            this.resetColor()
+
+            if (backgroundImageId != null) {
+                this.renderBGImage()
+            }
+
+
+            // Set border colors and draw borders
+            if (hasBorderWidth) {
+                // Draw rounded rectangle with borders
+                //print(borderColor, borderTopColor, borderRightColor, borderBottomColor, borderLeftColor)
+                this.renderColor(borderTopColor)
+                // draw top line
+                love.graphics.setLineWidth(borderTopWidth)
+                love.graphics.line(0, 0, width, 0)
+                this.resetColor()
+
+                this.renderColor(borderRightColor)
+                love.graphics.setLineWidth(borderRightWidth)
+                love.graphics.line(width, 0, width, height)
+                this.resetColor()
+
+                this.renderColor(borderBottomColor)
+                love.graphics.setLineWidth(borderBottomWidth)
+                love.graphics.line(0, height, width, height)
+                this.resetColor()
+
+                this.renderColor(borderLeftColor)
+                love.graphics.setLineWidth(borderLeftWidth)
+                love.graphics.line(0, 0, 0, height)
+                this.resetColor()
+
+                love.graphics.setLineWidth(1)
+            }
+
+            const result = love.timer.getTime() - start
+            print("rendering ", this.key, " took ", result, " seconds")
         }
-
-
-        if(backgroundImageId != null) {
-            this.renderBGImage()
-        }
-
-
-        // Set border colors and draw borders
-        if (hasBorderWidth) {
-            // Draw rounded rectangle with borders
-            //print(borderColor, borderTopColor, borderRightColor, borderBottomColor, borderLeftColor)
-            this.renderColor(borderTopColor)
-            // draw top line
-            love.graphics.setLineWidth(borderTopWidth)
-            love.graphics.line(0, 0, width, 0)
-            this.resetColor()
-
-            this.renderColor(borderRightColor)
-            love.graphics.setLineWidth(borderRightWidth)
-            love.graphics.line(width, 0, width, height)
-            this.resetColor()
-
-            this.renderColor(borderBottomColor)
-            love.graphics.setLineWidth(borderBottomWidth)
-            love.graphics.line(0, height, width, height)
-            this.resetColor()
-
-            this.renderColor(borderLeftColor)
-            love.graphics.setLineWidth(borderLeftWidth)
-            love.graphics.line(0, 0, 0, height)
-            this.resetColor()
-
-            love.graphics.setLineWidth(1)
-        }
-
         love.graphics.setCanvas();
 
         // TODO: inherit transparency from color (if not gradient)
@@ -255,8 +259,8 @@ export class Div extends BaseComponent {
             height,
         } = this.viewport;
 
-        const {/*backgroundImageRender, */backgroundImageSize} = this.props.style;
-        
+        const {/*backgroundImageRender, */backgroundImageSize } = this.props.style;
+
         const imageWidth = image.getWidth();
         const imageHeight = image.getHeight();
 
@@ -266,7 +270,7 @@ export class Div extends BaseComponent {
         let scaleX = 1;
         let scaleY = 1;
 
-        if(backgroundImageSize == "contain"){
+        if (backgroundImageSize == "contain") {
             // scale image to fit inside the div while maintaining aspect ration
             const scale = math.min(width / imageWidth, height / imageHeight)
             scaleX = scale
@@ -276,9 +280,9 @@ export class Div extends BaseComponent {
             const scaledHeight = imageHeight * scale
             imgX = width / 2 - scaledWidth / 2
             imgY = height / 2 - scaledHeight / 2
-            
+
         }
-        else if(backgroundImageSize == "cover"){
+        else if (backgroundImageSize == "cover") {
             // scale image to cover the entire div while maintaining aspect ration
             const scale = math.max(width / imageWidth, height / imageHeight)
             scaleX = scale
