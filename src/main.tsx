@@ -7,6 +7,7 @@ import { Color, GradientColor } from "./core/Color";
 import { Grid } from "./core/Grid";
 import { TextBox } from "./core/TextBox";
 import { PlaceholderComponent } from "./PlaceholderComponent";
+import { Checkbox } from "./extra/CheckBox";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
@@ -29,13 +30,16 @@ let root: BaseComponent =
         ]),
         borderRadius: "20px",
     }}>
-        <PlaceholderComponent message="hiiii" style={{backgroundColor: null}}>
+        <PlaceholderComponent message="hiiii" style={{backgroundColor: null, width: "1000px", height: "600"}}>
             <Div key={"child2"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Div key={"child3"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Div key={"child4"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Div key={"child5"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Div key={"child5"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
+            <Checkbox style={{width: 50, height: 50}} checked={false} onChange={(checked) => print(checked)}/>
         </PlaceholderComponent>
+        
+        
     </Div>
 
 /*

@@ -10,20 +10,19 @@ export class PlaceholderComponent extends BaseComponent<{message: string}> {
     }
 
     render(){
-        print("rerendering placeholder")
         return (
-            <Div key="placeholderRoot" style={{ width: "100%", height: "100%"}}>
-                <TextBox style={{borderWidth: 50, borderRadius: 50, borderColor: "#000000", backgroundColor: this.state.color, width: 200, height: 200}} key="placeholderText" halign="center" valign="center" fontAssetName="defaultFont_30">{this.props.message}</TextBox> 
+            <Div key="placeholderRoot" style={{ width: "100%", height: "100%", borderWidth: 1, borderColor: "#000000"}}>
+                
                 {...this.children}
                 <TextBox style={{borderWidth: 10, borderColor: "#0000ff", width: 200, height: 200}} key="placeholderText-2" halign="center" valign="center" fontAssetName="defaultFont_30">{this.props.message}</TextBox> 
+                <TextBox style={{borderWidth: 50, borderRadius: 50, borderColor: "#000000", backgroundColor: this.state.color, width: 200, height: 200}} key="placeholderText" halign="center" valign="center" fontAssetName="defaultFont_30">{this.props.message}</TextBox> 
             </Div>
         )
     }
 
     updateLove2d(dt: number): void {
         // check if mouse is over the object
-        const mousePosition = love.mouse.getPosition();
-        const mouseOver = this.isPointInside(mousePosition[0], mousePosition[1]);
+        const mouseOver = this.isMouseInside();
         if(mouseOver && this.state.color != "#00ff00"){
             print("mouse over")
             this.setState({color: "#00ff00"})
@@ -33,9 +32,5 @@ export class PlaceholderComponent extends BaseComponent<{message: string}> {
         }
     }
 
-    isPointInside(x: number, y: number): boolean {
-        const bounds = [this.viewport.x, this.viewport.y, this.viewport.width+this.viewport.x, this.viewport.height+this.viewport.y];
-        return x >= bounds[0] && x <= bounds[0] + bounds[2] && y >= bounds[1] && y <= bounds[1] + bounds[3];
-    }
 
 }
