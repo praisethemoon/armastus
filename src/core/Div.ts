@@ -92,16 +92,22 @@ export class Div extends BaseComponent {
         if (backgroundColor != null) {
             // Fill the area of the childRenderViewport with the background color
             this.renderColor(backgroundColor);
-            //love.graphics.rectangle("fill", 0, 0, width, height);
-            
-            const emptyImageData = love.image.newImageData(width, height);
 
-            // Create a texture from the empty image data
-            const emptyTexture = love.graphics.newImage(emptyImageData);
+            if((typeof(backgroundColor) == "object") && (backgroundColor.type == "gradient")){
+                //love.graphics.rectangle("fill", 0, 0, width, height);
+                
+                const emptyImageData = love.image.newImageData(width, height);
 
-            // Create a quad for the rectangle
-            const quad = love.graphics.newQuad(0, 0, width, height, width, height);
-            love.graphics.draw(emptyTexture, quad, 0, 0);
+                // Create a texture from the empty image data
+                const emptyTexture = love.graphics.newImage(emptyImageData);
+                // Create a quad for the rectangle
+
+                const quad = love.graphics.newQuad(0, 0, width, height, width, height);
+                love.graphics.draw(emptyTexture, quad, 0, 0);
+            }
+            else
+                love.graphics.rectangle("fill", 0, 0, width, height);
+
             this.resetColor()
         }
 
