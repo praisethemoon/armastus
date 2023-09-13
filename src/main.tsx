@@ -6,6 +6,7 @@ import { Div } from "./core/Div";
 import { Color, GradientColor } from "./core/Color";
 import { Grid } from "./core/Grid";
 import { TextBox } from "./core/TextBox";
+import { PlaceholderComponent } from "./PlaceholderComponent";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
@@ -28,33 +29,11 @@ let root: BaseComponent =
         ]),
         borderRadius: "20px",
     }}>
-        <Grid style={{ width: "1000px", height: "800px", position: "relative" }} columnsPattern={["1fr", "1fr"]} rowsPattern={["1fr", "1fr"]}>
-            <Div style={{ width: "100%", height: "100%", position: "relative", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "contain" }} />
-            <Div style={{ width: "100%", height: "100%", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
-            <Div key={"obj1"} style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#071952", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "fill"}} />
-            <Div key={"id1"} style={{
-                width: "100%", height: "100%", position: "relative",
-                backgroundColor: new GradientColor(
-                    "linear",
-                    "0deg",
-                    null,
-                    null,
-                    null,
-                    [
-                        { color: Color.fromString("#ff0000"), position: "0%" },
-                        { color: Color.fromString("#0000ff"), position: "70%" },
-                        { color: Color.fromString("#cccccc"), position: "100%" },
-                    ]
-                ),
-
-
-            }}>
-                <TextBox halign="right" valign="center" textAlign="justify" style={{ color: "#00ffff"}} fontAssetName="defaultFont_30" fontSize={30}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin fermentum tristique ipsum quis porta. Morbi non lacus at nisi placerat egestas. Pellentesque lobortis vehicula efficitur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer sem nibh, tincidunt ut finibus quis, rhoncus nec est. Nulla facilisi. Integer ac fringilla enim. Nunc imperdiet pulvinar ex eget pharetra. Fusce aliquet libero nec magna sodales cursus. Donec quam nunc, convallis eu accumsan nec, efficitur ut erat. Donec egestas ipsum nec ligula auctor porttitor sed nec ligula. Sed a pellentesque nibh, in condimentum erat. Nullam sodales molestie tortor, non condimentum elit dignissim vitae. In ultricies facilisis rutrum.
-
-                </TextBox>
-            </Div>
-        </Grid>
+        <PlaceholderComponent message="hiiii">
+            <Div style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
+            <Div style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
+            <Div style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
+        </PlaceholderComponent>
     </Div>
 
 /*
@@ -116,7 +95,7 @@ let c = Color.fromString("#cccccc").toLove2DColor()
 print(c[0], c[1], c[2], c[3])
 
 love.draw = () => {
-    root.render();
+    root.display();
 };
 
 love.update = (dt: number) => {

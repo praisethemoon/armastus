@@ -9,9 +9,11 @@ export interface ViewportInfo {
     height: number;
 }
 
-export class BaseComponent {
+export type ComponentProps =  { style: Partial<ComponentStyleProps>;[key: string]: any }
+
+export class BaseComponent<T = {}> {
     type: string = "base";
-    props: { style: Partial<ComponentStyleProps>;[key: string]: any } = { style: {} };
+    props: ComponentProps = { style: {} };
     key: string = "";
     parent: BaseComponent | null = null;
     children: BaseComponent[] = [];
@@ -32,7 +34,13 @@ export class BaseComponent {
         x: 0, y: 0, width: 0, height: 0
     }
 
-    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string }, children?: BaseComponent[]) {
+    /**
+     * Last rendered component
+     */
+
+    _renderCache: BaseComponent | null = null;
+
+    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string } & T, children?: BaseComponent[]) {
         this.props = { ...this.props, ...props };
         this.props.style = { ...new ComponentStyleProps(), ...props?.style };
         this.key = props?.key || "";
@@ -120,9 +128,21 @@ export class BaseComponent {
         let accX = this.childRenderViewport.x;
         let accY = this.childRenderViewport.y;
 
+        if(this._renderCache == null){
+            this._renderCache = this.render();
+        }
+
+        if(this._renderCache != null){
+            this._renderCache.computeViewport(accX, accY, this.childRenderViewport.width, this.childRenderViewport.height)
+            // return because the render cache is the actual owner of the children
+            return
+        }
+
         let highestHeight = 0;
 
+        let childCounter = -1;
         for (const child of this.children) {
+            childCounter++;
             if (child.props.style.position === 'absolute') {
                 child.computeViewport(0, 0, this.childRenderViewport.width, this.childRenderViewport.height)
                 continue;
@@ -142,7 +162,7 @@ export class BaseComponent {
             highestHeight = Math.max(highestHeight, child.childRenderViewport.height);
 
             // Check if the child exceeds the parent width, and if so, move to the next row
-            if (accX + child.viewport.width > this.childRenderViewport.x + this.viewport.width) {
+            if ((accX + child.viewport.width > this.childRenderViewport.x + this.viewport.width) && childCounter > 0) {
                 accX = this.childRenderViewport.x;
                 accY += highestHeight; // Move to the next row
                 highestHeight = child.viewport.height; // Reset highest height for the new row
@@ -194,9 +214,35 @@ export class BaseComponent {
     }
 
 
-    render() { }
+    render() {
+        
+        return null;
+    }
+
+    renderLove2d() {}
+
+    display(){
+        this.renderLove2d();
+        if(this._renderCache != null){
+            // @ts-ignore
+            this._renderCache.display()
+        }
+        else{
+            this.displayChildren();
+        }
+    }
+
+    displayChildren(){
+        for (const child of this.children) {
+            child.display();
+        }
+    }
 
     update(dt: number) {
+        if(this._renderCache == null){
+            this._renderCache = this.render();
+        }
+
         if (this.parent == null) {
             this.computeViewport(0, 0, parseCoordinate(this.props.style.width + "", 0), parseCoordinate(this.props.style.height + "", 0))
         }

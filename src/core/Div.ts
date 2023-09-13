@@ -94,7 +94,6 @@ export class Div extends BaseComponent {
             this.renderColor(backgroundColor);
             //love.graphics.rectangle("fill", 0, 0, width, height);
             
-            
             const emptyImageData = love.image.newImageData(width, height);
 
             // Create a texture from the empty image data
@@ -331,7 +330,7 @@ export class Div extends BaseComponent {
         return 1
     }
 
-    render() {
+    renderLove2d() {
         love.graphics.push("all")
         this.renderCanvas()
         love.graphics.pop()

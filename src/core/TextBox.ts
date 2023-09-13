@@ -31,7 +31,8 @@ export class TextBox extends Div {
         this.textAlign = props?.textAlign || "left";
     }
 
-    render() {
+    renderLove2d() {
+        super.renderLove2d()
         // render text in childRenderViewport depending on halign and valign
         const textWidth = math.min(this.font.getWidth(this.text), this.viewport.width);
 
