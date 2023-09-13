@@ -334,10 +334,6 @@ export class Div extends BaseComponent {
         love.graphics.push("all")
         this.renderCanvas()
         love.graphics.pop()
-        // Render child elements
-        for (const child of this.children) {
-            child.render();
-        }
     }
 
     extractBorderProps() {

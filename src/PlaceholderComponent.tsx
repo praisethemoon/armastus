@@ -11,6 +11,7 @@ export class PlaceholderComponent extends BaseComponent<{message: string}> {
                 <TextBox style={{borderWidth: 10, borderColor: "#000000", width: 200, height: 200}} key="placeholderText" halign="center" valign="center" fontAssetName="defaultFont_30">{this.props.message}</TextBox> 
                 {...this.children}
                 <TextBox style={{borderWidth: 10, borderColor: "#0000ff", width: 200, height: 200}} key="placeholderText" halign="center" valign="center" fontAssetName="defaultFont_30">{this.props.message}</TextBox> 
-            </Div>)
+            </Div>
+        )
     }
 }

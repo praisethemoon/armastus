@@ -221,12 +221,17 @@ export class BaseComponent<T = {}> {
     renderLove2d() {}
 
     display(){
+        // we call the renderLove2d initially
         this.renderLove2d();
+
+        // check the render cache, if its on we display it, which in turn should
+        // be responsible for rendering its children
         if(this._renderCache != null){
             // @ts-ignore
             this._renderCache.display()
         }
         else{
+            // else we manually display children, since the object probably uses native love2d rendering
             this.displayChildren();
         }
     }
@@ -238,6 +243,7 @@ export class BaseComponent<T = {}> {
     }
 
     update(dt: number) {
+        // check if the root component has been rendered before
         if(this._renderCache == null){
             this._renderCache = this.render();
         }
