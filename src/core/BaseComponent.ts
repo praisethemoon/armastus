@@ -179,6 +179,7 @@ export class BaseComponent<T = {}> {
             }
         }
     }
+    
 
     // Helper function to compute dimensions based on different types of values
     computeDimension(value: string | number | null | undefined, max: string | number | null | undefined, parentSize: number): number {
