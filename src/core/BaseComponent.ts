@@ -136,6 +136,7 @@ export class BaseComponent<T = {}> {
         }
 
         if(this._renderCache != null){
+            this._renderCache.parent = this;
             this._renderCache.computeViewport(accX, accY, this.childRenderViewport.width, this.childRenderViewport.height)
             // return because the render cache is the actual owner of the children
             return
@@ -151,7 +152,7 @@ export class BaseComponent<T = {}> {
                 continue;
             };
 
-            const childViewportResult = child.computeViewport(
+            child.computeViewport(
                 accX,
                 accY,
                 this.childRenderViewport.width,
@@ -170,12 +171,18 @@ export class BaseComponent<T = {}> {
                 accY += highestHeight; // Move to the next row
                 highestHeight = child.viewport.height; // Reset highest height for the new row
 
-                // now the child surely exceed the area, we reassign it to new row
-                child.viewport.x = accX;
-                child.viewport.y = accY;
-
-                // Update the accumulated x-coordinate
-                accX += child.viewport.width;
+                child.computeViewport(
+                    accX,
+                    accY,
+                    this.childRenderViewport.width,
+                    this.childRenderViewport.height
+                );
+    
+                // Update the child viewport information
+                accX = child.viewport.x + child.viewport.width;
+    
+                // Check if the child's height exceeds the highest height
+                highestHeight = Math.max(highestHeight, child.viewport.height);
             }
         }
     }
@@ -280,4 +287,16 @@ export class BaseComponent<T = {}> {
         this.computeViewport(this.parent?.viewport.x || 0, this.parent?.viewport.y || 0, this.parent?.viewport.width || parseCoordinate(this.props.style.width + "", 0), this.parent?.viewport.height || parseCoordinate(this.props.style.height + "", 0))
     }
 
+
+    /**
+     * Helper functions
+     */
+
+
+    isMouseInside(): boolean {
+        const x = love.mouse.getX();
+        const y = love.mouse.getY();
+        const bounds = [this.viewport.x, this.viewport.y, this.viewport.width+this.viewport.x, this.viewport.height+this.viewport.y];
+        return x >= bounds[0] && x <= bounds[0] + bounds[2] && y >= bounds[1] && y <= bounds[1] + bounds[3];
+    }
 }
