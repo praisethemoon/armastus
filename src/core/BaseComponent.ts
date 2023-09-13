@@ -17,6 +17,9 @@ export class BaseComponent<T = {}> {
     key: string = "";
     parent: BaseComponent | null = null;
     children: BaseComponent[] = [];
+    previousProps: ComponentProps | null = null;
+
+    state: any = {};
 
     /**
      * Viewport information
@@ -42,6 +45,7 @@ export class BaseComponent<T = {}> {
     constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string } & T, children?: BaseComponent[]) {
         this.props = { ...this.props, ...props };
         this.props.style = { ...new ComponentStyleProps(), ...props?.style };
+        this.previousProps = this.props;
         this.key = props?.key || "";
 
 
@@ -242,7 +246,12 @@ export class BaseComponent<T = {}> {
         }
     }
 
+    /**
+     * Internal update function
+     * @param dt 
+     */
     update(dt: number) {
+        this.updateLove2d(dt);
         // check if the root component has been rendered before
         if(this._renderCache == null){
             this._renderCache = this.render();
@@ -257,5 +266,17 @@ export class BaseComponent<T = {}> {
         }
     }
 
+    /**
+     * Override this if you want to call a love2d regular update function
+     */
+    updateLove2d(dt: number) {
+
+    }
+
+    setState(newState: any){
+        this.state = {...this.state, ...newState};
+        this._renderCache = null;
+        this.computeViewport(this.parent?.viewport.x || 0, this.parent?.viewport.y || 0, this.parent?.viewport.width || parseCoordinate(this.props.style.width + "", 0), this.parent?.viewport.height || parseCoordinate(this.props.style.height + "", 0))
+    }
 
 }
