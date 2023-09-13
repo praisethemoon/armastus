@@ -94,7 +94,6 @@ export class Div extends BaseComponent {
             this.renderColor(backgroundColor);
 
             if((typeof(backgroundColor) == "object") && (backgroundColor.type == "gradient")){
-                //love.graphics.rectangle("fill", 0, 0, width, height);
                 
                 const emptyImageData = love.image.newImageData(width, height);
 

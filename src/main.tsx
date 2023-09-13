@@ -29,15 +29,12 @@ let root: BaseComponent =
         ]),
         borderRadius: "20px",
     }}>
-        <PlaceholderComponent message="hiiii">
+        <PlaceholderComponent message="hiiii" style={{backgroundColor: null}}>
             <Div key={"child2"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Div key={"child3"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Div key={"child4"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Div key={"child5"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
-            <Div key={"child6"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Div key={"child5"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
-            <Div key={"child6"} style={{ width: "150px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
-
         </PlaceholderComponent>
     </Div>
 
