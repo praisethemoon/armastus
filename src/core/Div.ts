@@ -146,7 +146,7 @@ export class Div extends BaseComponent {
             }
 
             const result = love.timer.getTime() - start
-            print("rendering ", this.key, " took ", result, " seconds")
+            //print("rendering ", this.key, " took ", result, " seconds")
         }
         love.graphics.setCanvas();
 
