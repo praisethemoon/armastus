@@ -8,6 +8,7 @@ import { Grid } from "./core/Grid";
 import { TextBox } from "./core/TextBox";
 import { PlaceholderComponent } from "./PlaceholderComponent";
 import { Checkbox } from "./extra/CheckBox";
+import { MouseEvent } from "./core/Events";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
@@ -38,8 +39,6 @@ let root: BaseComponent =
             <Div key={"child5"} style={{ width: "200px", height: "200px", backgroundColor: "#35A29F", borderWidth: 2, borderColor: "#000000" , backgroundImageId: "kitten", backgroundImageSize: "cover" }} />
             <Checkbox style={{width: 50, height: 50}} checked={false} onChange={(checked) => print(checked)}/>
         </PlaceholderComponent>
-        
-        
     </Div>
 
 /*
@@ -107,4 +106,8 @@ love.draw = () => {
 love.update = (dt: number) => {
     root.update(dt);
     love.window.setTitle("FPS: " + love.timer.getFPS());
+}
+
+love.mousepressed = (x: number, y: number, button: number, isTouch: boolean, presses: number) => {
+    root.onMouseEvent(new MouseEvent("click", {x, y, button, isTouch, presses}))
 }

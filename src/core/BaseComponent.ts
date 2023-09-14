@@ -1,5 +1,7 @@
 import ComponentStyleProps from "./ComponentStyleProps";
+import { MouseEvent } from "./Events";
 import { parseCoordinate } from "./utils/parseCoordinate";
+
 
 
 export interface ViewportInfo {
@@ -297,11 +299,27 @@ export class BaseComponent<T = {}> {
      * Helper functions
      */
 
-
     isMouseInside(): boolean {
         const x = love.mouse.getX();
         const y = love.mouse.getY();
         const bounds = [this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height];
         return x >= bounds[0] && x <= bounds[0] + bounds[2] && y >= bounds[1] && y <= bounds[1] + bounds[3];
+    }
+
+    onMouseEvent(e: MouseEvent) {
+        if(!this.isMouseInside){
+            return
+        }
+
+        if(this._renderCache != null){
+            this._renderCache.onMouseEvent(e)
+        }
+
+        for(const child of this.children){
+            if(!e.spread){
+                break
+            }
+            child.onMouseEvent(e)
+        }
     }
 }
