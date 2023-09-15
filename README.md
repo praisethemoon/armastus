@@ -1,42 +1,81 @@
-# LÖVE 2D TypeScript Project Template
+![](logo.png)
+===
 
-A template LÖVE 2D TypeScript Project made possible with [TypeScriptToLua](https://github.com/TypeScriptToLua/TypeScriptToLua).
+![meh](meh.png)
 
-You can click `Use this template` to clone this repo, or download it as a zip.
 
-## Scripts
+### FAQ (no one actually asked these questions, i am making them up):
 
-Requires [NodeJS](https://nodejs.org/en/download/) and [LÖVE 2D](https://love2d.org/) within your CLI.
-
-| Command                | Description                                      |
-| ---------------------- | ------------------------------------------------ |
-| `npm install`          | ⏬ Install dependencies                          |
-| `npm run build`        | 🔨 Build everything                              |
-| `npm run watch`        | 🔨x♾ Re-build Lua files when a TS file is saved |
-| `npm start`            | 🎮 Start the game                                |
-| `npm run fix:prettier` | 💄 Fixes linting issues                          |
-| `npm run lint`         | 💄 Checks for linting issues in code             |
-
-To distribute the game, see the [game distribution wiki page](https://love2d.org/wiki/Game_Distribution).
-
-External files can be placed in `res/` and referenced with `res/<filename>`.
-
-e.g.
-
-```ts
-love.filesystem.read("res/input.txt");
+```
+Q: What is this?
+A: Another typescript UI framework .. but for `love2d`!
 ```
 
-### Notes
+```
+Q: Why not lua?
+A: I love typescript :(
+```
 
-- If you're using VS Code, the [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extension will automatically format your code for you so you don't need to run `npm run fix:prettier` on every change.
-- Index your arrays at 0 in your source code.
-- Lua does not iterate over sparse arrays (arrays with no values in the middle of them).
+```
+Q: How to use?
+A: I have no idea, I'm still working on it.
+```
+```
+Q:  Why?
+A: I love react. `typescript-to-lua` is an awesome project, it allows the generation of lua code even from React TSX code. Since in my humble opinion is the best way to write user interfaces, I have decided to try it with love2d.
+```
+```
+Q: What do I expect from this?:
+A: Only building blocks! You should be able to create your own components and use them in your projects.
+```
 
-### Links
+#### Here is a snippet!
+```tsx
+let root: BaseComponent =
+    <Div key="main" style={{ width: love.window.getMode()[0], height: love.window.getMode()[1] }}>
+        <Grid style={{ width: "100%", height: "100%" }}
+            columnsPattern={["1fr"]}
+            rowsPattern={["1fr", "10fr"]}>
+            <Grid style={{ width: "100%", height: "100%"}}
+                columnsPattern={["1fr", "1fr", "1fr", "1fr", "1fr"]}
+                rowsPattern={["1fr"]}>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#F5F5DC", borderBottomWidth: 5, borderColor: "#000000"}}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Play</TextBox>
+                </Div>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#BB2525", borderBottomWidth: 20, borderWidth: 0, borderColor: "#000000" }}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Git Gud</TextBox>
+                </Div>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FF6969"}}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Waste Money</TextBox>
+                </Div>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FFF5E0",  }}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Useless Page</TextBox>
+                </Div>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FFCF9D",  borderBottomWidth: 5, borderColor: "#000000"}}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Zettingz</TextBox>
+                </Div>
+            </Grid>
+            <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: new GradientColor("linear", "270deg", null, null, null, [
+                {color: Color.fromString("hsl(240deg, 100%, 20%)"), position: "0%"},
+                {color: Color.fromString("hsl(289deg, 100%, 21%) "), position: "21%"},
+                {color: Color.fromString("hsl(315deg, 100%, 27%)"), position: "30%"},
+                {color: Color.fromString("hsl(329deg, 100%, 36%)"), position: "39%"},
+                {color: Color.fromString("hsl(337deg, 100%, 43%)"), position: "46%"},
+                {color: Color.fromString("hsl(357deg, 91%, 59%)"), position: "54%"},
+                {color: Color.fromString("hsl(17deg, 100%, 59%)"), position: "61%"},
+                {color: Color.fromString("hsl(34deg, 100%, 53%)"), position: "69%"},
+                {color: Color.fromString("hsl(45deg, 100%, 50%)"), position: "79%"},
+                {color: Color.fromString("hsl(55deg, 100%, 50%)"), position: "100%"},
+            ]) }}>
+                <Button style={{width: 120, height: 80}}>Hello</Button>
+            </Div>
+        </Grid>
+    </Div>
+```
 
-- [TypeScriptToLua Wiki](https://github.com/TypeScriptToLua/TypeScriptToLua/wiki)
-  - [Writing Declarations](https://github.com/TypeScriptToLua/TypeScriptToLua/wiki/Writing-Declarations)
-  - [Compiler Directives](https://github.com/TypeScriptToLua/TypeScriptToLua/wiki/Compiler-Directives)
-- [LÖVE 2D Wiki](https://love2d.org/wiki/Main_Page)
-- [LÖVE 2D - Getting Started](https://love2d.org/wiki/Getting_Started)
+#### Inconveniences:
+- Everything must have dims. 
+- If you exceed parent dims, it will NOT be clipped. Events might not propagate properly.
+- No scrolling when overflow (obviously)
+- Bugs, bugs, and more bugs to keep you entertained.
+- I almost guarentee you that I will break the API. Tis what I do!
