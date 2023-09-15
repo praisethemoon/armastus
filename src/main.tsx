@@ -27,16 +27,16 @@ let root: BaseComponent =
                     <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Play</TextBox>
                 </Div>
                 <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#BB2525", borderBottomWidth: 20, borderWidth: 0, borderColor: "#000000" }}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">My Deck</TextBox>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Git Gud</TextBox>
                 </Div>
                 <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FF6969"}}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Store</TextBox>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Waste Money</TextBox>
                 </Div>
                 <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FFF5E0",  }}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Friends</TextBox>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Useless Page</TextBox>
                 </Div>
                 <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FFCF9D",  borderBottomWidth: 5, borderColor: "#000000"}}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Settings</TextBox>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Zettingz</TextBox>
                 </Div>
             </Grid>
             <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: new GradientColor("linear", "270deg", null, null, null, [
@@ -52,7 +52,7 @@ let root: BaseComponent =
                 {color: Color.fromString("hsl(55deg, 100%, 50%)"), position: "100%"},
             ]) }}>
                 {/*<TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Mai Raet &lt;3</TextBox>*/}
-                <Button style={{width: 200, height: 80}}>Frau Raet!</Button>
+                <Button style={{width: 120, height: 80}}>Hello</Button>
             </Div>
         </Grid>
     </Div>
