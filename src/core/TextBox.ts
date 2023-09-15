@@ -18,11 +18,11 @@ export class TextBox extends Div {
     valign: TextBoxVAlign = "top";
     textAlign: TextContentAlign = "left";
 
-    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string, fontAssetName?: string, valign: TextBoxVAlign, halign: TextBoxHAlign, textAlign?: TextContentAlign }, children?: string[]) {
+    constructor(props?: { style?: Partial<ComponentStyleProps>, key?: string, fontAssetName?: string, fontSize?: number, valign?: TextBoxVAlign, halign?: TextBoxHAlign, textAlign?: TextContentAlign }, children?: string[]) {
         super(props, []);
 
         this.fontAssetName = props?.fontAssetName || "defaultFont";
-        this.font = AssetMap.loadFont(this.fontAssetName) as Font
+        this.font = AssetMap.loadFont(this.fontAssetName, props?.fontSize || 15) as Font
         this.text = children?.join("") || "";
         this.halign = props?.halign || "left";
         this.valign = props?.valign || "top";

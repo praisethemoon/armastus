@@ -9,147 +9,52 @@ import { TextBox } from "./core/TextBox";
 import { PlaceholderComponent } from "./PlaceholderComponent";
 import { Checkbox } from "./extra/CheckBox";
 import { MouseEvent } from "./core/Events";
+import { Button } from "./extra/Button";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
 love.graphics.setLineJoin("miter")
 
 let root: BaseComponent =
-    <Div key="main" style={{
-        width: "1000px", height: "800px",
-        backgroundColor: new GradientColor("linear", "270deg", null, null, null, [
-            {color: Color.fromString("hsl(240deg, 100%, 20%)"), position: "0%"},
-            {color: Color.fromString("hsl(289deg, 100%, 21%) "), position: "21%"},
-            {color: Color.fromString("hsl(315deg, 100%, 27%)"), position: "30%"},
-            {color: Color.fromString("hsl(329deg, 100%, 36%)"), position: "39%"},
-            {color: Color.fromString("hsl(337deg, 100%, 43%)"), position: "46%"},
-            {color: Color.fromString("hsl(357deg, 91%, 59%)"), position: "54%"},
-            {color: Color.fromString("hsl(17deg, 100%, 59%)"), position: "61%"},
-            {color: Color.fromString("hsl(34deg, 100%, 53%)"), position: "69%"},
-            {color: Color.fromString("hsl(45deg, 100%, 50%)"), position: "79%"},
-            {color: Color.fromString("hsl(55deg, 100%, 50%)"), position: "100%"},
-        ]),
-        borderRadius: "0px",
-        borderColor: "#ffffff",
-        borderWidth: 20
-    }}>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-    <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-            <Checkbox defaultChecked={false} onChange={(checked) => print(checked)} style={{width: 50, height: 50}}/>
-
+    <Div key="main" style={{ width: love.window.getMode()[0], height: love.window.getMode()[1] }}>
+        <Grid style={{ width: "100%", height: "100%" }}
+            columnsPattern={["1fr"]}
+            rowsPattern={["1fr", "10fr"]}>
+            <Grid style={{ width: "100%", height: "100%"}}
+                columnsPattern={["1fr", "1fr", "1fr", "1fr", "1fr"]}
+                rowsPattern={["1fr"]}>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#F5F5DC", borderBottomWidth: 5, borderColor: "#000000"}}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Play</TextBox>
+                </Div>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#BB2525", borderBottomWidth: 20, borderWidth: 0, borderColor: "#000000" }}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">My Deck</TextBox>
+                </Div>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FF6969"}}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Store</TextBox>
+                </Div>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FFF5E0",  }}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Friends</TextBox>
+                </Div>
+                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FFCF9D",  borderBottomWidth: 5, borderColor: "#000000"}}>
+                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Settings</TextBox>
+                </Div>
+            </Grid>
+            <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: new GradientColor("linear", "270deg", null, null, null, [
+                {color: Color.fromString("hsl(240deg, 100%, 20%)"), position: "0%"},
+                {color: Color.fromString("hsl(289deg, 100%, 21%) "), position: "21%"},
+                {color: Color.fromString("hsl(315deg, 100%, 27%)"), position: "30%"},
+                {color: Color.fromString("hsl(329deg, 100%, 36%)"), position: "39%"},
+                {color: Color.fromString("hsl(337deg, 100%, 43%)"), position: "46%"},
+                {color: Color.fromString("hsl(357deg, 91%, 59%)"), position: "54%"},
+                {color: Color.fromString("hsl(17deg, 100%, 59%)"), position: "61%"},
+                {color: Color.fromString("hsl(34deg, 100%, 53%)"), position: "69%"},
+                {color: Color.fromString("hsl(45deg, 100%, 50%)"), position: "79%"},
+                {color: Color.fromString("hsl(55deg, 100%, 50%)"), position: "100%"},
+            ]) }}>
+                {/*<TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Mai Raet &lt;3</TextBox>*/}
+                <Button style={{width: 200, height: 80}}>Frau Raet!</Button>
+            </Div>
+        </Grid>
     </Div>
 
 love.draw = () => {
@@ -164,6 +69,16 @@ love.update = (dt: number) => {
 }
 
 love.mousepressed = (x: number, y: number, button: number, isTouch: boolean, presses: number) => {
-    print("mouse pressed", x, y, button, isTouch, presses)
-    root.onMouseEvent(new MouseEvent("click", {x, y, button, isTouch, presses}))
+    //print("mouse pressed", x, y, button, isTouch, presses)
+    root.onMouseEvent(new MouseEvent("pressed", { x, y, button, isTouch, presses }))
+}
+
+love.mousemoved = (x: number, y: number, dx: number, dy: number, isTouch: boolean) => {
+    //print("mouse moved", x, y, dx, dy, isTouch)
+    root.onMouseEvent(new MouseEvent("moved", { x, y, button: undefined, isTouch, presses: undefined }))
+}
+
+love.mousereleased = (x: number, y: number, button: number, isTouch: boolean, presses: number) => {
+    //print("mouse released", x, y, button, isTouch, presses)
+    root.onMouseEvent(new MouseEvent("released", { x, y, button, isTouch, presses }))
 }

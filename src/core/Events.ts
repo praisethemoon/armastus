@@ -1,5 +1,5 @@
-export type MouseEventType = "hover" | "click" | "drag"
-export type MouseEventData = {x: number, y: number, button: number, isTouch: boolean, presses: number}
+export type MouseEventType = "hover" | "pressed" | "released" | "moved"
+export type MouseEventData = {x: number, y: number, button?: number, isTouch: boolean, presses?: number}
 
 export class MouseEvent {
     eventType: MouseEventType

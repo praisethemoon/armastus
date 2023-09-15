@@ -14,7 +14,7 @@ export class Checkbox extends BaseComponent<{defaultChecked: boolean, onChange: 
 
     render(){
         return (<Div key="cb-dev">
-            <Div key="cb-inner" style={{width: "100%", height: "100%", backgroundColor: this.state.checked?"#FFCC70FF":"#FFCC7070"}}/>
+            <Div key="cb-inner" style={{width: "100%", height: "100%", backgroundColor: this.state.checked?"#FFCC70FF":"#FFCC7070", borderWidth: 2, borderColor: "#00000000"}}/>
         </Div>)
     }
 
