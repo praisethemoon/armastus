@@ -160,6 +160,7 @@ export class BaseComponent<T = {}> {
                 this.childRenderViewport.width,
                 this.childRenderViewport.height
             );
+            //print("child", child.key, child.viewport.x, child.viewport.y, child.viewport.width, child.viewport.height)
 
             // Update the child viewport information
             accX = child.viewport.x + child.viewport.width;
@@ -168,7 +169,7 @@ export class BaseComponent<T = {}> {
             highestHeight = Math.max(highestHeight, child.viewport.height);
 
             // Check if the child exceeds the parent width, and if so, move to the next row
-            if ((accX  > this.childRenderViewport.x + this.viewport.width) && childCounter > 0) {
+            if ((accX  > this.childRenderViewport.x + this.childRenderViewport.width) && childCounter > 0) {
                 accX = this.childRenderViewport.x;
                 accY += highestHeight; // Move to the next row
                 highestHeight = child.viewport.height; // Reset highest height for the new row
@@ -185,6 +186,20 @@ export class BaseComponent<T = {}> {
     
                 // Check if the child's height exceeds the highest height
                 highestHeight = Math.max(highestHeight, child.viewport.height);
+
+                // check we need to adjust the height of the currernt component
+                if(accY + highestHeight > this.childRenderViewport.y + this.viewport.height){
+                    // check if do not have a max height set
+                    if(maxHeight == null || maxHeight == 'unset'){
+                        const diff = (accY + highestHeight - this.childRenderViewport.y) - this.childRenderViewport.height
+                        this.childRenderViewport.height = accY + highestHeight - this.childRenderViewport.y;
+                        this.viewport.height += diff;
+                    }
+                    else{
+                        // TODO: i guess we render but do not care? or maybe we stop rendering
+                    }
+                    
+                }
             }
         }
     }
@@ -306,8 +321,13 @@ export class BaseComponent<T = {}> {
         return x >= bounds[0] && x <= bounds[0] + bounds[2] && y >= bounds[1] && y <= bounds[1] + bounds[3];
     }
 
+    isEventInside(e: MouseEvent): boolean {
+        const bounds = [this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height];
+        return e.eventData.x >= bounds[0] && e.eventData.x <= bounds[0] + bounds[2] && e.eventData.y >= bounds[1] && e.eventData.y <= bounds[1] + bounds[3];
+    }
+
     onMouseEvent(e: MouseEvent) {
-        if(!this.isMouseInside){
+        if(!this.isEventInside(e)){
             return
         }
 
