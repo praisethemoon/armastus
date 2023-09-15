@@ -7,7 +7,7 @@ import { ShaderFactory } from "./ShaderFactory";
 import { AssetMap } from "./AssetMap";
 
 export class Div extends BaseComponent {
-    type= "div"
+    type = "div"
     canvas: Canvas | null = null; // Store the canvas
     prevCanvasW: number = 0;
     prevCanvasH: number = 0;
@@ -49,7 +49,7 @@ export class Div extends BaseComponent {
         borderLeftColor = borderLeftColor || borderColor;
         this.canvas = this.canvas || love.graphics.newCanvas();
 
-        
+
 
         const {
             x,
@@ -122,26 +122,34 @@ export class Div extends BaseComponent {
             if (hasBorderWidth) {
                 // Draw rounded rectangle with borders
                 //print(borderColor, borderTopColor, borderRightColor, borderBottomColor, borderLeftColor)
-                this.renderColor(borderTopColor)
-                // draw top line, we need to offset by width/2 since love2d draw half width on each side of the lines
-                love.graphics.setLineWidth(borderTopWidth)
-                love.graphics.line(0, borderTopWidth/2, width, borderTopWidth/2)
-                this.resetColor()
+                if (borderTopWidth > 0) {
+                    this.renderColor(borderTopColor)
+                    // draw top line, we need to offset by width/2 since love2d draw half width on each side of the lines
+                    love.graphics.setLineWidth(borderTopWidth)
+                    love.graphics.line(0, borderTopWidth / 2, width, borderTopWidth / 2)
+                    this.resetColor()
+                }
 
-                this.renderColor(borderRightColor)
-                love.graphics.setLineWidth(borderRightWidth)
-                love.graphics.line(width-borderRightWidth/2, 0, width-borderRightWidth/2, height)
-                this.resetColor()
+                if (borderRightWidth > 0) {
+                    this.renderColor(borderRightColor)
+                    love.graphics.setLineWidth(borderRightWidth)
+                    love.graphics.line(width - borderRightWidth / 2, 0, width - borderRightWidth / 2, height)
+                    this.resetColor()
+                }
 
-                this.renderColor(borderBottomColor)
-                love.graphics.setLineWidth(borderBottomWidth)
-                love.graphics.line(0, height-borderBottomWidth/2, width, height-borderBottomWidth/2)
-                this.resetColor()
+                if (borderBottomWidth > 0) {
+                    this.renderColor(borderBottomColor)
+                    love.graphics.setLineWidth(borderBottomWidth)
+                    love.graphics.line(0, height - borderBottomWidth / 2, width, height - borderBottomWidth / 2)
+                    this.resetColor()
+                }
 
-                this.renderColor(borderLeftColor)
-                love.graphics.setLineWidth(borderLeftWidth)
-                love.graphics.line(borderLeftWidth/2, 0, borderLeftWidth/2, height)
-                this.resetColor()
+                if (borderLeftWidth > 0) {
+                    this.renderColor(borderLeftColor)
+                    love.graphics.setLineWidth(borderLeftWidth)
+                    love.graphics.line(borderLeftWidth / 2, 0, borderLeftWidth / 2, height)
+                    this.resetColor()
+                }
 
                 love.graphics.setLineWidth(1)
             }
