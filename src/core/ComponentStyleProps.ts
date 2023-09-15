@@ -56,8 +56,8 @@ class ComponentStyleProps {
     borderBottomStyle: string = "solid";
     borderLeftStyle: string = "solid";
 
-    maxWidth: NullableProp = "100%";  // Default value
-    maxHeight: NullableProp = "100%"; // Default value
+    maxWidth: NullableProp = "unset";  // Default value
+    maxHeight: NullableProp = "unset"; // Default value
 
     overflowX?: OverflowProp = "scroll" 
     overflowY?: OverflowProp = "scroll"
