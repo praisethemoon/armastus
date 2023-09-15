@@ -7,6 +7,7 @@ import { ShaderFactory } from "./ShaderFactory";
 import { AssetMap } from "./AssetMap";
 
 export class Div extends BaseComponent {
+    type= "div"
     canvas: Canvas | null = null; // Store the canvas
     prevCanvasW: number = 0;
     prevCanvasH: number = 0;
@@ -122,24 +123,24 @@ export class Div extends BaseComponent {
                 // Draw rounded rectangle with borders
                 //print(borderColor, borderTopColor, borderRightColor, borderBottomColor, borderLeftColor)
                 this.renderColor(borderTopColor)
-                // draw top line
+                // draw top line, we need to offset by width/2 since love2d draw half width on each side of the lines
                 love.graphics.setLineWidth(borderTopWidth)
-                love.graphics.line(0, 0, width, 0)
+                love.graphics.line(0, borderTopWidth/2, width, borderTopWidth/2)
                 this.resetColor()
 
                 this.renderColor(borderRightColor)
                 love.graphics.setLineWidth(borderRightWidth)
-                love.graphics.line(width, 0, width, height)
+                love.graphics.line(width-borderRightWidth/2, 0, width-borderRightWidth/2, height)
                 this.resetColor()
 
                 this.renderColor(borderBottomColor)
                 love.graphics.setLineWidth(borderBottomWidth)
-                love.graphics.line(0, height, width, height)
+                love.graphics.line(0, height-borderBottomWidth/2, width, height-borderBottomWidth/2)
                 this.resetColor()
 
                 this.renderColor(borderLeftColor)
                 love.graphics.setLineWidth(borderLeftWidth)
-                love.graphics.line(0, 0, 0, height)
+                love.graphics.line(borderLeftWidth/2, 0, borderLeftWidth/2, height)
                 this.resetColor()
 
                 love.graphics.setLineWidth(1)
@@ -155,7 +156,8 @@ export class Div extends BaseComponent {
             this.applyMask(borderRadiusTopLeft, borderRadiusTopRight, borderRadiusBottomLeft, borderRadiusBottomRight);
         }
 
-        love.graphics.setColor(1, 1, 1, 1);
+        love.graphics.setColor(1, 1, 1, this.getColorOpacity(backgroundColor || null));
+        //print("drawing canvas", this.key, x, y, width, height)
         love.graphics.draw(this.canvas, x, y);
         this.clearMask()
     }
