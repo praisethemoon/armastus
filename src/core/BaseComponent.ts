@@ -299,6 +299,9 @@ export class BaseComponent<T = {}> {
     }
 
     setState(newState: any){
+        if(this._renderCache != null){
+            this._renderCache.componentWillUnmount();
+        }
         this._renderCache = null;
         this.state = {...this.state, ...newState};
         this._renderCache = this.render();
@@ -340,6 +343,13 @@ export class BaseComponent<T = {}> {
                 break
             }
             child.onMouseEvent(e)
+        }
+    }
+
+    componentWillUnmount() {
+        // call for all children
+        for (const child of this.children) {
+            child.componentWillUnmount();
         }
     }
 }
