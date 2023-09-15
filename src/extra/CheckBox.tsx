@@ -3,34 +3,36 @@ import { Arma } from "../core/Arma";
 import { BaseComponent, ComponentProps } from "../core/BaseComponent";
 import { Div } from "../core/Div";
 import { MouseEvent } from "../core/Events";
+import { TextBox } from "../core/TextBox";
+import ComponentStyleProps from "../core/ComponentStyleProps";
 
-export class Checkbox extends BaseComponent<{checked: boolean, onChange: (checked: boolean) => void}> {
-    constructor(props: ComponentProps & {checked: boolean, onChange: (checked: boolean) => void}, children: BaseComponent[]) {
+export class Checkbox extends BaseComponent<{defaultChecked: boolean, onChange: (checked: boolean) => void}> {
+    constructor(props: { style?: Partial<ComponentStyleProps>, key?: string } & {defaultChecked: boolean, onChange: (checked: boolean) => void}, children: BaseComponent[]) {
         super(props, children);
-        this.state = {checked: false}
+        this.state = {checked: props.defaultChecked}
     }
 
     render(){
-        return (
-            <Div key="cb-bg" style={{space: 10, width: 50, height: 50, borderWidth: 10, borderRadius: 5, borderColor: "#000000", backgroundColor: this.state.checked ? "#0000ff" : "#0cccfc"}}/>
-        )
-    }
-
-    updateLove2d(dt: number): void {
-        
+        return (<Div key="cb-dev">
+            <Div key="cb-inner" style={{width: "100%", height: "100%", backgroundColor: this.state.checked?"#FFCC70FF":"#FFCC7070"}}/>
+        </Div>)
     }
 
     onMouseEvent(e: MouseEvent): void {
-        const mouseOver = this.isMouseInside();
+        const mouseOver = this.isEventInside(e);
 
         if(mouseOver && !this.state.checked){
             this.setState({checked: true})
+            this.props.onChange(true)
+            e.end()
         }
         else if(mouseOver && this.state.checked) {
             this.setState({checked: false})
+            this.props.onChange(false)
+            e.end()
         }
 
-        e.end()
+        super.onMouseEvent(e);
     }
 
 
