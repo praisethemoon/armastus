@@ -135,7 +135,9 @@ export class BaseComponent<T = {}> {
 
         if(this._renderCache == null){
             this._renderCache = this.render();
-            (this._renderCache as unknown as BaseComponent).componentDidMount();
+            if(this._renderCache != null){
+                (this._renderCache as unknown as BaseComponent).componentDidMount();
+            }
         }
 
         if(this._renderCache != null){
