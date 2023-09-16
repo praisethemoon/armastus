@@ -108,7 +108,7 @@ export class BaseComponent<T = {}> {
         totalWidth = totalWidth - spaceL - spaceR;
         totalHeight = totalHeight - spaceT - spaceB;
 
-        this, this.viewport.x += spaceL;
+        this.viewport.x += spaceL;
         this.viewport.y += spaceT;
 
         this.viewport.width = totalWidth;

@@ -18,7 +18,7 @@ love.graphics.setLineJoin("miter")
 
 let root: BaseComponent =
     <Div key="main" style={{ width: love.window.getMode()[0], height: love.window.getMode()[1] }}>
-        <Grid style={{ width: "100%", height: "100%" }}
+        <Grid style={{ width: "400", height: "400"}}
             columnsPattern={["1fr"]}
             rowsPattern={["1fr", "10fr"]}>
             <Grid style={{ width: "100%", height: "100%" }}
