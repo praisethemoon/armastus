@@ -31,13 +31,11 @@ export class Grid extends Div {
         this.viewport.width = parseCoordinate(this.props.style.width+"", parentWidth);
         this.viewport.height = parseCoordinate(this.props.style.height+"", parentHeight);
 
-
         // Calculate the final position of the grid
 
-
         // Compute grid dimensions based on patterns
-        const columnWidths = this.computeGridDimensions(this.gridTemplateColumns, parentWidth);
-        const rowHeights = this.computeGridDimensions(this.gridTemplateRows, parentHeight);
+        const columnWidths = this.computeGridDimensions(this.gridTemplateColumns, this.viewport.width);
+        const rowHeights = this.computeGridDimensions(this.gridTemplateRows, this.viewport.height);
         // Set positions and dimensions for child elements based on the grid layout
         let rowIndex = 0;
         let columnIndex = 0;
