@@ -10,6 +10,7 @@ import { PlaceholderComponent } from "./PlaceholderComponent";
 import { Checkbox } from "./extra/CheckBox";
 import { MouseEvent } from "./core/Events";
 import { Button } from "./extra/Button";
+import { FAIcon } from "./extra/FAIcon";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
@@ -20,39 +21,45 @@ let root: BaseComponent =
         <Grid style={{ width: "100%", height: "100%" }}
             columnsPattern={["1fr"]}
             rowsPattern={["1fr", "10fr"]}>
-            <Grid style={{ width: "100%", height: "100%"}}
+            <Grid style={{ width: "100%", height: "100%" }}
                 columnsPattern={["1fr", "1fr", "1fr", "1fr", "1fr"]}
                 rowsPattern={["1fr"]}>
-                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#F5F5DC", borderBottomWidth: 5, borderColor: "#000000"}}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Play</TextBox>
-                </Div>
-                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#BB2525", borderBottomWidth: 20, borderWidth: 0, borderColor: "#000000" }}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Git Gud</TextBox>
-                </Div>
-                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FF6969"}}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Waste Money</TextBox>
-                </Div>
-                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FFF5E0",  }}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Useless Page</TextBox>
-                </Div>
-                <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: "#FFCF9D",  borderBottomWidth: 5, borderColor: "#000000"}}>
-                    <TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Zettingz</TextBox>
-                </Div>
+                <Button
+                    style={{ width: "100%", height: "100%" }}
+                    defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
+                    hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
+                    icon={<FAIcon bucket="solid" icon="play-circle" />}
+                >Play and Fail</Button>
+                <Button
+                    style={{ width: "100%", height: "100%" }}
+                    defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
+                    hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
+                    icon={<FAIcon bucket="solid" icon="sad-cry" />}
+                >Git Gud</Button>
+                <Button
+                    style={{ width: "100%", height: "100%" }}
+                    defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
+                    hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
+                    icon={<FAIcon bucket="solid" icon="money-bill" />}
+                >Waste Money</Button>
+                <Button
+                    style={{ width: "100%", height: "100%" }}
+                    defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
+                    hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
+                    icon={<FAIcon bucket="solid" icon="newspaper" />}
+                >Useless Page</Button>
+                <Button
+                    style={{ width: "100%", height: "100%" }}
+                    defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
+                    hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
+                    icon={<FAIcon bucket="solid" icon="cogs" />}
+                >Zettingz</Button>
             </Grid>
-            <Div key="grid-1" style={{ width: "100%", height: "100%", backgroundColor: new GradientColor("linear", "270deg", null, null, null, [
-                {color: Color.fromString("hsl(240deg, 100%, 20%)"), position: "0%"},
-                {color: Color.fromString("hsl(289deg, 100%, 21%) "), position: "21%"},
-                {color: Color.fromString("hsl(315deg, 100%, 27%)"), position: "30%"},
-                {color: Color.fromString("hsl(329deg, 100%, 36%)"), position: "39%"},
-                {color: Color.fromString("hsl(337deg, 100%, 43%)"), position: "46%"},
-                {color: Color.fromString("hsl(357deg, 91%, 59%)"), position: "54%"},
-                {color: Color.fromString("hsl(17deg, 100%, 59%)"), position: "61%"},
-                {color: Color.fromString("hsl(34deg, 100%, 53%)"), position: "69%"},
-                {color: Color.fromString("hsl(45deg, 100%, 50%)"), position: "79%"},
-                {color: Color.fromString("hsl(55deg, 100%, 50%)"), position: "100%"},
-            ]) }}>
+            <Div key="grid-1" style={{
+                width: "100%", height: "100%", backgroundColor: "#EC53B0"
+            }}>
                 {/*<TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Mai Raet &lt;3</TextBox>*/}
-                <Button style={{width: 120, height: 80}}>Hello</Button>
+                <Button style={{ width: 120, height: 80 }}>Hello</Button>
             </Div>
         </Grid>
     </Div>

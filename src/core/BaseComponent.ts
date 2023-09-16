@@ -339,9 +339,11 @@ export class BaseComponent<T = {}> {
     }
 
     onMouseEvent(e: MouseEvent) {
+        /*
         if(!this.isEventInside(e)){
             return
         }
+        */
 
         if(this._renderCache != null){
             this._renderCache.onMouseEvent(e)
