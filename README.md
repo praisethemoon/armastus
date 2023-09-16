@@ -73,6 +73,14 @@ let root: BaseComponent =
     </Div>
 ```
 
+#### How to run:
+```
+cd repo
+npm install
+npm run build
+love game
+```
+
 #### Inconveniences:
 - Everything must have dims. 
 - If you exceed parent dims, it will NOT be clipped. Events might not propagate properly.
