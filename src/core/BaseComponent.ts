@@ -135,6 +135,7 @@ export class BaseComponent<T = {}> {
 
         if(this._renderCache == null){
             this._renderCache = this.render();
+            (this._renderCache as unknown as BaseComponent).componentDidMount();
         }
 
         if(this._renderCache != null){
@@ -280,6 +281,9 @@ export class BaseComponent<T = {}> {
         // check if the root component has been rendered before
         if(this._renderCache == null){
             this._renderCache = this.render();
+            if (this._renderCache != null) {
+                (this._renderCache as unknown as BaseComponent).componentDidMount();
+            }
         }
 
         if (this.parent == null) {
@@ -302,9 +306,12 @@ export class BaseComponent<T = {}> {
         if(this._renderCache != null){
             this._renderCache.componentWillUnmount();
         }
+
         this._renderCache = null;
         this.state = {...this.state, ...newState};
         this._renderCache = this.render();
+        this.componentDidMount();
+
         if(this._renderCache != null){
             // @ts-ignore
             this._renderCache.parent = this;
@@ -346,6 +353,20 @@ export class BaseComponent<T = {}> {
         }
     }
 
+    /**
+     * Called right after the component was created
+     * The logic is still a bit broken might need more testing
+     */
+    componentDidMount() {
+        // call for all children
+        for (const child of this.children) {
+            child.componentDidMount();
+        }
+    }
+
+    /**
+     * Called right before the component is removed
+     */
     componentWillUnmount() {
         // call for all children
         for (const child of this.children) {
