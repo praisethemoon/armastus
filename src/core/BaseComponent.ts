@@ -253,7 +253,7 @@ export class BaseComponent<T = {}> {
      * Override this if you are using jsx
      * @returns the component to be rendered
      */
-    render() {
+    render(): BaseComponent | null {
         return null;
     }
 
