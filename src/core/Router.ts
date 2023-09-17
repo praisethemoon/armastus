@@ -1,37 +1,48 @@
 import { Arma } from "./Arma";
 import { BaseComponent } from "./BaseComponent";
+import { printObject } from "./utils/printObject";
 
 
-
-export class Router extends BaseComponent<{route: string, exact?: boolean, default?: boolean}>{
+export class Router extends BaseComponent<{route: string, default?: boolean}>{
     route: string;
-    exact: boolean;
     default: boolean;
 
-    constructor(props: {exact: boolean, route: string, default?: boolean}, children: []){
+    constructor(props: {route: string, default?: boolean}, children: []){
         super(props, children);
         this.route = props.route;
-        this.exact = props.exact;
         this.default = props.default ?? false;
     }
 
     render(){
-        print("rendering router", this.route, this.props.style.width, this.props.style.height)
-        return this.children[0]
+        return (this.children.length > 0)?this.children[0]:null;
     }
 
-    match(route: string){
-        if(this.exact == false || this.exact == null){
-            if(route.startsWith(this.route)){
-                return true;
+    match(route: string): {[key: string]: string} | false {
+        // we split both routes into segments to compare.
+
+        const routeSegments = route.split("/");
+        const patternSegments = this.route.split("/");
+
+        if (routeSegments.length !== patternSegments.length) {
+            return false; // Different number of segments, no match
+        }
+
+        // prepare param object
+        const params: {[key: string]: string} = {};
+
+        for (let i = 0; i < patternSegments.length; i++) {
+            const patternSegment = patternSegments[i];
+            const routeSegment = routeSegments[i];
+
+            if (patternSegment.startsWith("{") && patternSegment.endsWith("}")) {
+                const paramName = patternSegment.slice(1, -1);
+                params[paramName] = routeSegment;
+            } else if (patternSegment !== routeSegment) {
+                return false; // Segments don't match, no match
             }
         }
-        if(this.exact == true){
-            if(route == this.route){
-                return true;
-            }
-        }
-        return false;
+
+        return params;
     }
 }
 
@@ -39,6 +50,12 @@ export class Router extends BaseComponent<{route: string, exact?: boolean, defau
 export class Switch extends BaseComponent {
     routes: Router[] = [];
     routeState = this.useState(Arma.getRouteState())
+
+    /**
+     * We store the state here without this.useState because we do not need this component
+     * to listen to state changes, we only need to update the state when the route changes
+     */
+    routeParamState = Arma.getRouteParamsState();
 
     constructor(props: {}, children: Router[]){
         super(props, []);
@@ -57,9 +74,15 @@ export class Switch extends BaseComponent {
                 fallBackRoute = route;
             }
 
-            if(route.match(currentRoute)){
-                return route
+            const matchOrParams = route.match(currentRoute)
+            if(matchOrParams !== false){
+                if(typeof matchOrParams === "object")
+                    this.routeParamState.set(() => matchOrParams);
+                else
+                    this.routeParamState.set(() => ({}));
+                return route;
             }
+
         }
 
         if(fallBackRoute != null){
