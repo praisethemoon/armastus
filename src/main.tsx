@@ -7,6 +7,7 @@ import { MouseEvent } from "./core/Events";
 import { Button } from "./extra/Button";
 import { FAIcon } from "./extra/FAIcon";
 import { Router, Switch } from "./core/Router";
+import { TextBox } from "./core/TextBox";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
@@ -14,8 +15,19 @@ love.graphics.setLineJoin("miter")
 
 const lastClickedButton = Arma.newState("none")
 
+class SmartTextBox extends BaseComponent {
+    routerParams = this.useState(Arma.getRouteParamsState())
+    render(): BaseComponent<{}> | null {
+        return (<TextBox style={{width: "100%", height: "100%"}}>{this.routerParams.get()["amount"]}</TextBox>)
+    }
+}
+
 class RootComponent extends BaseComponent {
     lastClickedButton = this.useState(lastClickedButton)
+    
+    constructor(params?: any) {
+        super(params, [])
+    }
 
     render() {
         return (
@@ -48,7 +60,7 @@ class RootComponent extends BaseComponent {
                             defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
                             hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
                             icon={<FAIcon bucket="solid" icon="money-bill" />}
-                            onClick={() => Arma.setRoute("/waste_money")}
+                            onClick={() => Arma.setRoute("/waste_money/100")}
                         >Waste Money</Button>
                         <Button
                             key="btn4"
@@ -56,11 +68,11 @@ class RootComponent extends BaseComponent {
                             defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
                             hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
                             icon={<FAIcon bucket="solid" icon="newspaper" />}
-                            onClick={() => Arma.setRoute("/useless")}
+                            onClick={() => Arma.setRoute("/waste_money/100/Arma")}
                         >Useless Page</Button>
                         <Button
                             key="btn5"
-                            style={{ width: "100%", height: "100%", zIndex: 1000 }}
+                            style={{ width: "100%", height: "100%"}}
                             defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
                             hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
                             icon={<FAIcon bucket="solid" icon="cogs" />}
@@ -71,23 +83,25 @@ class RootComponent extends BaseComponent {
                         width: "100%", height: "100%", backgroundColor: "#EC53B0"
                     }}>
                         <Switch>
-                            <Router exact={true} route={"/play"}>
+                            <Router  route={"/play"}>
                                 <Div style={{width: "100%", height: "100%", backgroundColor: "#F1EFEF"}}/>
                             </Router>
 
-                            <Router exact={false} route={"/git_gud"}>
+                            <Router route={"/git_gud"}>
                                 <Div style={{width: "100%", height: "100%", backgroundColor: "#CCC8AA"}}/>
                             </Router>
 
-                            <Router exact={false} route={"/waste_money"}>
-                                <Div style={{width: "100%", height: "100%", backgroundColor: "#7D7C7C"}}/>
+                            <Router route={"/waste_money/{amount}"}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "#7D7C7C"}}>
+                                    <SmartTextBox key="txt" style={{width: "100%", height: "100%"}}/>
+                                </Div>
                             </Router>
 
-                            <Router exact={false} route={"/useless"}>
-                                <Div style={{width: "100%", height: "100%", backgroundColor: "#191717"}}/>
+                            <Router route={"/waste_money/{amount}/{target}"}>
+                                <SmartTextBox key="txt" style={{width: "100%", height: "100%"}}/>
                             </Router>
 
-                            <Router exact={false} route={"/settings"}>
+                            <Router route={"/settings"}>
                                 <Div style={{width: "100%", height: "100%", backgroundColor: "#FF00FF"}}/>
                             </Router>
                         </Switch>
