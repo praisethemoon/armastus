@@ -69,12 +69,9 @@ class RootComponent extends BaseComponent {
                     <Div key="grid-1" style={{
                         width: "100%", height: "100%", backgroundColor: "#EC53B0"
                     }}>
-                        {/*<TextBox halign="center" valign="center" style={{ width: "100%", height: "100%" }} fontAssetName="defaultFont_30">Mai Raet &lt;3</TextBox>*/}
                         <Button style={{ width: 120, height: 80 }}>{lastClickedButton.get()}</Button>
                     </Div>
                 </Grid>
-                {/*testing  zindex*/}
-                <Div style={{position: "absolute", left: 960, top: 10, backgroundColor: "#cccccc", width: 200, height: 200}} ></Div>
             </Div>
         )
     }
