@@ -57,7 +57,10 @@ export class Button extends BaseComponent {
         else if (e.eventType == "pressed") {
             if (this.isEventInside(e)) {
                 this.setState({ buttonState: "clicked" })
-                this.props?.onClick()
+                if(this.props?.onClick != null)
+                {
+                    this.props.onClick()
+                }
             }
         }
         else if (e.eventType == "released") {
