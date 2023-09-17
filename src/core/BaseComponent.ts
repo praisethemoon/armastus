@@ -1,4 +1,4 @@
-import { StateObject } from "./Arma";
+import { Arma, StateObject } from "./Arma";
 import ComponentStyleProps from "./ComponentStyleProps";
 import { MouseEvent } from "./Events";
 import { parseCoordinate } from "./utils/parseCoordinate";
@@ -263,9 +263,17 @@ export class BaseComponent<T = {}> {
     renderLove2d() {}
 
     /**
-     * used during the update -> render loop
+     * used during the love render loop
      */
-    display(){
+    display(currentZIndex?: number){
+        currentZIndex = currentZIndex || 0;
+        this.props.style.zIndex = this.props.style.zIndex || 0;
+
+        if((currentZIndex < this.props.style.zIndex)){
+            Arma.addHigherOrderLayer(this, this.props.style.zIndex);
+            return
+        }
+
         // we call the renderLove2d initially
         this.renderLove2d();
 
@@ -273,20 +281,20 @@ export class BaseComponent<T = {}> {
         // be responsible for rendering its children
         if(this._renderCache != null){
             // @ts-ignore
-            this._renderCache.display()
+            this._renderCache.display(currentZIndex)
         }
         else{
             // else we manually display children, since the object probably uses native love2d rendering
-            this.displayChildren();
+            this.displayChildren(currentZIndex);
         }
     }
 
     /**
      * Displays children
      */
-    displayChildren(){
+    displayChildren(currentZIndex?: number){
         for (const child of this.children) {
-            child.display();
+            child.display(currentZIndex);
         }
     }
 

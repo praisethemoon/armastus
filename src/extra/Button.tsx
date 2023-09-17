@@ -16,7 +16,7 @@ export class Button extends BaseComponent {
 
     state = { buttonState: "default" }
 
-    constructor(props?: { style?: Partial<ComponentStyleProps>, defaultStyle?: Partial<ComponentStyleProps>, hoveredStyle?: Partial<ComponentStyleProps>, clickedStyle?: Partial<ComponentStyleProps>, key?: string, icon?: FAIcon | null }, children?: string[]) {
+    constructor(props?: { style?: Partial<ComponentStyleProps>, defaultStyle?: Partial<ComponentStyleProps>, hoveredStyle?: Partial<ComponentStyleProps>, clickedStyle?: Partial<ComponentStyleProps>, key?: string, icon?: FAIcon | null, onClick?: () => void }, children?: string[]) {
         super(props, []);
         this.text = children?.join("") || ""
 
@@ -57,6 +57,7 @@ export class Button extends BaseComponent {
         else if (e.eventType == "pressed") {
             if (this.isEventInside(e)) {
                 this.setState({ buttonState: "clicked" })
+                this.props?.onClick()
             }
         }
         else if (e.eventType == "released") {
