@@ -43,9 +43,11 @@ export class Arma {
         return new StateObject<T>(initialValue);
     }
 
-    static root: BaseComponent;
-    static higherOrderLayers: BaseComponent[][] = [];
-    static sortedAvailableLayers: number[] = []
+    private static root: BaseComponent;
+    private static higherOrderLayers: BaseComponent[][] = [];
+    private static sortedAvailableLayers: number[] = []
+    
+    private static routeState: StateObject<string> = new StateObject<string>("/");
 
     /**
      * View management
@@ -90,8 +92,25 @@ export class Arma {
         this.higherOrderLayers[zIndex].push(layer);
     }
 
+    /**
+     * Update root component
+     * @param dt 
+     */
     static update(dt: number){
         this.root.update(dt);
+    }
+
+    /** */
+    static setRoute(route: string){
+        this.routeState.set(() => route);
+    }
+
+    static getRouteState(){
+        return this.routeState;
+    }
+
+    static getRoute(){
+        return this.routeState.get()
     }
 }
 

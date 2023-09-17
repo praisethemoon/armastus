@@ -6,6 +6,7 @@ import { Grid } from "./core/Grid";
 import { MouseEvent } from "./core/Events";
 import { Button } from "./extra/Button";
 import { FAIcon } from "./extra/FAIcon";
+import { Router, Switch } from "./core/Router";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
@@ -31,7 +32,7 @@ class RootComponent extends BaseComponent {
                             defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
                             hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
                             icon={<FAIcon bucket="solid" icon="play-circle" />}
-                            onClick={() => lastClickedButton.set(() => "btn1")}
+                            onClick={() => Arma.setRoute("/play")}
                         >Play and Fail</Button>
                         <Button
                             key="btn2"
@@ -39,7 +40,7 @@ class RootComponent extends BaseComponent {
                             defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
                             hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
                             icon={<FAIcon bucket="solid" icon="sad-cry" />}
-                            onClick={() => lastClickedButton.set(() => "btn2")}
+                            onClick={() => Arma.setRoute("/git_gud")}
                         >Git Gud</Button>
                         <Button
                             key="btn3"
@@ -47,7 +48,7 @@ class RootComponent extends BaseComponent {
                             defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
                             hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
                             icon={<FAIcon bucket="solid" icon="money-bill" />}
-                            onClick={() => lastClickedButton.set(() => "btn3")}
+                            onClick={() => Arma.setRoute("/waste_money")}
                         >Waste Money</Button>
                         <Button
                             key="btn4"
@@ -55,7 +56,7 @@ class RootComponent extends BaseComponent {
                             defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
                             hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
                             icon={<FAIcon bucket="solid" icon="newspaper" />}
-                            onClick={() => lastClickedButton.set(() => "btn4")}
+                            onClick={() => Arma.setRoute("/useless")}
                         >Useless Page</Button>
                         <Button
                             key="btn5"
@@ -63,13 +64,33 @@ class RootComponent extends BaseComponent {
                             defaultStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#4D2DB7", width: "100%", height: "100%" }}
                             hoveredStyle={{ borderRadius: 0, borderBottomWidth: 5, borderColor: "#9D44C0", backgroundColor: "#9D44C0", width: "100%", height: "100%" }}
                             icon={<FAIcon bucket="solid" icon="cogs" />}
-                            onClick={() => lastClickedButton.set(() => "btn5")}
+                            onClick={() => Arma.setRoute("/settings")}
                         >Zettingz</Button>
                     </Grid>
                     <Div key="grid-1" style={{
                         width: "100%", height: "100%", backgroundColor: "#EC53B0"
                     }}>
-                        <Button style={{ width: 120, height: 80 }}>{lastClickedButton.get()}</Button>
+                        <Switch>
+                            <Router exact={true} route={"/play"}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "#F1EFEF"}}/>
+                            </Router>
+
+                            <Router exact={false} route={"/git_gud"}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "#CCC8AA"}}/>
+                            </Router>
+
+                            <Router exact={false} route={"/waste_money"}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "#7D7C7C"}}/>
+                            </Router>
+
+                            <Router exact={false} route={"/useless"}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "#191717"}}/>
+                            </Router>
+
+                            <Router exact={false} route={"/settings"}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "#FF00FF"}}/>
+                            </Router>
+                        </Switch>
                     </Div>
                 </Grid>
             </Div>
