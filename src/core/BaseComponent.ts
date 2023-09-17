@@ -1,3 +1,4 @@
+import { StateObject } from "./Arma";
 import ComponentStyleProps from "./ComponentStyleProps";
 import { MouseEvent } from "./Events";
 import { parseCoordinate } from "./utils/parseCoordinate";
@@ -21,7 +22,11 @@ export class BaseComponent<T = {}> {
     children: BaseComponent[] = [];
     previousProps: ComponentProps | null = null;
 
+    /** local object state */
     state: any = {};
+
+    /** global object states, we use this to unscubscribe component when it is about to be unmounted */
+    globalStates: StateObject<any>[] = [];
 
     /**
      * Viewport information
@@ -207,7 +212,6 @@ export class BaseComponent<T = {}> {
         }
     }
     
-
     // Helper function to compute dimensions based on different types of values
     computeDimension(value: string | number | null | undefined, max: string | number | null | undefined, parentSize: number): number {
         if (value === undefined) {
@@ -245,13 +249,22 @@ export class BaseComponent<T = {}> {
     }
 
 
+    /**
+     * Override this if you are using jsx
+     * @returns the component to be rendered
+     */
     render() {
-        
         return null;
     }
 
+    /**
+     * Override this to render using native Love2d calls
+     */
     renderLove2d() {}
 
+    /**
+     * used during the update -> render loop
+     */
     display(){
         // we call the renderLove2d initially
         this.renderLove2d();
@@ -268,6 +281,9 @@ export class BaseComponent<T = {}> {
         }
     }
 
+    /**
+     * Displays children
+     */
     displayChildren(){
         for (const child of this.children) {
             child.display();
@@ -304,21 +320,29 @@ export class BaseComponent<T = {}> {
 
     }
 
+    /**
+     * Updates the internal object state
+     * @param newState new state of the component
+     */
     setState(newState: any){
-        if(this._renderCache != null){
-            this._renderCache.componentWillUnmount();
-        }
-
-        this._renderCache = null;
+        this.rerender()
         this.state = {...this.state, ...newState};
-        this._renderCache = this.render();
-        this.componentDidMount();
+    }
 
-        if(this._renderCache != null){
-            // @ts-ignore
-            this._renderCache.parent = this;
-        }
-        this.computeViewport(this.childRenderViewport.x, this.childRenderViewport.y, this.childRenderViewport.width, this.childRenderViewport.height)
+    /**
+     * Called when a global state object has changed
+     * and requests component to update
+     */
+    receiveStateUpdate(){
+        this.rerender()
+    }
+
+    /**
+     * Reset the render cache
+     * this will force the component to re-render on the next update
+     */
+    rerender(){
+        this._renderCache = null;
     }
 
 
@@ -372,9 +396,20 @@ export class BaseComponent<T = {}> {
      * Called right before the component is removed
      */
     componentWillUnmount() {
+        // ubsuscribe from all global states
+        for (const state of this.globalStates) {
+            state.unsubscribe(this);
+        }
+
         // call for all children
         for (const child of this.children) {
             child.componentWillUnmount();
         }
+    }
+
+    useState<U>(obj: StateObject<U>){
+        obj.subscribe(this);
+        this.globalStates.push(obj);
+        return obj;
     }
 }
