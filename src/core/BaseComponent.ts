@@ -380,13 +380,10 @@ export class BaseComponent<T = {}> {
         if(this._renderCache != null){
             this._renderCache.onMouseEvent(e)
         }
-
-        for(const child of this.children){
-            if(!e.spread){
-                break
+        else for(const child of this.children){
+                child.onMouseEvent(e)
             }
-            child.onMouseEvent(e)
-        }
+
     }
 
     onKeyboardEvent(e: KeyboardEvent){
@@ -394,10 +391,7 @@ export class BaseComponent<T = {}> {
             this._renderCache.onKeyboardEvent(e)
         }
 
-        for(const child of this.children){
-            if(!e.spread){
-                break
-            }
+        else for(const child of this.children){
             child.onKeyboardEvent(e)
         }
     }

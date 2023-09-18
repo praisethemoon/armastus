@@ -132,8 +132,8 @@ export class Arma {
         this.root.onMouseEvent(new MouseEvent("moved", { x, y, dx, dy, isTouch }))
     }
 
-
     static mousePressed(x: number, y: number, button: number, isTouch: boolean, presses: number){
+        print("root -- mouse pressed")
         this.root.onMouseEvent(new MouseEvent("pressed", { x, y, button, isTouch, presses }))
     }
 
@@ -155,12 +155,13 @@ export class Arma {
         this.root.onKeyboardEvent(new KeyboardEvent("released", { key, scancode}))
     }
 
-    static textEdited(){
-
+    static textInput(text: string){
+        this.root.onKeyboardEvent(new KeyboardEvent("input", { text }))
     }
 
-    static textInput(){
-
+    // TODO: understand and implement this :(
+    static textEdited(){
+        throw new Error("Not implemented")
     }
 }
 

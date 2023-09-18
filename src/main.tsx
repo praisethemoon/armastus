@@ -9,6 +9,7 @@ import { FAIcon } from "./extra/FAIcon";
 import { Router, Switch } from "./core/Router";
 import { TextBox } from "./core/TextBox";
 import { KeyConstant, Scancode } from "love.keyboard";
+import { TextInput } from "./extra/TextInput";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
@@ -103,7 +104,18 @@ class RootComponent extends BaseComponent {
                             </Router>
 
                             <Router route={"/settings"}>
-                                <Div style={{width: "100%", height: "100%", backgroundColor: "#FF00FF"}}/>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "#FF00FF"}}>
+                                    <TextInput defaultFocused={true} defaultValue="Hi" fontAssetName="defaultFont" 
+                                        style={{
+                                            width: "100%", 
+                                            height: "35px", 
+                                            borderColor: "#cccccc", 
+                                            borderWidth: 3, 
+                                            borderRadius: 3,
+                                            backgroundColor: "#ffffff",
+                                        }}
+                                        />
+                                </Div>
                             </Router>
                         </Switch>
                     </Div>
@@ -147,4 +159,12 @@ love.keypressed = (key: KeyConstant, scancode: Scancode, isrepeat: boolean) => {
 
 love.keyreleased = (key: KeyConstant, scancode: Scancode) => {
     Arma.keyReleased(key, scancode)
+}
+
+love.textinput = (text: string) => {
+    Arma.textInput(text)
+}
+
+love.textedited = (text: string, start: number, length: number) => {
+    
 }

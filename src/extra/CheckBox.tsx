@@ -21,15 +21,15 @@ export class Checkbox extends BaseComponent<{defaultChecked: boolean, onChange: 
     onMouseEvent(e: MouseEvent): void {
         const mouseOver = this.isEventInside(e);
 
-        if(mouseOver && !this.state.checked){
+        if(mouseOver && !this.state.checked && !e.isResolved()){
             this.setState({checked: true})
             this.props.onChange(true)
-            e.end()
+            e.resolve()
         }
-        else if(mouseOver && this.state.checked) {
+        else if(mouseOver && this.state.checked && !e.isResolved()) {
             this.setState({checked: false})
             this.props.onChange(false)
-            e.end()
+            e.resolve()
         }
 
         super.onMouseEvent(e);
