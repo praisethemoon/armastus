@@ -1,9 +1,10 @@
 import { Color, GradientColor} from "./Color";
+import { ColorConstant } from "./ColorConstants";
 
 export type NullableProp = string | number | null;
 export type OverflowProp = "hidden" | "visible" | "scroll";
 
-export type ColorProp = Color | string | GradientColor | null
+export type ColorProp = Color | string| ColorConstant | GradientColor | null
 
 //export type ImageRenderProp = "repeat-x" | "repeat-y" | "repeat" | "no-repeat" | null
 export type ImageSizeProp = "cover" | "contain" | "fill" | [number|string, number|string] | string | number | null
