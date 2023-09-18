@@ -1,5 +1,6 @@
 import { Shader } from "love.graphics";
 import { ShaderFactory } from "./ShaderFactory";
+import { ColorConstant, ColorMap } from "./ColorConstants";
 
 type ColorType = "color" | "gradient";
 
@@ -48,23 +49,32 @@ export class Color {
      * rgba(r,g,b,a)
      * #rrggbb
      * #rrggbbaa
+     * $[colorConstant] will be replace with its actual string and reprocessed again
      * @param hex 
      */
     static fromString(hex: string): Color {
+        // check if ColorConstant
+        if (hex.startsWith("$")) {
+            const col = (hex as ColorConstant)
+            if (ColorMap[col] != undefined) {
+                hex = ColorMap[col];
+            }
+        }
+
         // remove white space:
         hex = hex.trim().replace(" ", "").replace("\t", "").replace("\n", "");
         
         // check if rgba
-        if (hex.startsWith("rgba")) {
+        if (hex.toLowerCase().startsWith("rgba")) {
             let values = hex.substring(5, hex.length - 1).split(",").map(e => e.trim());
-            return new Color(parseInt(values[0]), parseInt(values[1]), parseInt(values[2]), parseFloat(values[3]));
+            return new Color(parseInt(values[0]), parseInt(values[1]), parseInt(values[2]), parseFloat(values[3])*255);
         }
         // check if rgb
-        if (hex.startsWith("rgb")) {
+        if (hex.toLowerCase().startsWith("rgb")) {
             let values = hex.substring(4, hex.length - 1).split(",").map(e => e.trim());
             return new Color(parseInt(values[0]), parseInt(values[1]), parseInt(values[2]));
         }
-        if(hex.startsWith("hsl")){
+        if(hex.toLowerCase().startsWith("hsl")){
             let values = hex.substring(4, hex.length - 1).split(",").map(e => e.trim());
             
             let h = parseInt(values[0]);
@@ -98,6 +108,7 @@ export class Color {
                 return new Color(parseInt(hex.substring(1, 3), 16), parseInt(hex.substring(3, 5), 16), parseInt(hex.substring(5, 7), 16), 255);
             }
         }
+        
         throw new Error("Invalid color format: `" + hex+"`");
     }
 
@@ -235,3 +246,4 @@ export class GradientColor {
         return this.shader as Shader;
     }
 }
+
