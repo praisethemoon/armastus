@@ -64,7 +64,6 @@ export class TextInput extends BaseComponent<TextInputProps> {
          */
         if((e.eventType == "pressed") && (e.eventData as MouseClickEventData).button == 1){
             if((this.isEventInside(e)) && (!e.isResolved())){
-                print("mouse pressed inside", (e.eventData as MouseClickEventData).presses)
                 if(!this.state.isFocused){
                     print("focused")
                     this.setState({isFocused: true})
@@ -74,7 +73,6 @@ export class TextInput extends BaseComponent<TextInputProps> {
             }
 
             else if(!this.isEventInside(e)){
-                print("mouse pressed outside")
                 if(this.state.isFocused){
                     this.setState({isFocused: false})
                 }
