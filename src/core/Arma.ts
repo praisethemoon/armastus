@@ -133,7 +133,7 @@ export class Arma {
     }
 
     static mousePressed(x: number, y: number, button: number, isTouch: boolean, presses: number){
-        print("root -- mouse pressed")
+        print("root -- mouse pressed", button)
         this.root.onMouseEvent(new MouseEvent("pressed", { x, y, button, isTouch, presses }))
     }
 

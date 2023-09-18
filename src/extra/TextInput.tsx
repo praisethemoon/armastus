@@ -6,7 +6,6 @@ import ComponentStyleProps from "../core/ComponentStyleProps";
 import { KeyboardEvent, KeyboardPressEventData, KeyboardTextInputEventData, MouseClickEventData, MouseEvent } from "../core/Events";
 import { TextBox } from "../core/TextBox";
 
-
 type TextInputProps = {fontAssetName?: string, fontSize?: number, defaultValue?: string, defaultFocused?: boolean, onChange?: (text: string) => void}
 
 export class TextInput extends BaseComponent<TextInputProps> {
@@ -63,8 +62,7 @@ export class TextInput extends BaseComponent<TextInputProps> {
          * we cannot end event propagation here and all inputs needs to listen to press events
          * to unfocus if outside.
          */
-        if(e.eventType == "pressed"){
-            print(e.isResolved())
+        if((e.eventType == "pressed") && (e.eventData as MouseClickEventData).button == 1){
             if((this.isEventInside(e)) && (!e.isResolved())){
                 print("mouse pressed inside", (e.eventData as MouseClickEventData).presses)
                 if(!this.state.isFocused){

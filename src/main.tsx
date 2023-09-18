@@ -86,15 +86,15 @@ class RootComponent extends BaseComponent {
                     }}>
                         <Switch>
                             <Router  route={"/play"}>
-                                <Div style={{width: "100%", height: "100%", backgroundColor: "#F1EFEF"}}/>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "$red200"}}/>
                             </Router>
 
                             <Router route={"/git_gud"}>
-                                <Div style={{width: "100%", height: "100%", backgroundColor: "#CCC8AA"}}/>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "$red300"}}/>
                             </Router>
 
                             <Router route={"/waste_money/{amount}"}>
-                                <Div style={{width: "100%", height: "100%", backgroundColor: "$cyan100"}}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "$red400"}}>
                                     <SmartTextBox key="txt" style={{width: "100%", height: "100%"}}/>
                                 </Div>
                             </Router>
@@ -104,7 +104,7 @@ class RootComponent extends BaseComponent {
                             </Router>
 
                             <Router route={"/settings"}>
-                                <Div style={{width: "100%", height: "100%", backgroundColor: "#FF00FF"}}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "$red800"}}>
                                     <TextInput defaultFocused={true} defaultValue="Hi" fontAssetName="defaultFont" 
                                         style={{
                                             width: "100%", 

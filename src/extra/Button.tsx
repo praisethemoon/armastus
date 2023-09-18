@@ -2,7 +2,7 @@ import { Arma } from "../core/Arma";
 import { BaseComponent } from "../core/BaseComponent";
 import ComponentStyleProps from "../core/ComponentStyleProps";
 import { Div } from "../core/Div";
-import { MouseEvent } from "../core/Events";
+import { MouseClickEventData, MouseEvent } from "../core/Events";
 import { Grid } from "../core/Grid";
 import { TextBox } from "../core/TextBox";
 import { FAIcon } from "./FAIcon";
@@ -45,6 +45,9 @@ export class Button extends BaseComponent {
     }
 
     onMouseEvent(e: MouseEvent): void {
+        // ignore resolved events
+        if(e.isResolved()) return;
+
         if (e.eventType == "moved") {
             if (this.isEventInside(e)) {
                 this.setState({ buttonState: "hovered" })
@@ -54,7 +57,7 @@ export class Button extends BaseComponent {
                     this.setState({ buttonState: "default" })
             }
         }
-        else if (e.eventType == "pressed") {
+        else if ((e.eventType == "pressed") && ((e.eventData as MouseClickEventData).button == 1)) {
             if (this.isEventInside(e)) {
                 this.setState({ buttonState: "clicked" })
                 if(this.props?.onClick != null)
@@ -63,7 +66,7 @@ export class Button extends BaseComponent {
                 }
             }
         }
-        else if (e.eventType == "released") {
+        else if ((e.eventType == "released") && ((e.eventData as MouseClickEventData).button == 1)) {
             if (this.isEventInside(e)) {
                 this.setState({ buttonState: "hovered" })
             }
