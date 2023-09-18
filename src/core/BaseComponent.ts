@@ -1,6 +1,6 @@
 import { Arma, StateObject } from "./Arma";
 import ComponentStyleProps from "./ComponentStyleProps";
-import { MouseEvent } from "./Events";
+import { KeyboardEvent, MouseEvent } from "./Events";
 import { parseCoordinate } from "./utils/parseCoordinate";
 
 
@@ -386,6 +386,19 @@ export class BaseComponent<T = {}> {
                 break
             }
             child.onMouseEvent(e)
+        }
+    }
+
+    onKeyboardEvent(e: KeyboardEvent){
+        if(this._renderCache != null){
+            this._renderCache.onKeyboardEvent(e)
+        }
+
+        for(const child of this.children){
+            if(!e.spread){
+                break
+            }
+            child.onKeyboardEvent(e)
         }
     }
 

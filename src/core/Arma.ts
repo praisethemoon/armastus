@@ -1,5 +1,7 @@
+import { KeyConstant, Scancode } from "love.keyboard";
 import { BaseComponent } from "./BaseComponent";
 import ComponentStyleProps from "./ComponentStyleProps";
+import { KeyboardEvent, MouseEvent } from "./Events";
 
 export class StateObject<T>{
     private value: T;
@@ -121,6 +123,44 @@ export class Arma {
 
     static getRouteParams() {
         return this.routeParams.get();
+    }
+
+
+    /** Events */
+
+    static mouseMoved(x: number, y: number, dx: number, dy: number, isTouch: boolean) {
+        this.root.onMouseEvent(new MouseEvent("moved", { x, y, dx, dy, isTouch }))
+    }
+
+
+    static mousePressed(x: number, y: number, button: number, isTouch: boolean, presses: number){
+        this.root.onMouseEvent(new MouseEvent("pressed", { x, y, button, isTouch, presses }))
+    }
+
+    static mouseReleased(x: number, y: number, button: number, isTouch: boolean, presses: number){
+        this.root.onMouseEvent(new MouseEvent("released", { x, y, button, isTouch, presses }))
+    }
+
+    static wheelMoved(x: number, y: number){
+        this.root.onMouseEvent(new MouseEvent("wheel", { x, y }))
+    }
+
+    // TODO: joysticks events
+
+    static keyPressed(key: KeyConstant, scancode: Scancode, isrepeat: boolean){
+        this.root.onKeyboardEvent(new KeyboardEvent("pressed", { key, scancode, isrepeat }))
+    }
+
+    static keyReleased(key: KeyConstant, scancode: Scancode){
+        this.root.onKeyboardEvent(new KeyboardEvent("released", { key, scancode}))
+    }
+
+    static textEdited(){
+
+    }
+
+    static textInput(){
+
     }
 }
 

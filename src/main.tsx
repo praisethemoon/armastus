@@ -8,6 +8,7 @@ import { Button } from "./extra/Button";
 import { FAIcon } from "./extra/FAIcon";
 import { Router, Switch } from "./core/Router";
 import { TextBox } from "./core/TextBox";
+import { KeyConstant, Scancode } from "love.keyboard";
 
 love.graphics.setDefaultFilter("nearest", "nearest");
 love.graphics.setLineStyle("smooth")
@@ -80,7 +81,7 @@ class RootComponent extends BaseComponent {
                         >Zettingz</Button>
                     </Grid>
                     <Div key="grid-1" style={{
-                        width: "100%", height: "100%", backgroundColor: "#EC53B0"
+                        width: "100%", height: "100%", backgroundColor: "$red800"
                     }}>
                         <Switch>
                             <Router  route={"/play"}>
@@ -92,7 +93,7 @@ class RootComponent extends BaseComponent {
                             </Router>
 
                             <Router route={"/waste_money/{amount}"}>
-                                <Div style={{width: "100%", height: "100%", backgroundColor: "#7D7C7C"}}>
+                                <Div style={{width: "100%", height: "100%", backgroundColor: "$cyan100"}}>
                                     <SmartTextBox key="txt" style={{width: "100%", height: "100%"}}/>
                                 </Div>
                             </Router>
@@ -125,16 +126,25 @@ love.update = (dt: number) => {
 }
 
 love.mousepressed = (x: number, y: number, button: number, isTouch: boolean, presses: number) => {
-    //print("mouse pressed", x, y, button, isTouch, presses)
-    root.onMouseEvent(new MouseEvent("pressed", { x, y, button, isTouch, presses }))
+    Arma.mousePressed(x, y, button, isTouch, presses)
 }
 
 love.mousemoved = (x: number, y: number, dx: number, dy: number, isTouch: boolean) => {
-    //print("mouse moved", x, y, dx, dy, isTouch)
-    root.onMouseEvent(new MouseEvent("moved", { x, y, button: undefined, isTouch, presses: undefined }))
+    Arma.mouseMoved(x, y, dx, dy, isTouch)
 }
 
 love.mousereleased = (x: number, y: number, button: number, isTouch: boolean, presses: number) => {
-    //print("mouse released", x, y, button, isTouch, presses)
-    root.onMouseEvent(new MouseEvent("released", { x, y, button, isTouch, presses }))
+    Arma.mouseReleased(x, y, button, isTouch, presses)
+}
+
+love.wheelmoved = (x: number, y: number) => {
+    Arma.wheelMoved(x, y)
+}
+
+love.keypressed = (key: KeyConstant, scancode: Scancode, isrepeat: boolean) => {
+    Arma.keyPressed(key, scancode, isrepeat)
+}
+
+love.keyreleased = (key: KeyConstant, scancode: Scancode) => {
+    Arma.keyReleased(key, scancode)
 }
